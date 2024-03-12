@@ -29,10 +29,6 @@ app.use(
 app.use(morgan("dev"));
 
 app.set("x-powered-by", false);
-app.set("trust proxy", function (ip: any) {
-	if (ip === "127.0.0.1" || ip === "123.123.123.123") return true;
-	else return false;
-});
 
 const server = http.createServer(app);
 
