@@ -36,9 +36,10 @@ server.listen(PORT || 8080, () => {
 	console.log(`Server is running on http://localhost:${PORT}/`);
 });
 
-app.use("/", router());
+import { ratelimitMiddleware } from "./middleware/ratelimit";
+// app.use(ratelimitMiddleware);
 
-app.set("title", "My Site");
+app.use("/", router());
 
 let pkg = require("../package.json");
 app.get("/", (req: express.Request, res: express.Response) => {

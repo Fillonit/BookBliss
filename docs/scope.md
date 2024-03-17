@@ -4,8 +4,6 @@ This project was initiated to address the growing demand for online bookstores, 
 
 # Project Scope
 
-The project scope encompasses the development and deployment of a full-stack bookstore application, designed to meet the outlined objectives and requirements.
-
 In-scope activities include:
 - Implementing a user-friendly interface for browsing books, placing orders, and managing user accounts.
 - Integrating with existing book databases to provide users with accurate book information, including titles, authors, descriptions, and prices.
