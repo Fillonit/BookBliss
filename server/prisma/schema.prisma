@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Book {
+  id         Int         @id @default(autoincrement())
+  title      String      @db.VarChar(100)
+  author     String      @db.VarChar(100)
+  isbn       String      @unique @db.VarChar(13)
+  pages      Int         @default(0)
+  words      Int         @default(0)
+  timeToRead Int         @default(0)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @default(now()) @updatedAt
+  Author     Author?     @relation(fields: [authorId], references: [id])
+  authorId   Int?
+  Review     Review[]
+  BookGenre  BookGenre[]
+}
+
+model Genre {
+  id        Int         @id @default(autoincrement())
+  name      String      @db.VarChar(100)
+  BookGenre BookGenre[]
+}
+
+model BookGenre {
+  bookId  Int
+  genreId Int
+  Book    Book  @relation(fields: [bookId], references: [id])
+  Genre   Genre @relation(fields: [genreId], references: [id])
+
+  @@id([bookId, genreId])
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Author    Author?
+  Review    Review[]
+}
+
+model Author {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  books     Book[]
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  comment   String
+  book      Book     @relation(fields: [bookId], references: [id])
+  bookId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
