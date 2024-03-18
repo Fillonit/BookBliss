@@ -16,10 +16,7 @@ import {
 	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-import {
-	faBookOpenReader,
-	faShoppingBag,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBookOpen, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 
 const components: { title: string; href: string; description: string }[] = [
 	{
@@ -89,13 +86,13 @@ function Component() {
 	return (
 		<div className="fixed w-full z-50">
 			<Navbar fluid rounded className="bg-white/70 z-50">
-				<Navbar.Brand href="https://flowbite-react.com">
+				<Navbar.Brand href="/">
 					<FontAwesomeIcon
-						icon={faBookOpenReader}
+						icon={faBookOpen}
 						className="mr-3 h-6 sm:h-9"
 					/>
 					<span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-						Flowbite React
+						BookBliss
 					</span>
 				</Navbar.Brand>
 				<div className="flex md:order-2">
@@ -190,15 +187,15 @@ function Component() {
 											>
 												<Icons.logo className="h-6 w-6" />
 												<div className="mb-2 mt-4 text-lg font-medium">
-													shadcn/ui
+													BookBliss
 												</div>
-												<p className="text-sm leading-tight text-muted-foreground">
+												{/* <p className="text-sm leading-tight text-muted-foreground">
 													Beautifully designed
 													components that you can copy
 													and paste into your apps.
 													Accessible. Customizable.
 													Open Source.
-												</p>
+												</p> */}
 											</a>
 										</NavigationMenuLink>
 									</li>

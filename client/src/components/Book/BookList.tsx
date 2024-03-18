@@ -36,15 +36,16 @@ for (let i = 1; i <= 250; i++) {
 
 const BookList: React.FC = () => {
 	const [visibleBooks, setVisibleBooks] = useState(20); // Initially show 20 books
-	const totalBooksToShow = 5 * 4; // 5 rows with 4 columns each
+	// const totalBooksToShow = 5 * 4; // 5 rows with 4 columns each
 	const [filter, setFilter] = useState<FilterOption | null>(null);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [ascendingOrder, setAscendingOrder] = useState<boolean>(true);
 	const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false); // State for dropdown visibility
 	const [searchQuery, setSearchQuery] = useState<string>("");
 	const [selectedGenre, setSelectedGenre] = useState<string | null>(null); // State for selected genre
 
-	setAscendingOrder(true);
-	setVisibleBooks(totalBooksToShow);
+	// setAscendingOrder(true);
+	// setVisibleBooks(totalBooksToShow);
 	// Define filter options
 	const genres: string[] = [
 		"Action",
