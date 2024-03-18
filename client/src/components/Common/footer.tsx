@@ -8,7 +8,7 @@ return(
   <div className="mx-auto max-w-screen-xl px-4 pb-6 pt-16 sm:px-6 lg:px-8 lg:pt-24">
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
       <div>
-        <div className="flex justify-center text-cyan-500 sm:justify-start">
+        <div className="flex justify-center text-violet-500 sm:justify-start">
           <h1 className="text-3xl font-bold">BookBliss</h1>
         </div>
 
@@ -23,7 +23,7 @@ return(
             href="#"
             rel="noreferrer"
             target="_blank"
-            className="text-cyan-600 transition hover:text-cyan-600/75"
+            className="text-violet-500 transition hover:text-violet-600/75"
         >
             <span className="sr-only">Facebook</span>
             <FontAwesomeIcon icon={faFacebook} className="h-6 w-6" />
@@ -35,7 +35,7 @@ return(
       href="#"
       rel="noreferrer"
       target="_blank"
-      className="text-cyan-600 transition hover:text-cyan-600/75"
+      className="text-violet-500 transition hover:text-violet-600/75"
     >
       <span className="sr-only">Instagram</span>
       <FontAwesomeIcon icon={faInstagram} className="h-6 w-6" />
@@ -47,7 +47,7 @@ return(
       href="#"
       rel="noreferrer"
       target="_blank"
-      className="text-cyan-600 transition hover:text-cyan-600/75"
+      className="text-violet-500 transition hover:text-violet-600/75"
     >
       <span className="sr-only">Twitter</span>
       <FontAwesomeIcon icon={faTwitter} className="h-6 w-6" />
@@ -59,7 +59,7 @@ return(
       href="#"
       rel="noreferrer"
       target="_blank"
-      className="text-cyan-600 transition hover:text-cyan-600/75"
+      className="text-violet-500 transition hover:text-violet-600/75"
     >
       <span className="sr-only">GitHub</span>
       <FontAwesomeIcon icon={faGithub} className="h-6 w-6" />
@@ -71,7 +71,7 @@ return(
       href="#"
       rel="noreferrer"
       target="_blank"
-      className="text-cyan-600 transition hover:text-cyan-600/75"
+      className="text-violet-500 transition hover:text-violet-600/75"
     >
       <span className="sr-only">Dribbble</span>
       <FontAwesomeIcon icon={faDribbble} className="h-6 w-6" />
@@ -148,20 +148,20 @@ return(
           </ul>
         </div>
 
-        <div className="text-right sm:text-left">
-            <p className="text-lg font-medium text-gray-900">Contact Us</p>
-            <div className="flex items-center mt-8">
-                <FontAwesomeIcon icon={faMapMarkerAlt} className="h-6 w-6 text-cyan-600 transition hover:text-cyan-600/75 mr-2" />
-                <input type="text" placeholder="123 Main Street" />
-            </div>
-            <div className="flex items-center mt-2">
-                <FontAwesomeIcon icon={faPhone} className="h-6 w-6 text-cyan-600 transition hover:text-cyan-600/75 mr-2" />
-                <input type="text" placeholder="Phone: (123) 456-7890" />
-            </div>
-            <div className="flex items-center mt-2">
-                <FontAwesomeIcon icon={faEnvelope} className="h-6 w-6 text-cyan-600 transition hover:text-cyan-600/75 mr-2" />
-                <input type="text" placeholder="Email: info@example.com" />
-            </div>
+        <div className="text-center sm:text-left">
+          <p className="text-lg font-medium text-gray-900">Contact Us</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start mt-8">
+            <FontAwesomeIcon icon={faMapMarkerAlt} className="h-6 w-6 text-violet-500 transition hover:text-violet-600/75 mr-2" />
+            <p className='w-full sm:w-auto text-center mt-2"'>123 Main Street</p>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start mt-2">
+            <FontAwesomeIcon icon={faPhone} className="h-6 w-6 text-violet-500 transition hover:text-violet-600/75 mr-2" />
+            <p className='w-full sm:w-auto text-center mt-2"'>(123) 456-7890</p>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start mt-2">
+            <FontAwesomeIcon icon={faEnvelope} className="h-6 w-6 text-violet-500 transition hover:text-violet-600/75 mr-2" />
+            <p className='w-full sm:w-auto text-center mt-2"'>info@example.com</p>
+          </div>
         </div>
       </div>
     </div>
@@ -172,7 +172,7 @@ return(
           <span className="block sm:inline">All rights reserved. </span>
 
           <a
-            className="inline-block text-cyan-500 underline transition hover:text-cyan-500/75"
+            className="inline-block text-violet-500 underline transition hover:text-violet-500/75"
             href="#"
           >
             Terms & Conditions
@@ -181,7 +181,7 @@ return(
           <span> &middot;</span>
 
           <a
-            className="inline-block text-cyan-500 underline transition hover:text-cyan-500/75"
+            className="inline-block text-violet-500 underline transition hover:text-violet-500/75"
             href="#"
           >
             Privacy Policy
