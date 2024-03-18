@@ -11,19 +11,22 @@ datasource db {
 }
 
 model Book {
-  id         Int         @id @default(autoincrement())
-  title      String      @db.VarChar(100)
-  author     String      @db.VarChar(100)
-  isbn       String      @unique @db.VarChar(13)
-  pages      Int         @default(0)
-  words      Int         @default(0)
-  timeToRead Int         @default(0)
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @default(now()) @updatedAt
-  Author     Author?     @relation(fields: [authorId], references: [id])
-  authorId   Int?
-  Review     Review[]
-  BookGenre  BookGenre[]
+  id          Int         @id @default(autoincrement())
+  title       String      @db.VarChar(100)
+  author      String      @db.VarChar(100)
+  isbn        String      @unique @db.VarChar(13)
+  price       Float       @default(0)
+  description String      @db.VarChar(1000)
+  cover       String      @db.VarChar(100)
+  pages       Int         @default(0)
+  words       Int         @default(0)
+  timeToRead  Int         @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now()) @updatedAt
+  Author      Author?     @relation(fields: [authorId], references: [id])
+  authorId    Int?
+  Review      Review[]
+  BookGenre   BookGenre[]
 }
 
 model Genre {
@@ -82,5 +85,5 @@ model Contact {
   message   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  ip        String   @db.VarChar(30)
 }
-
