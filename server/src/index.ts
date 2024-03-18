@@ -39,7 +39,7 @@ server.listen(PORT || 8080, () => {
 import { ratelimitMiddleware } from "./middleware/ratelimit";
 // app.use(ratelimitMiddleware);
 
-app.use("/", router());
+app.use("/api", router());
 
 let pkg = require("../package.json");
 app.get("/", (req: express.Request, res: express.Response) => {
