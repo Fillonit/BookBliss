@@ -37,7 +37,7 @@ function App() {
 							element={<PrivateRoute element={<Dashboard />} />}
 						/>  */}
 					</Routes>
-					{!window.location.pathname.includes("/dashboard") && (
+					{!window.location.pathname.includes("/dashboard") && !window.location.pathname.includes("/login") && !window.location.pathname.includes("/register") && (
 						<Footer />
 					)}
 				</div>

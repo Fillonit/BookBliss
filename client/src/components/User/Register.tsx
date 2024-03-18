@@ -1,6 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
 const Register = () => {
@@ -11,66 +8,59 @@ const Register = () => {
             setShowPassword(!showPassword);
         };
 
-    return (
-        <div className="font-[sans-serif] text-[#333] bg-white">
-      <div className="grid lg:grid-cols-4 md:grid-cols-3 items-center">
-        <form className="lg:col-span-3 md:col-span-2 max-w-lg w-full p-6 mx-auto">
-          <div className="mb-16">
-            <h3 className="text-4xl font-extrabold">Sign Up</h3>
-            <p className="text-sm mt-6">Welcome! Please Sign up to access your account and explore a world of possibilities. Your journey begins here.</p>
-          </div>
-            <div className="relative flex items-center">
-                <label className="text-[13px] bg-white absolute px-2 top-[-10px] left-[18px] font-semibold">Email</label>
-                <input type="email" placeholder="Enter email"
-                className="px-4 py-3.5 bg-white w-full text-sm border-2 border-gray-200 focus:border-violet-600 rounded outline-none" />
-                <FontAwesomeIcon icon={faEnvelope} className="w-[18px] h-[18px] absolute right-4 text-gray-400" />
+        return (
+            <div className="flex flex-wrap">
+                <div className="flex w-full flex-col md:w-1/2">
+                    <div className="lg:w-[28rem] mx-auto my-auto flex flex-col justify-center pt-8 md:justify-start md:px-6 md:pt-0">
+                        <p className="text-left text-3xl font-bold">Welcome</p>
+                        <p className="mt-2 text-left text-gray-500">Welcome please enter your details.</p>
+                        <button className="-2 mt-8 flex items-center justify-center rounded-md border px-4 py-1 outline-none ring-gray-400 ring-offset-2 transition focus:ring-2 hover:border-transparent hover:bg-black hover:text-white"><img className="mr-2 h-5" src="https://static.cdnlogo.com/logos/g/35/google-icon.svg" /> Sign Up with Google</button>
+                        <div className="relative mt-8 flex h-px place-items-center bg-gray-200">
+                            <div className="absolute left-1/2 h-6 w-14 -translate-x-1/2 bg-white text-center text-sm text-gray-500">or</div>
+                        </div>
+                        <form className="flex flex-col pt-3 md:pt-8">
+                            <div className="flex flex-col pt-4">
+                                <div className="focus-within:border-b-gray-500 relative flex overflow-hidden border-b-2 transition">
+                                    <input type="email" id="login-email" className="w-full flex-1 appearance-none border-none bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="Email" />
+                                </div>
+                            </div>
+                            <div className="flex flex-col pt-4">
+                                <div className="focus-within:border-b-gray-500 relative flex overflow-hidden border-b-2 transition">
+                                    <input type="email" id="login-email" className="w-full flex-1 appearance-none border-none bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="Confirm Email" />
+                                </div>
+                            </div>
+                            <div className="flex flex-col pt-4">
+                                <div className="focus-within:border-b-gray-500 relative flex overflow-hidden border-b-2 transition">
+                                    <input type="password" id="login-password" className="w-full flex-1 appearance-none border-none bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="Password" />
+                                </div>
+                            </div>
+                            <div className="flex flex-col pt-4">
+                                <div className="focus-within:border-b-gray-500 relative flex overflow-hidden border-b-2 transition">
+                                    <input type="password" id="login-password" className="w-full flex-1 appearance-none border-none bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="Confirm Password" />
+                                </div>
+                            </div>
+                            <button type="submit" className="w-full rounded-lg bg-amber-900 px-4 py-2 text-center text-base font-semibold text-white shadow-md ring-gray-500 ring-offset-2 transition focus:ring-2 mt-10">Sign in</button>
+                        </form>
+                        <div className="py-12 text-center">
+                            <p className="whitespace-nowrap text-gray-600">
+                                Already have an account?
+                                <a href="#" className="underline-offset-4 font-semibold text-amber-900 underline"> have and Account?</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div className="pointer-events-none relative hidden h-screen select-none bg-black md:block md:w-1/2">
+                    <div className="absolute bottom-0 z-10 px-8 text-white opacity-100">
+                        <p className="mb-8 text-3xl font-semibold leading-10">We offer a wide range of books faster than our competitors and maintain a consistent inventory. While they're struggling with supply issues, we're releasing new titles.</p>
+                        <p className="mb-4 text-3xl font-semibold">John doe</p>
+                        <p className="">Founder, BookBliss</p>
+                        <p className="mb-7 text-sm opacity-70">Online Bookstore</p>
+                    </div>
+                    <img className="-z-1 absolute top-0 h-full w-full object-cover opacity-90" src="https://source.unsplash.com/random/?Books" />
+                </div>
             </div>
-            <div className="mt-10 relative flex items-center">
-                <label className="text-[13px] bg-white absolute px-2 top-[-10px] left-[18px] font-semibold">Confirm Email</label>
-                <input type="email" placeholder="Enter email"
-                className="px-4 py-3.5 bg-white w-full text-sm border-2 border-gray-200 focus:border-violet-600 rounded outline-none" />
-                <FontAwesomeIcon icon={faEnvelope} className="w-[18px] h-[18px] absolute right-4 text-gray-400" />
-            </div>
-            <div className="relative flex items-center mt-10">
-            <label className="text-[13px] bg-white absolute px-2 top-[-10px] left-[18px] font-semibold">Password</label>
-            <input type={showPassword ? "text" : "password"} placeholder="Enter password"
-                className="px-4 py-3.5 bg-white w-full text-sm border-2 border-gray-200 focus:border-violet-600 rounded outline-none" />
-            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={togglePasswordVisibility} className="w-[18px] h-[18px] absolute right-4 text-gray-400 cursor-pointer" />
-        </div>
-        <div className="relative flex items-center mt-10">
-            <label className="text-[13px] bg-white absolute px-2 top-[-10px] left-[18px] font-semibold">Confirm Password</label>
-            <input type={showPassword ? "text" : "password"} placeholder="Enter password"
-                className="px-4 py-3.5 bg-white w-full text-sm border-2 border-gray-200 focus:border-violet-600 rounded outline-none" />
-            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={togglePasswordVisibility} className="w-[18px] h-[18px] absolute right-4 text-gray-400 cursor-pointer" />
-        </div>
-          <div className="mt-8">
-            <button type="button" className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-violet-600 hover:bg-violet-700 focus:outline-none">
-              Register
-            </button>
-          </div>
-          <p className="text-sm mt-10 text-center">Already have an Account? <a href="javascript:void(0);" className="text-violet-600 font-semibold hover:underline ml-1 whitespace-nowrap">Register here</a></p>
-        </form>
-        <div className="flex flex-col justify-center space-y-16 md:h-screen max-md:mt-16 min-h-full bg-gradient-to-r from-violet-500 to-violet-700 lg:px-8 px-4 py-4">
-          <div>
-            <h4 className="text-white text-lg font-semibold">Secure Authentication</h4>
-            <p className="text-[13px] text-white mt-2">Log in with your registered email and password securely.</p>
-          </div>
-          <div>
-            <h4 className="text-white text-lg font-semibold">Confirm Email</h4>
-            <p className="text-[13px] text-white mt-2">Confirm Email to Sign up</p>
-          </div>
-          <div>
-            <h4 className="text-white text-lg font-semibold">Confirm Password</h4>
-            <p className="text-[13px] text-white mt-2">Confirm Password to Sign up</p>
-          </div>
-          <div>
-            <h4 className="text-white text-lg font-semibold">Forgot Password?</h4>
-            <p className="text-[13px] text-white mt-2">Easily recover your account by clicking on the "Forgot Password?" link.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    );
+    
+        );
 }
 
 export default Register;

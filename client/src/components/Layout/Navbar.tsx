@@ -85,7 +85,7 @@ function Component() {
 
 	return (
 		<div className="fixed w-full z-50">
-			<Navbar fluid rounded className="bg-white/70 z-50">
+			<Navbar fluid className="bg-white z-50 shadow-md">
 				<Navbar.Brand href="/">
 					<FontAwesomeIcon
 						icon={faBookOpen}
@@ -102,7 +102,7 @@ function Component() {
 						label={
 							<FontAwesomeIcon
 								icon={faShoppingBag}
-								className="mr-3 h-6 sm:h-9 text-violet-500 dark:text-violet-400"
+								className="mr-3 h-6 sm:h-9 text-amber-900 dark:text-amber-700"
 							/>
 						}
 					>
