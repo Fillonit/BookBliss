@@ -3,11 +3,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { DarkThemeToggle, Flowbite } from "flowbite-react";
 import Home from "@/pages/Homepage";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Layout/Navbar";
+import BookList from "@/components/Book/BookList";
 // import { useState } from "react";
 
 // import "./App.css";
-import Footer from "@/components/Common/footer";
+import Footer from "@/components/Layout/Footer";
 // import Hero from "@/components/Book/Hero";
 function App() {
 	// const [userId, setUserId] = useState(localStorage.getItem("userId"));
@@ -20,6 +21,7 @@ function App() {
 					{/* )} */}
 					<Routes>
 						<Route path="/" element={<Home />} />
+						<Route path="/books" element={<BookList />} />
 						{/* <Route
 						path="/login"
 						element={<PublicRoute element={<LoginPage />} />}

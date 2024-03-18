@@ -1,6 +1,6 @@
 // import "./App.css";
 // import BookCard from "@/components/Book/BookCard";
-import Hero from "@/components/Book/Hero";
+import Hero from "@/components/Home/Hero";
 function App() {
 	return (
 		<>

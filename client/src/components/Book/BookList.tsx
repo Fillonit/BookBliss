@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Header from "../Header/header";
 import book1Image from "../../assets/book1.jpg";
 import book2Image from "../../assets/book2.jpg";
 import filterLogo from "../../assets/filterLogo.png"; // Import the filter logo image
@@ -138,7 +137,6 @@ const BookList: React.FC = () => {
 
 	return (
 		<div className="flex flex-col">
-			<Header />
 			<div className="w-full flex justify-center items-center mt-20">
 				<div className="flex justify-between items-center">
 					<input
