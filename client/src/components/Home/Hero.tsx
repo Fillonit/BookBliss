@@ -4,7 +4,7 @@ const Hero = () => {
 			<div className="relative z-10">
 				<div className="absolute inset-x-0 top-1/2 -z-10 flex -translate-y-1/2 justify-center overflow-hidden">
 					<svg
-						className="h-[60rem] w-[100rem] flex-none stroke-amber-800 opacity-20"
+						className="h-[60rem] w-[100rem] flex-none stroke-amber-800 opacity-20 dark:stroke-amber-400 dark:opacity-30"
 						aria-hidden="true"
 					>
 						<defs>
