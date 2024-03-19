@@ -35,18 +35,15 @@ for (let i = 1; i <= 250; i++) {
 }
 
 const BookList: React.FC = () => {
-	const [visibleBooks, setVisibleBooks] = useState(20); // Initially show 20 books
-	// const totalBooksToShow = 5 * 4; // 5 rows with 4 columns each
+	const [visibleBooks, setVisibleBooks] = useState(8); // Initially show 8 books
 	const [filter, setFilter] = useState<FilterOption | null>(null);
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [ascendingOrder, setAscendingOrder] = useState<boolean>(true);
+	const [ascendingOrder] = useState<boolean>(true);
 	const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false); // State for dropdown visibility
 	const [searchQuery, setSearchQuery] = useState<string>("");
 	const [selectedGenre, setSelectedGenre] = useState<string | null>(null); // State for selected genre
 
-	// setAscendingOrder(true);
-	// setVisibleBooks(totalBooksToShow);
 	// Define filter options
+	// setAscendingOrder(true);
 	const genres: string[] = [
 		"Action",
 		"Animated",
@@ -114,7 +111,12 @@ const BookList: React.FC = () => {
 	};
 
 	const handleShowMore = () => {
-		setVisibleBooks((prevVisibleBooks) => prevVisibleBooks + 20); // Increase by 20 books
+		setVisibleBooks(Math.min(books.length, 8)); // Show the next 8 books or less if there are fewer books remaining
+	};
+	const handleShowLess = () => {
+		setVisibleBooks((prevVisibleBooks) =>
+			Math.max(prevVisibleBooks - 8, 8)
+		); // Decrease by 8 books, capped at 8
 	};
 
 	const handleFilterChange = (option: FilterOption) => {
@@ -137,35 +139,37 @@ const BookList: React.FC = () => {
 	};
 
 	return (
-		<div className="flex flex-col">
-			<div className="w-full flex justify-center items-center mt-20">
-				<div className="flex justify-between items-center">
+		<div className="flex flex-col pt-20 bg-gradient-to-r from-yellow-500 to-amber-900">
+			<h1 className="flex justify-left text-5xl font-bold text-white mx-14 pt-10">
+				Book Listing
+			</h1>
+			<div className="flex justify-center pb-16 -mt-10">
+				<div className="flex justify-between items-center ms-20 ">
 					<input
 						type="text"
 						placeholder="Search..."
-						className="h-12 bg-[#E4E4E4] px-4 outline-none rounded-lg"
-						style={{ width: "800px" }}
+						className="h-12 border-1.5 border-amber-800 px-4 rounded bg-white text-amber-700 shadow-lg  placeholder-amber-800/90 font-bold outline-none focus:outline-none focus:border-none"
+						style={{ width: "880px" }}
 						value={searchQuery}
 						onChange={handleSearchInputChange}
 					/>
 
 					<div className="relative inline justify-self-end">
 						<button
-							className="text-black text-white font-bold py-2 px-3 rounded inline-flex items-center"
+							className="text-amber-500 font-bold py-2 px-3 rounded inline-flex items-center"
 							onClick={toggleDropdown}
 						>
 							<img
 								src={filterLogo}
 								alt="Filter Logo"
 								className="h-11 w-auto"
-								style={{ filter: "invert(1)" }}
 							/>
 						</button>
 						{isDropdownOpen && (
-							<ul className="absolute bg-white border rounded shadow-lg mt-2 w-32 z-20">
+							<ul className="absolute bg-white border shadow-lg mt-2 w-32 z-20 rounded-xl">
 								<li>
 									<button
-										className="block text-left px-4 py-2 text-sm text-gray-800 hover:bg-gray-200 w-full"
+										className="block text-left px-4 py-2 text-sm hover:text-white text-black hover:bg-amber-900 w-full hover:rounded-t-xl"
 										onClick={() =>
 											handleFilterChange("rating")
 										}
@@ -175,7 +179,7 @@ const BookList: React.FC = () => {
 								</li>
 								<li>
 									<button
-										className="block text-left px-4 py-2 text-sm text-gray-800 hover:bg-gray-200 w-full"
+										className="block text-left px-4 py-2 text-sm hover:text-white text-black hover:bg-amber-900 w-full hover:rounded-none"
 										onClick={() =>
 											handleFilterChange("popularity")
 										}
@@ -185,7 +189,7 @@ const BookList: React.FC = () => {
 								</li>
 								<li>
 									<button
-										className="block text-left px-4 py-2 text-sm text-gray-800 hover:bg-gray-200 w-full"
+										className="block text-left px-4 py-2 text-sm hover:text-white text-black hover:bg-amber-900 w-full hover:rounded-b-xl"
 										onClick={() =>
 											handleFilterChange("price")
 										}
@@ -200,25 +204,18 @@ const BookList: React.FC = () => {
 			</div>
 
 			<div className="flex flex-col md:flex-row">
-				<div className="w-full md:w-1/5 p-5 ">
-					{" "}
-					{/* Added flex-col to make it a column */}
-					{/* Sidebar for genres */}
+				<div className="w-full md:w-1/5 p-3 ">
 					<div
-						className="bg-[#242424] p-4 rounded-lg "
-						style={{ marginTop: "210px" }}
+						className="bg-white border-amber-800/100 shadow-slate-700/60 p-4 rounded-md shadow-md border-none m-12"
+						style={{ marginTop: "10px" }}
 					>
-						<h2 className="text-white text-3xl font-bold mb-2 text-center mb-5">
-							Genres
-						</h2>{" "}
-						{/* Adjusted font size */}
 						<div className="flex flex-col">
 							{" "}
 							{/* Added flex-wrap for genre buttons */}
 							{genres.map((genre) => (
 								<button
 									key={genre}
-									className={`bg-[#242424] text-left text-white hover:bg-[#505050] pt-2 pb-2 text-xl font-medium px-3 py-1 rounded-md mb-2 ${
+									className={`text-left text-amber-700 hover:bg-amber-900 hover:text-white rounded-t-lg rounded-br-lg text-lg font-bold pl-4 hover:border-l-4 hover:border-amber-700 hover:rounded-l-xl py-2 ${
 										genre === selectedGenre
 											? "bg-blue-500 text-white"
 											: ""
@@ -232,10 +229,7 @@ const BookList: React.FC = () => {
 					</div>
 				</div>
 
-				<div className="w-full md:w-4/5 p-5">
-					<h1 className="text-3xl font-bold my-4 text-white text-center pt-10">
-						Book Listing
-					</h1>
+				<div className="w-full md:w-4/5 p-5  rounded ">
 					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 						{applyFilters(books)
 							.filter((book) =>
@@ -247,34 +241,45 @@ const BookList: React.FC = () => {
 							.map((book) => (
 								<div
 									key={book.id}
-									className="relative bg-white rounded-lg overflow-hidden"
+									className="relative rounded overflow-hidden shadow-lg transform transition-transform duration-300 hover:scale-105" // Decreased duration to 300 milliseconds
 								>
 									<img
 										src={book.image}
 										alt={book.title}
 										className="w-full h-100 object-cover"
 									/>
-									<div className="absolute bottom-0 left-0 right-0 p-4 text-white bg-black bg-opacity-80 opacity-0 transition-opacity duration-300 hover:opacity-100">
-										<h2 className="text-xl font-semibold mb-2">
-											{book.title}
-										</h2>
-										<p className="text-white-600 mb-2">
-											{book.author}
-										</p>
-										<p className="text-white-700">
-											{book.description}
-										</p>
+									<div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 hover:opacity-100 flex justify-center items-end text-white text-center px-4 py-2">
+										<div>
+											<h2 className="text-2xl font-semibold mb-2">
+												{book.title}
+											</h2>
+											<p className="text-white-600 mb-2">
+												{book.author}
+											</p>
+											<p className="text-white-700 mb-4">
+												{book.description}
+											</p>
+										</div>
 									</div>
 								</div>
 							))}
 					</div>
 					{visibleBooks < books.length && (
 						<div className="flex justify-center my-4">
+							{/* Change the "Show More" button to arrows */}
+							{visibleBooks > 8 && (
+								<button
+									className="bg-amber-800 hover:bg-white hover:text-amber-900 text-white font-bold py-2 px-4 rounded mr-4"
+									onClick={handleShowLess}
+								>
+									&lt; Prev
+								</button>
+							)}
 							<button
-								className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+								className="bg-amber-800 hover:bg-white hover:text-amber-900 text-white font-bold py-2 px-4 rounded"
 								onClick={handleShowMore}
 							>
-								Show More
+								Next &gt;
 							</button>
 						</div>
 					)}

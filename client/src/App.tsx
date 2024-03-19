@@ -2,16 +2,18 @@
 // import { Analytics } from "@vercel/analytics/react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { DarkThemeToggle, Flowbite } from "flowbite-react";
+
+// ? PAGES
 import Home from "@/pages/Homepage";
+import Login from "@/components/Auth/Login";
+import Register from "@/components/Auth/Register";
+import AboutUs from "@/components/About/about";
+// ? COMPONENTS
 import Navbar from "@/components/Layout/Navbar";
 import BookList from "@/components/Book/BookList";
-import Login from "./components/User/Login";
-// import { useState } from "react";
-
-// import "./App.css";
 import Footer from "@/components/Layout/Footer";
-import Register from "./components/User/Register";
-// import Hero from "@/components/Book/Hero";
+
+import { PublicRoute, PrivateRoute } from "@/util/routeHandler";
 function App() {
 	// const [userId, setUserId] = useState(localStorage.getItem("userId"));
 	return (
@@ -24,24 +26,27 @@ function App() {
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/books" element={<BookList />} />
+						<Route path="/about" element={<AboutUs />} />
 						<Route
 							path="/login"
-							element={<Login />}
+							element={<PublicRoute element={<Login />} />}
 						/>
 						<Route
 							path="/register"
-							element={<Register />}
-							/>
-						{/* <Route
-							path="/dashboard/:table"
-							element={<PrivateRoute element={<Dashboard />} />}
-						/>  */}
+							element={<PublicRoute element={<Register />} />}
+						/>
+						<Route
+							path="/admin"
+							element={<PrivateRoute element={<BookList />} />}
+						/>
 					</Routes>
-					{!window.location.pathname.includes("/dashboard") && (
-						<Footer />
-					)}
+					{!window.location.pathname.includes("/dashboard") &&
+						!window.location.pathname.includes("/login") &&
+						!window.location.pathname.includes("/register") && (
+							<Footer />
+						)}
 				</div>
-				<DarkThemeToggle className="fixed bottom-2 right-2 text-white dark:text-white bg-purple-400 hover:bg-purple-600 dark:hover:bg-purple-600 ring-0 focus:ring-0 dark:focus:ring-0 dark:ring-0" />
+				<DarkThemeToggle className="fixed bottom-2 right-2 text-white dark:text-white bg-amber-700 hover:bg-amber-900 dark:hover:bg-amber-600 ring-0 focus:ring-0 dark:focus:ring-0 dark:ring-0" />
 			</Flowbite>
 		</Router>
 	);

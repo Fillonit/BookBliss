@@ -6,6 +6,7 @@ import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
+import { Badge } from "@/components/ui/badge";
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -16,7 +17,7 @@ import {
 	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-import { faBookOpen, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
+import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
 
 const components: { title: string; href: string; description: string }[] = [
 	{
@@ -56,53 +57,53 @@ const components: { title: string; href: string; description: string }[] = [
 	},
 ];
 
-const cartItems = [
-	{
-		id: 1,
-		name: "The Pragmatic Programmer",
-		price: 29.99,
-		image: "https://www.flowbite-react.com/_next/image?url=%2Fimages%2Fpeople%2Fprofile-picture-3.jpg&w=96&q=75",
-	},
-	{
-		id: 2,
-		name: "Clean Code",
-		price: 24.99,
-		image: "https://www.flowbite-react.com/_next/image?url=%2Fimages%2Fpeople%2Fprofile-picture-3.jpg&w=96&q=75",
-	},
-	{
-		id: 3,
-		name: "Design Patterns",
-		price: 34.99,
-		image: "https://www.flowbite-react.com/_next/image?url=%2Fimages%2Fpeople%2Fprofile-picture-3.jpg&w=96&q=75",
-	},
-];
+// const cartItems = [
+// 	{
+// 		id: 1,
+// 		name: "The Pragmatic Programmer",
+// 		price: 29.99,
+// 		image: "https://www.flowbite-react.com/_next/image?url=%2Fimages%2Fpeople%2Fprofile-picture-3.jpg&w=96&q=75",
+// 	},
+// 	{
+// 		id: 2,
+// 		name: "Clean Code",
+// 		price: 24.99,
+// 		image: "https://www.flowbite-react.com/_next/image?url=%2Fimages%2Fpeople%2Fprofile-picture-3.jpg&w=96&q=75",
+// 	},
+// 	{
+// 		id: 3,
+// 		name: "Design Patterns",
+// 		price: 34.99,
+// 		image: "https://www.flowbite-react.com/_next/image?url=%2Fimages%2Fpeople%2Fprofile-picture-3.jpg&w=96&q=75",
+// 	},
+// ];
 
 function Component() {
-	function removeFromCart(id: number): void {
-		console.log(id);
-		// throw new Error("Function not implemented.");
-	}
+	// function removeFromCart(id: number): void {
+	// 	console.log(id);
+	// 	// throw new Error("Function not implemented.");
+	// }
 
 	return (
 		<div className="fixed w-full z-50">
-			<Navbar fluid rounded className="bg-white/70 z-50">
+			<Navbar fluid className="bg-white z-50 shadow-md">
 				<Navbar.Brand href="/">
 					<FontAwesomeIcon
 						icon={faBookOpen}
-						className="mr-3 h-6 sm:h-9"
+						className="mr-3 h-6 sm:h-9 text-amber-900 dark:text-amber-700"
 					/>
-					<span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+					<span className="self-center whitespace-nowrap text-2xl text-amber-800 font-bold dark:text-white">
 						BookBliss
 					</span>
 				</Navbar.Brand>
 				<div className="flex md:order-2">
-					<Dropdown
+					{/* <Dropdown
 						arrowIcon={false}
 						inline
 						label={
 							<FontAwesomeIcon
 								icon={faShoppingBag}
-								className="mr-3 h-6 sm:h-9 text-violet-500 dark:text-violet-400"
+								className="mr-3 h-6 sm:h-9 text-amber-900 dark:text-amber-700"
 							/>
 						}
 					>
@@ -145,7 +146,7 @@ function Component() {
 						<Dropdown.Item className="text-center font-bold text-blue-500 px-3 py-2">
 							Checkout
 						</Dropdown.Item>
-					</Dropdown>
+					</Dropdown> */}
 					<Dropdown
 						arrowIcon={false}
 						inline
@@ -164,6 +165,12 @@ function Component() {
 							</span>
 						</Dropdown.Header>
 						<Dropdown.Item>Dashboard</Dropdown.Item>
+						<Dropdown.Item className="float-left">
+							Notifications
+							<Badge className="ml-4 bg-amber-700 font-bold">
+								3
+							</Badge>
+						</Dropdown.Item>
 						<Dropdown.Item>Settings</Dropdown.Item>
 						<Dropdown.Item>Earnings</Dropdown.Item>
 						<Dropdown.Divider />
