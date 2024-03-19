@@ -11,19 +11,26 @@ datasource db {
 }
 
 model Book {
-  id         Int         @id @default(autoincrement())
-  title      String      @db.VarChar(100)
-  author     String      @db.VarChar(100)
-  isbn       String      @unique @db.VarChar(13)
-  pages      Int         @default(0)
-  words      Int         @default(0)
-  timeToRead Int         @default(0)
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @default(now()) @updatedAt
-  Author     Author?     @relation(fields: [authorId], references: [id])
-  authorId   Int?
-  Review     Review[]
-  BookGenre  BookGenre[]
+  id              Int              @id @default(autoincrement())
+  title           String           @db.VarChar(100)
+  author          String           @db.VarChar(100)
+  isbn            String           @unique @db.VarChar(13)
+  price           Float            @default(0)
+  description     String           @db.VarChar(1000)
+  pdfLink         String           @db.VarChar(1000)
+  cover           String           @db.VarChar(100)
+  pages           Int              @default(0)
+  words           Int              @default(0)
+  timeToRead      Int              @default(0)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @default(now()) @updatedAt
+  Author          Author?          @relation(fields: [authorId], references: [id])
+  authorId        Int?
+  Review          Review[]
+  BookGenre       BookGenre[]
+  SavedBook       SavedBook[]
+  DiscountTickets DiscountTicket[]
+  UserProgress    UserProgress[]
 }
 
 model Genre {
@@ -42,23 +49,46 @@ model BookGenre {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  name      String
-  role      String   @default("user")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Author    Author?
-  Review    Review[]
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  password     String
+  name         String
+  role         String         @default("user")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Author       Author?
+  Review       Review[]
+  SavedBook    SavedBook[]
+  Subsribers   Subscriber[]
+  UserProgress UserProgress[]
+}
+
+model SavedBook {
+  userId Int
+  bookId Int
+  User   User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Book   Book @relation(fields: [bookId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([userId, bookId])
 }
 
 model Author {
+  id         Int          @id @default(autoincrement())
+  name       String       @unique
+  books      Book[]
+  user       User         @relation(fields: [userId], references: [id])
+  userId     Int          @unique
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Subsribers Subscriber[]
+}
+
+model Subscriber {
   id        Int      @id @default(autoincrement())
-  name      String   @unique
-  books     Book[]
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int      @unique
+  author    Author   @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  authorId  Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -73,4 +103,35 @@ model Review {
   userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ip        String   @db.VarChar(30)
+}
+
+model UserProgress {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  bookId      Int
+  currentPage Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  User        User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Book        Book     @relation(fields: [bookId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model DiscountTicket {
+  id                 Int      @id @default(autoincrement())
+  discountPercentage Float
+  discountCode       String
+  bookId             Int
+  book               Book     @relation(fields: [bookId], references: [id])
+  validUntil         DateTime
+  used               Boolean  @default(false)
 }
