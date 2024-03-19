@@ -6,7 +6,7 @@ import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
-import { Badge, badgeVariants } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import {
 	NavigationMenu,
 	NavigationMenuContent,

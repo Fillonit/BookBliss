@@ -18,18 +18,6 @@ function App() {
 	// const [userId, setUserId] = useState(localStorage.getItem("userId"));
 	return (
 		<Router>
-			<head>
-				<link rel="preconnect" href="https://fonts.googleapis.com" />
-				<link
-					rel="preconnect"
-					href="https://fonts.gstatic.com"
-					crossorigin
-				/>
-				<link
-					href="https://fonts.googleapis.com/css2?family=Vibes&display=swap"
-					rel="stylesheet"
-				/>
-			</head>
 			<Flowbite>
 				<div className="min-h-screen flex flex-col ">
 					{/* {!window.location.pathname.includes("/dashboard") && ( */}
