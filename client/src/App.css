@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.fa-gradient {
+	@apply bg-gradient-to-r from-blue-500 to-green-500;
+	@apply bg-clip-text text-transparent;
+	@apply font-bold;
+}
