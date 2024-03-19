@@ -5,6 +5,7 @@ import { DarkThemeToggle, Flowbite } from "flowbite-react";
 import Home from "@/pages/Homepage";
 import Navbar from "@/components/Layout/Navbar";
 import BookList from "@/components/Book/BookList";
+import AboutUs from "@/components/About/about"; 
 import Login from "./components/User/Login";
 // import { useState } from "react";
 
@@ -24,6 +25,7 @@ function App() {
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/books" element={<BookList />} />
+						<Route path="/about" element={<AboutUs />} />
 						<Route
 							path="/login"
 							element={<Login />}
