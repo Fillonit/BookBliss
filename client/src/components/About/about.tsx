@@ -1,6 +1,6 @@
 const AboutUs = () => {
 	return (
-		<section className="relative overflow-hidden bg-gradient-to-b from-amber-800/20 via-transparent to-transparent pb-12 pt-20 sm:pb-16 sm:pt-32 lg:pb-24 xl:pb-32 xl:pt-40 min-h-screen">
+		<section className="max-w-screen relative overflow-hidden bg-gradient-to-b from-amber-800/20 via-transparent to-transparent pb-12 pt-20 sm:pb-16 sm:pt-32 lg:pb-24 xl:pb-32 xl:pt-40 min-h-screen">
 			<svg
 				className="h-[35rem] w-[200rem] flex-none stroke-amber-800 dark:stroke-amber-400 dark:opacity-30 opacity-10 absolute inset-x-0 top-1/2 -z-10 -translate-y-1/2"
 				aria-hidden="true"
@@ -36,8 +36,8 @@ const AboutUs = () => {
 				></rect>
 			</svg>
 
-			<div className="mx-auto max-w-7xl px-6 lg:px-8 lg:pt-20">
-				<div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+			<div className="mx-4 max-w-8xl px-6 lg:px-8 lg:pt-20">
+				<div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
 					<div className="lg:pr-8 lg:pt-4">
 						<div className="lg:max-w-lg">
 							<h2 className="text-base font-semibold leading-7 text-amber-700 dark:text-amber-300">
@@ -75,9 +75,9 @@ const AboutUs = () => {
 						</div>
 					</div>
 					<img
-						src="https://i.pinimg.com/originals/d9/71/b0/d971b07ec6d8cc2b05dfd00824bb20fb.jpg"
+						src="https://source.unsplash.com/random/?Books"
 						alt="Books"
-						className="w-[48rem] max-w-none max-h-[30rem] object-cover rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0"
+						className="w-[48rem] max-w-2xl max-h-[30rem] object-cover rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0 mr-8"
 					/>
 				</div>
 			</div>
