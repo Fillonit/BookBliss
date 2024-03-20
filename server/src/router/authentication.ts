@@ -7,5 +7,5 @@ import { ratelimitMiddleware } from "../middleware/ratelimit";
 export default (router: express.Router) => {
 	router.post("/register", register);
 	router.post("/login", login);
-	router.post("/logout/:id", logout);
+	router.delete("/logout/:id", logout);
 };
