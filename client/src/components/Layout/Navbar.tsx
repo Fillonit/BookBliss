@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
 import { Badge } from "@/components/ui/badge";
@@ -17,7 +17,7 @@ import {
 	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
+// import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
 
 const components: { title: string; href: string; description: string }[] = [
 	{
@@ -88,11 +88,16 @@ function Component() {
 		<div className="fixed top-0 w-full z-50">
 			<Navbar fluid className="bg-white z-50 shadow-md">
 				<Navbar.Brand href="/">
-					<FontAwesomeIcon
+					{/* <FontAwesomeIcon
 						icon={faBookOpen}
 						className="mr-3 h-6 sm:h-9 text-amber-900 dark:text-amber-700"
+					/> */}
+					<img
+						src="https://www.freeiconspng.com/thumbs/book-icon/description-book-icon-orange-28.png"
+						alt=""
+						className="mr-3 h-6 sm:h-9"
 					/>
-					<span className="self-center whitespace-nowrap text-2xl text-amber-800 font-bold dark:text-white">
+					<span className="self-center whitespace-nowrap text-2xl text-amber-600 font-bold dark:text-white">
 						BookBliss
 					</span>
 				</Navbar.Brand>
@@ -167,7 +172,7 @@ function Component() {
 						<Dropdown.Item>Dashboard</Dropdown.Item>
 						<Dropdown.Item className="float-left">
 							Notifications
-							<Badge className="ml-4 bg-amber-700 font-bold">
+							<Badge className="ml-4 bg-amber-600 dark:text-white dark:hover:bg-white dark:hover:text-amber-600 font-bold">
 								3
 							</Badge>
 						</Dropdown.Item>
