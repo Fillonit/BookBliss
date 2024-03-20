@@ -3,10 +3,13 @@
 		"module": "NodeNext",
 		"esModuleInterop": true,
 		"moduleResolution": "NodeNext",
-		"baseUrl": "src",
 		"outDir": "dist",
 		"sourceMap": true,
-		"noImplicitAny": true
+		"noImplicitAny": true,
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"]
+		}
 	},
 	"include": ["src/**/*"]
 }

@@ -60,6 +60,8 @@ model User {
   role         String         @default("user")
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
+  salt         String?        @unique
+  sessionToken String?        @unique
   Author       Author?
   Review       Review[]
   SavedBook    SavedBook[]
