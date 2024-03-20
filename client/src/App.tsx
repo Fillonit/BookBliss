@@ -14,6 +14,7 @@ import BookList from "@/components/Book/BookList";
 import Footer from "@/components/Layout/Footer";
 
 import { PublicRoute, PrivateRoute } from "@/util/routeHandler";
+import Contact from "@/pages/Contact";
 function App() {
 	// const [userId, setUserId] = useState(localStorage.getItem("userId"));
 	return (
@@ -34,6 +35,10 @@ function App() {
 						<Route
 							path="/register"
 							element={<PublicRoute element={<Register />} />}
+						/>
+						<Route
+							path="/Contact"
+							element={<PublicRoute element={<Contact />} />}
 						/>
 						<Route
 							path="/admin"
