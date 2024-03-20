@@ -18,3 +18,11 @@ export const createContact = async (
 	});
 	res.status(200).json(contact);
 };
+
+export const getContacts = async (
+    req: express.Request,
+    res: express.Response
+) => {
+    const contacts = await prisma.contact.findMany();
+    res.status(200).json(contacts);
+};
