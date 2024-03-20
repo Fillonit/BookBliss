@@ -79,7 +79,7 @@ const Register = () => {
 						<p className="whitespace-nowrap text-gray-600">
 							Already have an account?
 							<a
-								href="#"
+								href="/login"
 								className="underline-offset-4 font-semibold text-amber-900 underline"
 							>
 								{" "}
