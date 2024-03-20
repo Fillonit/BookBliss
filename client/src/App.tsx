@@ -19,7 +19,7 @@ function App() {
 	return (
 		<Router>
 			<Flowbite>
-				<div className="min-h-screen flex flex-col ">
+				<div className="min-h-screen flex flex-col mt-[3.5rem]">
 					{/* {!window.location.pathname.includes("/dashboard") && ( */}
 					<Navbar />
 					{/* )} */}
@@ -38,6 +38,17 @@ function App() {
 						<Route
 							path="/admin"
 							element={<PrivateRoute element={<BookList />} />}
+						/>
+						<Route
+							path="*"
+							element={
+								<div className="flex flex-col justify-center items-center">
+									<h1 className="text-[12rem] text-amber-500">
+										404
+									</h1>
+									<h1 className="text-[9rem]">Not Found</h1>
+								</div>
+							}
 						/>
 					</Routes>
 					{!window.location.pathname.includes("/dashboard") &&

@@ -1,5 +1,8 @@
 {
-  "dependencies": {
-    "@prisma/client": "^5.11.0"
-  }
+	"dependencies": {
+		"@prisma/client": "^5.11.0"
+	},
+	"scripts": {
+		"deploy:dev": "npx vercel alias set book-bliss-git-development-fillonit.vercel.app bookbliss-dev.logic-nest.me"
+	}
 }
