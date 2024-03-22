@@ -13,7 +13,7 @@ export const login = async (req: express.Request, res: express.Response) => {
 			return res.status(400).json({ message: "Missing fields" });
 		}
 
-		const user = await prisma.user.findUnique({
+		let user = await prisma.user.findUnique({
 			where: {
 				email: email,
 			},
@@ -41,14 +41,17 @@ export const login = async (req: express.Request, res: express.Response) => {
 			},
 		});
 
-		res.cookie("sessionToken", sessionToken, {
-			httpOnly: true,
-			secure: process.env.NODE_ENV === "production",
-			domain: "localhost",
-			path: "/",
-		});
+		// res.cookie("sessionToken", sessionToken, {
+		// 	httpOnly: true,
+		// 	secure: process.env.NODE_ENV === "production",
+		// 	domain: "localhost",
+		// 	path: "/",
+		// });
 
-		return res.status(200).json({ user }).end();
+		return res
+			.status(200)
+			.json({ ...user, sessionToken })
+			.end();
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({ message: "Internal server error" });
@@ -118,4 +121,59 @@ export const logout = async (req: express.Request, res: express.Response) => {
 		console.log(error);
 		return res.status(500).json({ message: "Internal server error" });
 	}
+};
+
+export const refreshSessionToken = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	try {
+		const { id } = req.params;
+
+		const user = await prisma.user.findUnique({
+			where: {
+				id: Number(id),
+			},
+		});
+
+		if (!user) {
+			return res.status(400).json({ message: "User not found" });
+		}
+
+		const salt = random();
+		const sessionToken = authentication(salt, user.id.toString());
+
+		await prisma.user.update({
+			where: {
+				id: user.id,
+			},
+			data: {
+				sessionToken,
+			},
+		});
+
+		return res
+			.status(200)
+			.json({
+				message: "Session token refreshed",
+				sessionToken,
+			})
+			.end();
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
+
+export const getUserBySessionToken = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const { sessionToken } = req.body;
+	const user = await prisma.user.findUnique({
+		where: {
+			sessionToken,
+		},
+	});
+	res.status(200).json(user);
 };
