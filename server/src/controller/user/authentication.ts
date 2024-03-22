@@ -171,5 +171,8 @@ export const getUserBySessionToken = async (sessionToken: string) => {
 			sessionToken,
 		},
 	});
+	if (!user) {
+		return null;
+	}
 	return user;
 };
