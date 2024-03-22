@@ -31,6 +31,10 @@ model Book {
   SavedBook       SavedBook[]
   DiscountTickets DiscountTicket[]
   UserProgress    UserProgress[]
+  Publisher       Publisher?       @relation(fields: [publisherId], references: [id])
+  publisherId     Int?
+  Inventory       Inventory[]
+  OrderItem       OrderItem[]
 }
 
 model Genre {
@@ -56,11 +60,14 @@ model User {
   role         String         @default("user")
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
+  salt         String?        @unique
+  sessionToken String?        @unique
   Author       Author?
   Review       Review[]
   SavedBook    SavedBook[]
   Subsribers   Subscriber[]
   UserProgress UserProgress[]
+  Order        Order[]
 }
 
 model SavedBook {
@@ -134,4 +141,47 @@ model DiscountTicket {
   book               Book     @relation(fields: [bookId], references: [id])
   validUntil         DateTime
   used               Boolean  @default(false)
+}
+
+model Publisher {
+  id      Int     @id @default(autoincrement())
+  name    String
+  address String?
+  website String?
+  books   Book[]
+}
+
+model Inventory {
+  id       Int  @id @default(autoincrement())
+  bookId   Int
+  quantity Int
+  Book     Book @relation(fields: [bookId], references: [id])
+}
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  userId    Int
+  orderDate DateTime    @default(now())
+  status    String
+  User      User        @relation(fields: [userId], references: [id])
+  OrderItem OrderItem[]
+  Payment   Payment[]
+}
+
+model OrderItem {
+  id       Int   @id @default(autoincrement())
+  orderId  Int
+  bookId   Int
+  quantity Int
+  Order    Order @relation(fields: [orderId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  Book     Book  @relation(fields: [bookId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+}
+
+model Payment {
+  id          Int      @id @default(autoincrement())
+  orderId     Int
+  paymentDate DateTime @default(now())
+  amount      Float
+  status      String   @default("pending")
+  Order       Order    @relation(fields: [orderId], references: [id])
 }

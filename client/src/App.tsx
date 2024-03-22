@@ -14,24 +14,13 @@ import BookList from "@/components/Book/BookList";
 import Footer from "@/components/Layout/Footer";
 
 import { PublicRoute, PrivateRoute } from "@/util/routeHandler";
+import Contact from "@/pages/Contact";
 function App() {
 	// const [userId, setUserId] = useState(localStorage.getItem("userId"));
 	return (
 		<Router>
-			<head>
-				<link rel="preconnect" href="https://fonts.googleapis.com" />
-				<link
-					rel="preconnect"
-					href="https://fonts.gstatic.com"
-					crossorigin
-				/>
-				<link
-					href="https://fonts.googleapis.com/css2?family=Vibes&display=swap"
-					rel="stylesheet"
-				/>
-			</head>
 			<Flowbite>
-				<div className="min-h-screen flex flex-col ">
+				<div className="min-h-screen flex flex-col mt-[3.5rem]">
 					{/* {!window.location.pathname.includes("/dashboard") && ( */}
 					<Navbar />
 					{/* )} */}
@@ -48,8 +37,23 @@ function App() {
 							element={<PublicRoute element={<Register />} />}
 						/>
 						<Route
+							path="/Contact"
+							element={<PublicRoute element={<Contact />} />}
+						/>
+						<Route
 							path="/admin"
 							element={<PrivateRoute element={<BookList />} />}
+						/>
+						<Route
+							path="*"
+							element={
+								<div className="flex flex-col justify-center items-center">
+									<h1 className="text-[12rem] text-amber-500">
+										404
+									</h1>
+									<h1 className="text-[9rem]">Not Found</h1>
+								</div>
+							}
 						/>
 					</Routes>
 					{!window.location.pathname.includes("/dashboard") &&
