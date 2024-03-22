@@ -165,15 +165,14 @@ export const refreshSessionToken = async (
 	}
 };
 
-export const getUserBySessionToken = async (
-	req: express.Request,
-	res: express.Response
-) => {
-	const { sessionToken } = req.body;
+export const getUserBySessionToken = async (sessionToken: string) => {
 	const user = await prisma.user.findUnique({
 		where: {
 			sessionToken,
 		},
 	});
-	res.status(200).json(user);
+	if (!user) {
+		return null;
+	}
+	return user;
 };
