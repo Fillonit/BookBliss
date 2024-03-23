@@ -176,3 +176,20 @@ export const getUserBySessionToken = async (sessionToken: string) => {
 	}
 	return user;
 };
+
+export const getUserBySessionTokenEndpoint = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	try {
+		const { sessionToken } = req.params;
+		const user = await getUserBySessionToken(sessionToken);
+		if (!user) {
+			return res.status(400).json({ message: "User not found" });
+		}
+		return res.status(200).json(user).end();
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
