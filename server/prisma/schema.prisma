@@ -80,11 +80,10 @@ model SavedBook {
 }
 
 model Author {
-  id         Int          @id @default(autoincrement())
+  id         Int          @id
   name       String       @unique
   books      Book[]
-  user       User         @relation(fields: [userId], references: [id])
-  userId     Int          @unique
+  user       User         @relation(fields: [id], references: [id])
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   Subsribers Subscriber[]
