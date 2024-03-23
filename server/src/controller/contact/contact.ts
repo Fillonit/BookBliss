@@ -26,3 +26,36 @@ export const getContacts = async (
     const contacts = await prisma.contact.findMany();
     res.status(200).json(contacts);
 };
+
+export const deleteContact = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const { id } = req.params;
+	const contact = await prisma.contact.delete({
+		where: {
+			id: parseInt(id),
+		},
+	});
+	res.status(200).json(contact);
+};
+
+export const updateContact = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const { id } = req.params;
+	const { name, email, message } = req.body;
+
+	const contact = await prisma.contact.update({
+		where: {
+			id: parseInt(id),
+		},
+		data: {
+			name: name,
+			email: email,
+			message: message,
+		},
+	});
+	res.status(200).json(contact);
+};

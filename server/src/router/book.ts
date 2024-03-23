@@ -1,7 +1,7 @@
 import express from "express";
 
 import { getBooks, getBook, updateBook, createBook } from "../controller/book/book";
-import upload from "@/util/fileSaver";
+import upload from "../util/fileSaver";
 
 import { ratelimitMiddleware } from "../middleware/ratelimit";
 
