@@ -2,6 +2,7 @@ import express from "express";
 import user from "./user";
 import book from "./book";
 import contact from "./contact";
+import author from "./author";
 import authentication from "./authentication";
 
 const router = express.Router();
@@ -11,5 +12,6 @@ export default (): express.Router => {
 	book(router);
 	contact(router);
 	authentication(router);
+	author(router)
 	return router;
 };
