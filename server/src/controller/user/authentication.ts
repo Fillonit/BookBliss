@@ -2,7 +2,7 @@ import express from "express";
 
 import { authentication, random } from "../../util";
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const login = async (req: express.Request, res: express.Response) => {
