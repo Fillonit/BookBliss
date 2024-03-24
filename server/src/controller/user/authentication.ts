@@ -41,12 +41,12 @@ export const login = async (req: express.Request, res: express.Response) => {
 			},
 		});
 
-		// res.cookie("sessionToken", sessionToken, {
-		// 	httpOnly: true,
-		// 	secure: process.env.NODE_ENV === "production",
-		// 	domain: "localhost",
-		// 	path: "/",
-		// });
+		res.cookie("sessionToken", sessionToken, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			domain: "localhost",
+			path: "/",
+		});
 
 		return res
 			.status(200)
@@ -150,6 +150,13 @@ export const refreshSessionToken = async (
 			data: {
 				sessionToken,
 			},
+		});
+
+		res.cookie("sessionToken", sessionToken, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			domain: "localhost",
+			path: "/",
 		});
 
 		return res
