@@ -5,6 +5,7 @@ import {
 	login,
 	logout,
 	getUserBySessionTokenEndpoint,
+	refreshSessionToken,
 } from "../controller/user/authentication";
 
 import { ratelimitMiddleware } from "../middleware/ratelimit";
@@ -14,4 +15,5 @@ export default (router: express.Router) => {
 	router.post("/login", login);
 	router.delete("/logout/:id", logout);
 	router.get("/auth/user/:sessionToken", getUserBySessionTokenEndpoint);
+	router.patch("/auth/refreshToken/:oldSessionToken", refreshSessionToken);
 };

@@ -128,11 +128,11 @@ export const refreshSessionToken = async (
 	res: express.Response
 ) => {
 	try {
-		const { id } = req.params;
+		const { oldSessionToken } = req.params;
 
 		const user = await prisma.user.findUnique({
 			where: {
-				id: Number(id),
+				sessionToken: oldSessionToken,
 			},
 		});
 
@@ -141,18 +141,18 @@ export const refreshSessionToken = async (
 		}
 
 		const salt = random();
-		const sessionToken = authentication(salt, user.id.toString());
+		const newSessionToken = authentication(salt, user.id.toString());
 
 		await prisma.user.update({
 			where: {
 				id: user.id,
 			},
 			data: {
-				sessionToken,
+				sessionToken: newSessionToken,
 			},
 		});
 
-		res.cookie("sessionToken", sessionToken, {
+		res.cookie("sessionToken", newSessionToken, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
 			domain: "localhost",
@@ -163,7 +163,7 @@ export const refreshSessionToken = async (
 			.status(200)
 			.json({
 				message: "Session token refreshed",
-				sessionToken,
+				sessionToken: newSessionToken,
 			})
 			.end();
 	} catch (error) {
