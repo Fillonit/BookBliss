@@ -14,26 +14,16 @@ interface BookCardProps {
 	genre: string;
 }
 
-export default function BookCard({
-	id,
-	title,
-	// author,
-	// description,
-	image,
-	rating,
-	// popularity,
-	price,
-}: // genre,
-BookCardProps) {
+export default function BookCard( book : BookCardProps) {''
 	return (
 		<div
 			className="w-full max-w-sm border border-gray-200 rounded-lg shadow relative overflow-hidden min-h-[30vh] bg-center bg-cover"
-			style={{ backgroundImage: `url(${image})` }}
+			style={{ backgroundImage: `url(${book.image})` }}
 		>
 			<div className="px-5 pb-5 bg-white bg-opacity-0 hover:bg-opacity-90 transition-all duration-500 absolute inset-0 flex flex-col justify-end space-y-4">
 				<a href="#">
 					<h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white mt-8">
-						{title}
+						{book.title}
 					</h5>
 				</a>
 				<div className="flex items-center mt-2.5 mb-5">
@@ -44,12 +34,12 @@ BookCardProps) {
 						/>
 					</div>
 					<span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
-						{rating}
+						{book.rating}
 					</span>
 				</div>
 				<div className="flex items-center justify-between mb-4">
 					<span className="text-3xl font-bold text-gray-900 dark:text-white">
-						${price}
+						${book.price}
 					</span>
 					<a
 						href="#"
@@ -58,7 +48,7 @@ BookCardProps) {
 						Add to cart
 					</a>
 				</div>
-				<a href={id.toString()} className="absolute bottom-4 right-4">
+				<a href={String(book.id)} className="absolute bottom-4 right-4">
 					<FontAwesomeIcon
 						icon={faGoodreads}
 						className="text-gray-900 dark:text-white text-xl"
