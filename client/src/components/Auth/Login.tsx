@@ -1,4 +1,6 @@
 // import { useState } from "react";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const LoginPage = () => {
 	// const [showPassword, setShowPassword] = useState(false);
@@ -6,11 +8,26 @@ const LoginPage = () => {
 	// const togglePasswordVisibility = () => {
 	//     setShowPassword(!showPassword);
 	// };
-	// const handleGoogleLogin = async () => {
-	// 	const response = await fetch("http://localhost:5000/auth/google");
-	// 	const data = await response.json();
-	// 	console.log(data); // Log the user data to the console
-	// };
+	const location = useLocation();
+
+	useEffect(() => {
+		const params = new URLSearchParams(location.search);
+		const googleId = params.get("googleId");
+
+		if (googleId) {
+			fetch(`http://localhost:5000/api/user/getByGoogleId/${googleId}`)
+				.then((response) => response.json())
+				.then((data) => {
+					localStorage.setItem("userId", data.id);
+					localStorage.setItem("sessionToken", data.sessionToken);
+					console.log(data);
+				})
+				.catch((error) => {
+					window.location.href = "/login";
+					console.error(error);
+				});
+		}
+	}, [location]);
 
 	return (
 		<div className="flex flex-wrap">
