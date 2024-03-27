@@ -10,14 +10,14 @@ export function PrivateRoute({
 	const [role, setRole] = useState<string | null>(null);
 
 	useEffect(() => {
-		const user = JSON.parse(localStorage.getItem("user") || "{}");
+		const sessionToken = localStorage.getItem("sessionToken");
 
-		if (user && user.authentication.sessionToken) {
+		if (sessionToken) {
 			fetch(`${API_BASE_URL}/users/me`, {
-				method: "POST",
+				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: `${user.authentication.sessionToken}`,
+					Authorization: `Bearer ${sessionToken}`,
 				},
 			})
 				.then((response) => response.json())
@@ -44,9 +44,9 @@ export function PublicRoute({
 	element,
 	...props
 }: React.ComponentProps<typeof Route>) {
-	const user = JSON.parse(localStorage.getItem("user") || "{}");
+	const sessionToken = localStorage.getItem("sessionToken");
 
-	if (!user || !user.role) {
+	if (!sessionToken) {
 		return React.cloneElement(
 			element as React.ReactElement<unknown>,
 			props
