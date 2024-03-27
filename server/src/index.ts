@@ -7,6 +7,11 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import morgan from "morgan";
+import session from "express-session";
+
+/* ! Google OAuth packages ! */
+import passport from "passport";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 dotenv.config();
 const { PORT, MONGO_URL, NODE_ENV } = process.env;
@@ -19,6 +24,82 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 app.use(compression());
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET!,
+		resave: false,
+		saveUninitialized: true,
+		cookie: { secure: "auto" },
+	})
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(
+	new GoogleStrategy(
+		{
+			clientID: process.env.GOOGLE_OAUTH_CLIENT_ID!,
+			clientSecret: process.env.GOOGLE_OAUTH_SECRET!,
+			callbackURL: "/auth/google/callback",
+		},
+		(accessToken, refreshToken, profile, done) => {
+			// You can perform any additional operations here such as saving user to database
+			return done(null, profile);
+		}
+	)
+);
+
+passport.serializeUser((user, done) => {
+	done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+	done(null, user);
+});
+
+app.get(
+	"/auth/google",
+	passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+import { prisma } from "./db/client";
+
+interface GoogleUser {
+	id: string;
+	displayName: string;
+	emails: { value: string; verified: boolean }[];
+	photos: { value: string }[];
+}
+
+app.get(
+	"/auth/google/callback",
+	passport.authenticate("google", {
+		failureRedirect: "http://localhost:3000/login",
+	}),
+	async (req: express.Request, res: express.Response) => {
+		try {
+			const googleUser = req.user as GoogleUser;
+			const user = await prisma.user.create({
+				data: {
+					email: googleUser.emails[0].value,
+					name: googleUser.displayName,
+					role: "user",
+					avatar: googleUser.photos[0].value,
+					password: googleUser.id,
+				},
+			});
+			res.redirect(`http://localhost:3000/login?id=${user.id}`);
+		} catch (error) {
+			console.error(error);
+			if (error.includes("prisma.user.create()")) {
+				res.status(500).json({ error: "Failed to create user" });
+			} else {
+				res.status(500).json({ error: "Failed to authenticate user" });
+			}
+		}
+	}
+);
 
 app.use(
 	cors({
