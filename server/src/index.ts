@@ -75,21 +75,21 @@ interface GoogleUser {
 app.get(
 	"/auth/google/callback",
 	passport.authenticate("google", {
-		failureRedirect: "http://localhost:3000/login",
+		failureRedirect: "http://localhost:5173/login",
 	}),
 	async (req: express.Request, res: express.Response) => {
 		try {
 			const googleUser = req.user as GoogleUser;
-			const user = await prisma.user.create({
-				data: {
-					email: googleUser.emails[0].value,
-					name: googleUser.displayName,
-					role: "user",
-					avatar: googleUser.photos[0].value,
-					password: googleUser.id,
-				},
-			});
-			res.redirect(`http://localhost:3000/login?id=${user.id}`);
+			// const user = await prisma.user.create({
+			// 	data: {
+			// 		email: googleUser.emails[0].value,
+			// 		name: googleUser.displayName,
+			// 		role: "user",
+			// 		avatar: googleUser.photos[0].value,
+			// 		password: googleUser.id,
+			// 	},
+			// });
+			res.redirect(`http://localhost:5173/login?id=${googleUser.id}`);
 		} catch (error) {
 			console.error(error);
 			if (error.includes("prisma.user.create()")) {
