@@ -12,15 +12,20 @@ const LoginPage = () => {
 
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
-		const googleId = params.get("googleId");
+		const googleId = params.get("id");
 
 		if (googleId) {
 			fetch(`http://localhost:5000/api/user/getByGoogleId/${googleId}`)
 				.then((response) => response.json())
 				.then((data) => {
-					localStorage.setItem("userId", data.id);
+					// console.log(`${JSON.stringify(data)}`);
+					// localStorage.setItem("userId", data.id);
+					// localStorage.setItem(
+					// 	"user",
+					// 	JSON.stringify({ ...data, password: "" })
+					// );
 					localStorage.setItem("sessionToken", data.sessionToken);
-					console.log(data);
+					window.location.href = "/";
 				})
 				.catch((error) => {
 					window.location.href = "/login";

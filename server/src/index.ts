@@ -36,6 +36,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+import { authentication, random } from "./util";
+
 passport.use(
 	new GoogleStrategy(
 		{
@@ -43,8 +45,38 @@ passport.use(
 			clientSecret: process.env.GOOGLE_OAUTH_SECRET!,
 			callbackURL: "/auth/google/callback",
 		},
-		(accessToken, refreshToken, profile, done) => {
-			// You can perform any additional operations here such as saving user to database
+		async (accessToken, refreshToken, profile, done) => {
+			let sessionToken = await authentication(accessToken, profile.id);
+			const existingUser = await prisma.user.findFirst({
+				where: {
+					OR: [
+						{ email: profile.emails[0].value },
+						{ googleId: profile.id },
+						{ sessionToken: accessToken },
+					],
+				},
+			});
+
+			if (!existingUser) {
+				try {
+					await prisma.user.create({
+						data: {
+							email: profile.emails[0].value,
+							name: profile.displayName,
+							role: "user",
+							avatar: profile.photos[0].value,
+							password: profile.id,
+							googleId: profile.id,
+							salt: random(),
+							sessionToken: accessToken,
+						},
+					});
+				} catch (error) {
+					console.error(error);
+					return done(error, null);
+				}
+			}
+
 			return done(null, profile);
 		}
 	)

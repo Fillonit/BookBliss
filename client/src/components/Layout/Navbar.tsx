@@ -6,7 +6,7 @@ import { Avatar, Dropdown, Navbar } from "flowbite-react";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -16,6 +16,7 @@ import {
 	NavigationMenuTrigger,
 	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { useEffect, useState } from "react";
 
 // import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
 
@@ -57,41 +58,34 @@ const components: { title: string; href: string; description: string }[] = [
 	},
 ];
 
-// const cartItems = [
-// 	{
-// 		id: 1,
-// 		name: "The Pragmatic Programmer",
-// 		price: 29.99,
-// 		image: "https://www.flowbite-react.com/_next/image?url=%2Fimages%2Fpeople%2Fprofile-picture-3.jpg&w=96&q=75",
-// 	},
-// 	{
-// 		id: 2,
-// 		name: "Clean Code",
-// 		price: 24.99,
-// 		image: "https://www.flowbite-react.com/_next/image?url=%2Fimages%2Fpeople%2Fprofile-picture-3.jpg&w=96&q=75",
-// 	},
-// 	{
-// 		id: 3,
-// 		name: "Design Patterns",
-// 		price: 34.99,
-// 		image: "https://www.flowbite-react.com/_next/image?url=%2Fimages%2Fpeople%2Fprofile-picture-3.jpg&w=96&q=75",
-// 	},
-// ];
+interface User {
+	avatar: string;
+	name: string;
+	email: string;
+}
 
 function Component() {
-	// function removeFromCart(id: number): void {
-	// 	console.log(id);
-	// 	// throw new Error("Function not implemented.");
-	// }
+	const [user, setUser] = useState<User | null>(null);
 
+	useEffect(() => {
+		const sessionToken = localStorage.getItem("sessionToken");
+		if (sessionToken) {
+			fetch(`http://localhost:5000/api/auth/user/${sessionToken}`)
+				.then((response) => response.json())
+				.then((data) => setUser(data));
+
+			console.log(user);
+		}
+	}, []);
+
+	function SingOut() {
+		localStorage.removeItem("sessionToken");
+		window.location.href = "/login";
+	}
 	return (
 		<div className="fixed top-0 w-full z-50">
 			<Navbar fluid className="bg-white z-50 shadow-md">
 				<Navbar.Brand href="/">
-					{/* <FontAwesomeIcon
-						icon={faBookOpen}
-						className="mr-3 h-6 sm:h-9 text-amber-900 dark:text-amber-700"
-					/> */}
 					<img
 						src="https://www.freeiconspng.com/thumbs/book-icon/description-book-icon-orange-28.png"
 						alt=""
@@ -102,84 +96,55 @@ function Component() {
 					</span>
 				</Navbar.Brand>
 				<div className="flex md:order-2">
-					{/* <Dropdown
-						arrowIcon={false}
-						inline
-						label={
-							<FontAwesomeIcon
-								icon={faShoppingBag}
-								className="mr-3 h-6 sm:h-9 text-amber-900 dark:text-amber-700"
-							/>
-						}
-					>
-						<Dropdown.Header>
-							<span className="block text-lg font-bold text-gray-700 px-3 py-2">
-								Shopping Cart
-							</span>
-						</Dropdown.Header>
-						{cartItems.map((item) => (
-							<Dropdown.Item
-								key={item.id}
-								className="py-2 border-b border-gray-200"
-							>
-								<div className="flex items-center justify-between px-3 py-2">
-									<div className="flex items-center">
-										<img
-											src={item.image}
-											alt={item.name}
-											className="w-16 h-16 mr-3 rounded"
-										/>
-										<div className="text-sm">
-											<div className="font-medium text-gray-700">
-												{item.name}
-											</div>
-											<div className="text-gray-500">
-												${item.price}
-											</div>
-										</div>
-									</div>
-									<button
-										onClick={() => removeFromCart(item.id)}
-										className="px-2 py-1 text-xs font-bold text-white bg-red-500 rounded hover:bg-red-700"
-									>
-										Delete
-									</button>
-								</div>
-							</Dropdown.Item>
-						))}
-						<Dropdown.Divider />
-						<Dropdown.Item className="text-center font-bold text-blue-500 px-3 py-2">
-							Checkout
-						</Dropdown.Item>
-					</Dropdown> */}
 					<Dropdown
 						arrowIcon={false}
 						inline
 						label={
 							<Avatar
 								alt="User settings"
-								img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+								img={
+									user
+										? user.avatar
+										: "https://cdn-icons-png.freepik.com/512/6681/6681204.png"
+								}
 								rounded
 							/>
 						}
 					>
 						<Dropdown.Header>
-							<span className="block text-sm">Bonnie Green</span>
+							<span className="block text-sm">
+								{user ? user.name : "Guest User"}
+							</span>
 							<span className="block truncate text-sm font-medium">
-								name@flowbite.com
+								{user ? user.email : "guest@bookbliss"}
 							</span>
 						</Dropdown.Header>
-						<Dropdown.Item>Dashboard</Dropdown.Item>
-						<Dropdown.Item className="float-left">
-							Notifications
-							<Badge className="ml-4 bg-amber-600 dark:text-white dark:hover:bg-white dark:hover:text-amber-600 font-bold">
-								3
-							</Badge>
-						</Dropdown.Item>
-						<Dropdown.Item>Settings</Dropdown.Item>
-						<Dropdown.Item>Earnings</Dropdown.Item>
-						<Dropdown.Divider />
-						<Dropdown.Item>Sign out</Dropdown.Item>
+						{user ? (
+							<>
+								<Dropdown.Item>Dashboard</Dropdown.Item>
+								<Dropdown.Item className="float-left">
+									Notifications
+									{/* <Badge className="ml-4 bg-amber-600 dark:text-white dark:hover:bg-white dark:hover:text-amber-600 font-bold">
+									3
+									</Badge> */}
+								</Dropdown.Item>
+								<Dropdown.Item>Settings</Dropdown.Item>
+								<Dropdown.Item>Earnings</Dropdown.Item>
+								<Dropdown.Divider />
+								<Dropdown.Item onClick={SingOut}>
+									Sign out
+								</Dropdown.Item>
+							</>
+						) : (
+							<>
+								<Dropdown.Item href="/login">
+									Sign in
+								</Dropdown.Item>
+								<Dropdown.Item href="/register">
+									Sign up
+								</Dropdown.Item>
+							</>
+						)}
 					</Dropdown>
 					<Navbar.Toggle />
 				</div>
