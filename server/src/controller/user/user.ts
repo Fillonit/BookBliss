@@ -24,7 +24,7 @@ export const createUser = async (
 	res: express.Response
 ) => {
 	const { email, name, password } = req.body;
-    
+
 	const user = await prisma.user.create({
 		data: {
 			email,
@@ -65,6 +65,19 @@ export const updateUser = async (
 			email,
 			name,
 			password,
+		},
+	});
+	res.status(200).json(user);
+};
+
+export const getUserByGoogleId = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const { googleId } = req.params;
+	const user = await prisma.user.findUnique({
+		where: {
+			googleId,
 		},
 	});
 	res.status(200).json(user);

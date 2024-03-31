@@ -1,4 +1,6 @@
 // import { useState } from "react";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const LoginPage = () => {
 	// const [showPassword, setShowPassword] = useState(false);
@@ -6,6 +8,31 @@ const LoginPage = () => {
 	// const togglePasswordVisibility = () => {
 	//     setShowPassword(!showPassword);
 	// };
+	const location = useLocation();
+
+	useEffect(() => {
+		const params = new URLSearchParams(location.search);
+		const googleId = params.get("id");
+
+		if (googleId) {
+			fetch(`http://localhost:5000/api/user/getByGoogleId/${googleId}`)
+				.then((response) => response.json())
+				.then((data) => {
+					// console.log(`${JSON.stringify(data)}`);
+					// localStorage.setItem("userId", data.id);
+					// localStorage.setItem(
+					// 	"user",
+					// 	JSON.stringify({ ...data, password: "" })
+					// );
+					localStorage.setItem("sessionToken", data.sessionToken);
+					window.location.href = "/";
+				})
+				.catch((error) => {
+					window.location.href = "/login";
+					console.error(error);
+				});
+		}
+	}, [location]);
 
 	return (
 		<div className="flex flex-wrap">
@@ -15,7 +42,13 @@ const LoginPage = () => {
 					<p className="mt-2 text-left text-gray-500">
 						Welcome please enter your details.
 					</p>
-					<button className="-2 mt-8 flex items-center justify-center rounded-md border px-4 py-1 outline-none ring-gray-400 ring-offset-2 transition focus:ring-2 hover:border-transparent hover:bg-black hover:text-white">
+					<button
+						className="-2 mt-8 flex items-center justify-center rounded-md border px-4 py-1 outline-none ring-gray-400 ring-offset-2 transition focus:ring-2 hover:border-transparent hover:bg-black hover:text-white"
+						onClick={() =>
+							(window.location.href =
+								"http://localhost:5000/auth/google")
+						}
+					>
 						<img
 							className="mr-2 h-5"
 							src="https://static.cdnlogo.com/logos/g/35/google-icon.svg"
