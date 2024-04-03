@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoodreads } from "@fortawesome/free-brands-svg-icons";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
-interface BookCardProps {
+export interface BookCardProps {
 	id: number;
 	title: string;
 	author: string;
