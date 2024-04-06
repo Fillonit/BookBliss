@@ -75,7 +75,7 @@ export const getUserByGoogleId = async (
 	res: express.Response
 ) => {
 	const { googleId } = req.params;
-	const user = await prisma.user.findUnique({
+	const user = await prisma.user.findFirst({
 		where: {
 			googleId,
 		},
