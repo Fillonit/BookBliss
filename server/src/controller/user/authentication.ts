@@ -2,7 +2,7 @@ import express from "express";
 
 import { authentication, random } from "../../util";
 
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const login = async (req: express.Request, res: express.Response) => {
@@ -73,6 +73,7 @@ export const register = async (req: express.Request, res: express.Response) => {
 		}
 
 		const salt = random();
+		const sessionToken = authentication(salt, email);
 		const hashedPassword = authentication(salt, password);
 
 		const user = await prisma.user.create({
@@ -80,6 +81,7 @@ export const register = async (req: express.Request, res: express.Response) => {
 				email,
 				name,
 				salt,
+				sessionToken,
 				password: hashedPassword,
 			},
 		});
@@ -87,7 +89,9 @@ export const register = async (req: express.Request, res: express.Response) => {
 		return res.status(201).json({ user }).end();
 	} catch (error) {
 		console.log(error);
-		return res.status(500).json({ message: "Internal server error" });
+		return res
+			.status(500)
+			.json({ message: "Internal server error", err: error.message });
 	}
 };
 
