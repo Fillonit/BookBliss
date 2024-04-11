@@ -2,7 +2,18 @@ import express from "express";
 import { prisma } from "../../db/client";
 
 export const getUsers = async (req: express.Request, res: express.Response) => {
-	const users = await prisma.user.findMany();
+	const users = await prisma.user.findMany({
+		select: {
+			id: true,
+			email: true,
+			avatar: true,
+			googleId: true,
+			name: true,
+			role: true,
+			createdAt: true,
+			updatedAt: true,
+		},
+	});
 	res.status(200).json(users);
 };
 
@@ -81,4 +92,12 @@ export const getUserByGoogleId = async (
 		},
 	});
 	res.status(200).json(user);
+};
+
+export const getUsersCount = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const count = await prisma.user.count();
+	res.status(200).json({ count });
 };
