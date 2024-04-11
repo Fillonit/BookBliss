@@ -41,9 +41,9 @@ export function HomeBooks() {
     fetch();
   }, [selectedSorting])
   const filters: DropdownProps["dropdownOptions"] =
-    [{ label: "Most recent", value: "recent" },
-    { label: "Most popular", value: "popularity" },
-    { label: "Most rated", value: "rating" }];
+    [{ label: "Most recent", value: "createdAt" },
+    { label: "Most popular", value: "ratingCount" },
+    { label: "Highest rated", value: "rating" }];
   return (
     <div className="flex flex-col items-center">
       <Dropdown dropdownOptions={filters} defaultValue="recent"

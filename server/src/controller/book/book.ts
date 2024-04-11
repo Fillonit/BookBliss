@@ -1,15 +1,21 @@
 import express from "express";
 import { prisma } from "../../db/client";
 import { getUserBySessionToken } from "../user/authentication";
-
+const validSortings = ['createdAt', 'rating', 'ratingCount'];
 export const getBooks = async (req: express.Request, res: express.Response) => {
 	const { limit, offset } = req.query;
 	const limitNumber = Number.parseInt(String(limit ?? "16"));
 	const query = String(req.query.query ?? "")
 	const offsetNumber = Number.parseInt(String(offset ?? "0"));
+	const sorting = String(req.query.sorting ?? "createdAt");
+	if (validSortings.includes(sorting)) return res.status(400).json({ message: "Invalid sorting value." });
+
 	const books = await prisma.book.findMany({
 		take: limitNumber,
 		skip: offsetNumber,
+		orderBy: {
+			[sorting]: 'desc'
+		},
 		select: {
 			id: true,
 			title: true,
