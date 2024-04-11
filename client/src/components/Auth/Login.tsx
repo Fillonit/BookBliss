@@ -1,6 +1,6 @@
-// import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { toast, UpdateOptions } from "react-toastify";
 
 const LoginPage = () => {
 	// const [showPassword, setShowPassword] = useState(false);
@@ -8,6 +8,78 @@ const LoginPage = () => {
 	// const togglePasswordVisibility = () => {
 	//     setShowPassword(!showPassword);
 	// };
+	const [formValues, setFormValues] = useState({ email: '', password: '' });
+	const [formErrors, setFormErrors] = useState({ email: '', password: '' });
+
+	const validateForm = () => {
+		let newErrors = { email: '', password: '' };
+
+		if (!formValues.email) {
+			newErrors.email = 'Email is required';
+		} else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
+			newErrors.email = 'Email is invalid';
+		}
+
+		if (!formValues.password) {
+			newErrors.password = 'Password is required';
+		} else if (formValues.password.length < 8) {
+			newErrors.password = 'Password must be at least 8 characters';
+		}
+
+		setFormErrors(newErrors);
+		return Object.values(newErrors).every(error => !error);
+	};
+
+	const handleSubmit = async (event: { preventDefault: () => void; }) => {
+		event.preventDefault();
+		const SignInToast = toast("Signing In...", {
+			autoClose: 3000,
+		  });
+		  try {
+			const response = await fetch(`http://localhost:5000/api/login`, {
+			  method: "POST",
+			  headers: {
+				"Content-Type": "application/json",
+			  },
+			  body: JSON.stringify({
+				email: formValues.email,
+        		password: formValues.password,
+			  }),
+			});
+			const data = await response.json();
+			console.log(data);
+			if (response.status === 200) {
+			  localStorage.setItem("token", data.user.authentication.sessionToken);
+			  localStorage.setItem("user", JSON.stringify(data.user));
+			  toast.update(SignInToast, {
+				render: "Signed In Successfully!",
+				type: "success",
+				// ...notifyConfig,
+			  } as UpdateOptions<unknown>);
+			  setLogIn(true);
+			  setTimeout(() => {
+				window.location.href = "/";
+			  }, 1000);
+			} else {
+			  toast.update(SignInToast, {
+				render: `${data.message}!`,
+				type: "error",
+				// ...notifyConfig,
+			  } as UpdateOptions<unknown>);
+			}
+		  } catch (error) {
+			toast.update(SignInToast, {
+			  render: "Sign In Failed!",
+			  type: "error",
+			  //...notifyConfig,
+			} as UpdateOptions<unknown>);
+			console.error(error);
+		  }
+	};
+
+	const handleChange = (event: { target: { id: any; value: any; }; }) => {
+		setFormValues({ ...formValues, [event.target.id]: event.target.value });
+	};
 	const location = useLocation();
 
 	useEffect(() => {
@@ -45,8 +117,8 @@ const LoginPage = () => {
 					<button
 						className="-2 mt-8 flex items-center justify-center rounded-md border px-4 py-1 outline-none ring-gray-400 ring-offset-2 transition focus:ring-2 hover:border-transparent hover:bg-black hover:text-white"
 						onClick={() =>
-							(window.location.href =
-								"http://localhost:5000/auth/google")
+						(window.location.href =
+							"http://localhost:5000/auth/google")
 						}
 					>
 						<img
@@ -60,28 +132,35 @@ const LoginPage = () => {
 							or
 						</div>
 					</div>
-					<form className="flex flex-col pt-3 md:pt-8">
+					<form className="flex flex-col pt-3 md:pt-8" onSubmit={handleSubmit}>
 						<div className="flex flex-col pt-4">
 							<div className="focus-within:border-b-gray-500 relative flex overflow-hidden border-b-2 transition">
 								<input
 									type="email"
-									id="login-email"
+									id="email"
 									className="w-full flex-1 appearance-none border-none bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
 									placeholder="Email"
+									value={formValues.email}
+									onChange={handleChange}
 								/>
+								{formErrors.email && <p>{formErrors.email}</p>}
 							</div>
 						</div>
 						<div className="mb-12 flex flex-col pt-4">
 							<div className="focus-within:border-b-gray-500 relative flex overflow-hidden border-b-2 transition">
 								<input
 									type="password"
-									id="login-password"
+									id="password"
 									className="w-full flex-1 appearance-none border-none bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
 									placeholder="Password"
+									value={formValues.password}
+									onChange={handleChange}
 								/>
+								{formErrors.password && <p className="text-red-500">{formErrors.password}</p>}
 							</div>
 						</div>
 						<button
+							onClick={handleSubmit}
 							type="submit"
 							className="w-full rounded-lg bg-amber-900 px-4 py-2 text-center text-base font-semibold text-white shadow-md ring-gray-500 ring-offset-2 transition focus:ring-2"
 						>
@@ -124,3 +203,7 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+function setLogIn(arg0: boolean) {
+	throw new Error("Function not implemented.");
+}
+
