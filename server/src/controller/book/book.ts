@@ -20,14 +20,14 @@ export const getBooks = async (req: express.Request, res: express.Response) => {
 			rating: true,
 			ratingCount: true
 		},
-		where:{
+		where: {
 			title: {
 				contains: query
 			}
 		}
 	});
 
-	res.status(200).json(books);
+	res.status(200).json({ message: 'Successfully fetched books.', data: books });
 };
 
 export const getBook = async (req: express.Request, res: express.Response) => {
@@ -44,18 +44,18 @@ export const getBook = async (req: express.Request, res: express.Response) => {
 export const updateBook = async (req: express.Request, res: express.Response) => {
 	const { session } = req.headers;
 	const { id } = req.params;
-    const user = await getUserBySessionToken(session as string);
+	const user = await getUserBySessionToken(session as string);
 	if (!user || (user.role !== "admin" && user.role !== "author")) {
-		return res.status(401).json({message: "Unauthorized"});
+		return res.status(401).json({ message: "Unauthorized" });
 	}
 	const book = await prisma.book.findFirst({
 		where: {
 			id: Number.parseInt(id),
-		    authorId: user.id
+			authorId: user.id
 		}
 	});
-	if(!book && user.role !== "admin"){
-		return res.status(401).json({message: "Book does not exist or you do not have access"});
+	if (!book && user.role !== "admin") {
+		return res.status(401).json({ message: "Book does not exist or you do not have access" });
 	}
 	const { price, description, title } = req.body;
 
@@ -70,14 +70,14 @@ export const updateBook = async (req: express.Request, res: express.Response) =>
 			updatedAt: new Date()
 		}
 	});
-	res.status(200).json({message: "Successfully updated book"});
+	res.status(200).json({ message: "Successfully updated book" });
 };
 
 export const createBook = async (req: express.Request, res: express.Response) => {
 	const { session } = req.headers;
-    const user = await getUserBySessionToken(session as string);
+	const user = await getUserBySessionToken(session as string);
 	if (!user || user.role !== "author") {
-		return res.status(401).json({message: "Unauthorized"});
+		return res.status(401).json({ message: "Unauthorized" });
 	}
 
 	const { price, description, title, pages, words, timeToRead } = req.body;
@@ -102,28 +102,28 @@ export const createBook = async (req: express.Request, res: express.Response) =>
 			updatedAt: new Date(),
 		}
 	});
-	res.status(200).json({message: "Successfully updated book"});
+	res.status(200).json({ message: "Successfully updated book" });
 };
 
 export const deleteBook = async (req: express.Request, res: express.Response) => {
 	const { session } = req.headers;
 	const { id } = req.params;
-    const user = await getUserBySessionToken(session as string);
+	const user = await getUserBySessionToken(session as string);
 	if (!user || user.role === "user") {
-		return res.status(401).json({message: "Unauthorized"});
+		return res.status(401).json({ message: "Unauthorized" });
 	}
-    const book = await prisma.book.findFirst({
+	const book = await prisma.book.findFirst({
 		where: {
 			id: Number.parseInt(id),
 		}
 	});
-    if(book.authorId !== user.id && user.role !== "admin"){
-        return res.status(401).json({message: "You do not have access to delete this book"});
+	if (book.authorId !== user.id && user.role !== "admin") {
+		return res.status(401).json({ message: "You do not have access to delete this book" });
 	}
-    await prisma.book.delete({
-		where:{
+	await prisma.book.delete({
+		where: {
 			id: Number.parseInt(id),
 		}
 	})
-	res.status(200).json({message: "Successfully updated book"});
+	res.status(200).json({ message: "Successfully updated book" });
 };

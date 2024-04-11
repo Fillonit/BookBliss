@@ -19,7 +19,7 @@ const { PORT, MONGO_URL, NODE_ENV } = process.env;
 import router from "./router";
 
 const app = express();
-
+app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
@@ -112,15 +112,15 @@ app.get(
 	async (req: express.Request, res: express.Response) => {
 		try {
 			const googleUser = req.user as GoogleUser;
-			// const user = await prisma.user.create({
-			// 	data: {
-			// 		email: googleUser.emails[0].value,
-			// 		name: googleUser.displayName,
-			// 		role: "user",
-			// 		avatar: googleUser.photos[0].value,
-			// 		password: googleUser.id,
-			// 	},
-			// });
+			const user = await prisma.user.create({
+				data: {
+					email: googleUser.emails[0].value,
+					name: googleUser.displayName,
+					role: "user",
+					avatar: googleUser.photos[0].value,
+					password: googleUser.id,
+				},
+			});
 			res.redirect(`http://localhost:5173/login?id=${googleUser.id}`);
 		} catch (error) {
 			console.error(error);
