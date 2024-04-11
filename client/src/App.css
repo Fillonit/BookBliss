@@ -3,7 +3,13 @@
 @tailwind utilities;
 
 .fa-gradient {
-	@apply bg-gradient-to-r from-blue-500 to-green-500;
-	@apply bg-clip-text text-transparent;
-	@apply font-bold;
+    @apply bg-gradient-to-r from-blue-500 to-green-500;
+    @apply bg-clip-text text-transparent;
+    @apply font-bold;
+}
+
+.invert-bg {
+    /* background: ; */
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
 }
