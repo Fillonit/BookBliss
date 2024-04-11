@@ -70,7 +70,6 @@ export const updateBook = async (req: express.Request, res: express.Response) =>
 			updatedAt: new Date()
 		}
 	});
-
 	res.status(200).json({message: "Successfully updated book"});
 };
 

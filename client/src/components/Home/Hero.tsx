@@ -1,3 +1,5 @@
+import { HomeBooks } from "./HomeBooks";
+
 const Hero = () => {
 	return (
 		<section className="relative overflow-hidden bg-gradient-to-b from-amber-800/20 via-transparent to-transparent pb-12 pt-20 sm:pb-16 sm:pt-32 lg:pb-24 xl:pb-32 xl:pt-40 dark:from-amber-800 dark:via-transparent dark:to-transparent">
@@ -71,6 +73,9 @@ const Hero = () => {
 							</svg>
 						</a>
 					</div>
+				</div>
+				<div className="flex justify-center items-center mt-11">
+				   <HomeBooks/>
 				</div>
 				<div className="flex justify-center">
 					<div className="mx-4 mt-10 max-w-xs">
