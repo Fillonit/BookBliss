@@ -4,11 +4,21 @@ import { getUserBySessionToken } from "../user/authentication";
 
 export const getBooks = async (req: express.Request, res: express.Response) => {
 	const { limit, offset } = req.query;
-	const limitNumber = Number.parseInt(String(limit));
-	const offsetNumber = Number.parseInt(String(offset));
+	const limitNumber = Number.parseInt(String(limit ?? "16"));
+	const offsetNumber = Number.parseInt(String(offset ?? "0"));
 	const books = await prisma.book.findMany({
 		take: limitNumber,
-		skip: offsetNumber
+		skip: offsetNumber,
+		select: {
+			id: true,
+			title: true,
+			description: true,
+			price: true,
+			author: true,
+			cover: true,
+			rating: true,
+			ratingCount: true
+		}
 	});
 
 	res.status(200).json(books);

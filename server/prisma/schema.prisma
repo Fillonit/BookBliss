@@ -16,6 +16,8 @@ model Book {
   author          String           @db.VarChar(100)
   isbn            String           @unique @db.VarChar(13)
   price           Float            @default(0)
+  rating          Float            @default(0)
+  ratingCount     Int              @default(0)
   description     String           @db.VarChar(1000)
   pdfLink         String           @db.VarChar(1000)
   cover           String           @db.VarChar(100)
