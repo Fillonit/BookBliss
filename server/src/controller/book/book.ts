@@ -5,6 +5,7 @@ import { getUserBySessionToken } from "../user/authentication";
 export const getBooks = async (req: express.Request, res: express.Response) => {
 	const { limit, offset } = req.query;
 	const limitNumber = Number.parseInt(String(limit ?? "16"));
+	const query = String(req.query.query ?? "")
 	const offsetNumber = Number.parseInt(String(offset ?? "0"));
 	const books = await prisma.book.findMany({
 		take: limitNumber,
@@ -18,6 +19,11 @@ export const getBooks = async (req: express.Request, res: express.Response) => {
 			cover: true,
 			rating: true,
 			ratingCount: true
+		},
+		where:{
+			title: {
+				contains: query
+			}
 		}
 	});
 

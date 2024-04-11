@@ -39,12 +39,27 @@ export const updateReview = async (req: express.Request, res: express.Response) 
 		},
 		data: {
 			rating,
-			comment:description,
+			comment: description,
 			updatedAt: new Date()
 		}
 	});
+	const book = await prisma.book.findFirst({
+		where: {
+			id: review.bookId
+		}
+	});
+	if(!book) return res.status(404).json({message: "Book not found"});
+	const currentRating = ((book.rating * book.ratingCount)+rating)/book.ratingCount;
+	await prisma.book.update({
+		where: {
+			id: review.bookId
+		},
+		data: {
+			rating: currentRating
+		}
+	});
 
-	res.status(200).json({message: "Successfully updated book"});
+	res.status(200).json({message: "Successfully updated review"});
 };
 
 export const createReview = async (req: express.Request, res: express.Response) => {
@@ -54,14 +69,29 @@ export const createReview = async (req: express.Request, res: express.Response) 
 		return res.status(401).json({message: "Unauthorized"});
 	}
 
-	const { rating,description,bookId } = req.body;
-
+	const { rating, description, bookId } = req.body;
+	const book = await prisma.book.findFirst({
+		where: {
+			id: bookId
+		}
+	});
+	if(!book) return res.status(404).json({message: "Book not found"});
 	await prisma.review.create({
 		data: {
-	    rating:rating,
-        comment:description,
-        bookId:bookId,
-        userId:user.id,
+	       rating:rating,
+           comment:description,
+           bookId:bookId,
+           userId:user.id,
+		}
+	});
+    const currentRating = ((book.rating * book.ratingCount)+rating)/(book.ratingCount+1);
+	await prisma.book.update({
+		where: {
+			id: bookId
+		},
+		data: {
+           	rating: currentRating,
+			ratingCount: book.ratingCount+1 
 		}
 	});
 	res.status(200).json({message: "Successfully updated book"});
