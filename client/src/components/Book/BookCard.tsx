@@ -7,9 +7,8 @@ export interface BookCardProps {
 	title: string;
 	author: string;
 	description: string;
-	image: string;
+    cover: string;
 	rating: number;
-	popularity: number;
 	price: number;
 	genre: string;
 }
@@ -18,7 +17,7 @@ export default function BookCard( book : BookCardProps) {''
 	return (
 		<div
 			className="w-full max-w-sm border border-gray-200 rounded-lg shadow relative overflow-hidden min-h-[30vh] bg-center bg-cover"
-			style={{ backgroundImage: `url(${book.image})` }}
+			style={{ backgroundImage: `url(${book.cover})` }}
 		>
 			<div className="px-5 pb-5 bg-white bg-opacity-0 hover:bg-opacity-90 transition-all duration-500 absolute inset-0 flex flex-col justify-end space-y-4">
 				<a href="#">
