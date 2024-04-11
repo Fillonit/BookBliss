@@ -3,6 +3,7 @@ import UsersTable from '@/components/Admin/Users/UserTable'
 import SidebarComponent from '@/components/Admin/Sidebar'
 import { useParams } from 'react-router-dom'
 import HoverCard from '@/components/Admin/Hover'
+import ContactTable from '@/components/Admin/Contact/ContactTable'
 
 // const API_BASE_URL = 'http://localhost:5000/api/'
 
@@ -55,6 +56,8 @@ const UsersInfo: React.FC = () => {
                 <div className="w-full bg-white dark:bg-gray-900 shadow-md rounded-lg p-6">
                     {table === 'users' || table === undefined ? (
                         <UsersTable />
+                    ) : table === 'contacts' ? (
+                        <ContactTable /> 
                     ) : (
                         // <UsersTable />
                         <div className="self-center">
