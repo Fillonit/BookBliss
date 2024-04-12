@@ -2,7 +2,7 @@
 
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Sidebar } from 'flowbite-react'
 import { HiBookOpen, HiMail, HiUser } from 'react-icons/hi'
 // import iconDark from '../../assets/iconDark.png'
