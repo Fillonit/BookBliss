@@ -9,7 +9,8 @@ import {
 import { Dropdown } from '../Other/Dropdown'
 import { DropdownProps } from '../Other/Dropdown'
 import { useEffect, useState } from 'react'
-import BookCard, { BookCardProps } from '../Book/BookCard'
+import BookCard from '../Book/BookCard'
+import { BookCardProps } from '@/types/BookCardProps'
 import Loading from '../Other/Loading'
 import NoResults from '../Other/Exceptions/NoResults'
 
@@ -62,17 +63,14 @@ export function HomeBooks() {
                 opts={{
                     align: 'start',
                 }}
-                className="w-full max-w-sm h-48"
+                className="w-full h-48"
             >
                 {loading && <Loading />}
                 {!loading && books && books.length > 0 && (
                     <CarouselContent>
                         {books.map((book, index) => (
-                            <CarouselItem
-                                key={index}
-                                className="md:basis-1/2 lg:basis-1/3"
-                            >
-                                <div className="p-1">
+                            <CarouselItem key={index} className="">
+                                <div className="p-6">
                                     <BookCard {...book} />
                                 </div>
                             </CarouselItem>
@@ -87,6 +85,11 @@ export function HomeBooks() {
                     </>
                 )}
             </Carousel>
+            {books && books.length > 0 && (
+                <div className="mt-[15vh]">
+                    <BookCard {...books[0]} />
+                </div>
+            )}
         </div>
     )
 }

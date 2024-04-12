@@ -1,6 +1,7 @@
 import express from "express";
 import { prisma } from "../../db/client";
 import { getUserBySessionToken } from "../user/authentication";
+import { set } from "lodash";
 const validSortings = ["createdAt", "rating", "ratingCount"];
 export const getBooks = async (req: express.Request, res: express.Response) => {
 	const { limit, offset } = req.query;
@@ -34,10 +35,17 @@ export const getBooks = async (req: express.Request, res: express.Response) => {
 		},
 	});
 
-	res.status(200).json({
-		message: "Successfully fetched books.",
-		data: books,
-	});
+	setTimeout(() => {
+		res.status(200).json({
+			message: "Successfully fetched books.",
+			data: books,
+		});
+	}, 2000);
+
+	// res.status(200).json({
+	// 	message: "Successfully fetched books.",
+	// 	data: books,
+	// });
 };
 
 export const getBook = async (req: express.Request, res: express.Response) => {

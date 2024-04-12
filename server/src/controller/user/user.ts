@@ -2,7 +2,13 @@ import express from "express";
 import { prisma } from "../../db/client";
 
 export const getUsers = async (req: express.Request, res: express.Response) => {
+	const { limit, offset } = req.query;
+	const limitNumber = Number.parseInt(String(limit ?? "3"));
+	const query = String(req.query.query ?? "");
+	const offsetNumber = Number.parseInt(String(offset ?? "0"));
 	const users = await prisma.user.findMany({
+		take: limitNumber,
+		skip: offsetNumber,
 		select: {
 			id: true,
 			email: true,
