@@ -112,19 +112,29 @@ app.get(
 	async (req: express.Request, res: express.Response) => {
 		try {
 			const googleUser = req.user as GoogleUser;
-			const user = await prisma.user.create({
-				data: {
-					email: googleUser.emails[0].value,
-					name: googleUser.displayName,
-					role: "user",
-					avatar: googleUser.photos[0].value,
-					password: googleUser.id,
-				},
+			const existingUser = await prisma.user.findFirst({
+				where: { email: googleUser.emails[0].value },
 			});
+
+			if (!existingUser) {
+				const user = await prisma.user.create({
+					data: {
+						email: googleUser.emails[0].value,
+						name: googleUser.displayName,
+						role: "user",
+						avatar: googleUser.photos[0].value,
+						password: googleUser.id,
+					},
+				});
+			}
+
 			res.redirect(`http://localhost:5173/login?id=${googleUser.id}`);
 		} catch (error) {
 			console.error(error);
-			if (error.includes("prisma.user.create()")) {
+			if (
+				error instanceof Prisma.PrismaClientKnownRequestError &&
+				error.code === "P2002"
+			) {
 				res.status(500).json({ error: "Failed to create user" });
 			} else {
 				res.status(500).json({ error: "Failed to authenticate user" });
@@ -150,6 +160,7 @@ server.listen(PORT || 8080, () => {
 });
 
 import { ratelimitMiddleware } from "./middleware/ratelimit";
+import { Prisma } from "@prisma/client";
 // app.use(ratelimitMiddleware);
 
 app.use("/api", router());

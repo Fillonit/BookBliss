@@ -56,11 +56,23 @@ function App() {
                                     <PrivateRoute element={<BookList />} />
                                 }
                             />
-                            <Route path="/dashboard" element={<Dashboard />} />
+                            <Route
+                                path="/dashboard"
+                                element={
+                                    <PrivateRoute element={<Dashboard />} />
+                                }
+                            />
+                            <Route
+                                path="/dashboard/:table"
+                                element={
+                                    <PrivateRoute element={<Dashboard />} />
+                                }
+                            />
+                            {/* <Route path="/dashboard" element={<Dashboard />} />
                             <Route
                                 path="/dashboard/:table"
                                 element={<Dashboard />}
-                            />
+                            /> */}
                         </Routes>
                         {!window.location.pathname.includes('/dashboard') &&
                             !window.location.pathname.includes('/login') &&
