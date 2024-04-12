@@ -5,23 +5,23 @@ import { BookCardProps } from '@/types/BookCardProps'
 
 export default function BookCard(book: BookCardProps) {
     return (
-        <Card className="max-w-sm" imgAlt={book.title}>
+        <Card className="flex flex-col items-center max-w-sm mx-auto">
             <img
                 className="rounded-lg max-h-48 w-full object-fill"
                 src={book.cover}
                 alt={book.title}
             />
             <a href={String(book.id)}>
-                <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white mt-4">
                     {book.title}
                 </h5>
             </a>
-            {/* <div className="mb-5 mt-2.5 flex items-center">
+            <div className="mb-5 mt-2.5 flex items-center">
                 <span className="ml-3 mr-2 rounded bg-cyan-100 px-2.5 py-0.5 text-xs font-semibold text-cyan-800 dark:bg-cyan-200 dark:text-cyan-800">
                     {book.rating}
                 </span>
-            </div> */}
-            <div className="flex items-center justify-between">
+            </div>
+            <div className="flex items-center justify-between w-full px-4">
                 <span className="text-3xl font-bold text-gray-900 dark:text-white">
                     ${book.price}
                 </span>

@@ -52,7 +52,7 @@ export function HomeBooks() {
         <div className="flex flex-col items-center">
             <Dropdown
                 dropdownOptions={filters}
-                defaultValue="recent"
+                defaultValue="createdAt"
                 buttonTitle={
                     filters.find((filter) => filter.value === selectedSorting)
                         ?.label ?? 'None'
