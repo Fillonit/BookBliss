@@ -178,6 +178,13 @@ export const refreshSessionToken = async (
 
 export const getUserBySessionToken = async (sessionToken: string) => {
 	const user = await prisma.user.findUnique({
+		select: {
+			id: true,
+			email: true,
+			name: true,
+			role: true,
+			avatar: true,
+		},
 		where: {
 			sessionToken,
 		},

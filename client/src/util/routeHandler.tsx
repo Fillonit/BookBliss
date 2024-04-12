@@ -12,13 +12,15 @@ export function PrivateRoute({
 
     useEffect(() => {
         if (sessionToken) {
-            fetch(`${API_BASE_URL}/auth/user/${sessionToken}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Authorization: `Bearer ${sessionToken}`,
-                },
-            })
+            fetch(
+                `${API_BASE_URL}/auth/user/${sessionToken}?source=PrivateRoute`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            )
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok')
