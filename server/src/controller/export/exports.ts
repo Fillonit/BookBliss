@@ -1,10 +1,9 @@
 import express from "express";
 import { prisma } from "../../db/client";
-
-// ? Tools
-const json2csv = require("json2csv").parse;
-const xmlbuilder = require("xmlbuilder");
-const yaml = require("js-yaml");
+import { parse as json2csv } from "json2csv";
+import xmlbuilder from "xmlbuilder";
+import yaml from "js-yaml";
+import { Document } from "pdfkit";
 
 export const exportJSON = async (
 	req: express.Request,
@@ -190,6 +189,36 @@ export const getExportFormats = async (
 		console.error(error);
 		res.status(500).json({
 			error: "Failed to get export formats",
+			message: error.message,
+		});
+	}
+};
+
+export const exportPDF = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	try {
+		const data = req.body;
+		if (!data) {
+			return res.status(400).json({ message: "No data found" });
+		}
+
+		const pdf = new PDFDocument();
+		pdf.pipe(res);
+
+		pdf.fontSize(25).text("Exported Data", {
+			align: "center",
+		});
+
+		pdf.moveDown();
+		pdf.fontSize(15).text(JSON.stringify(data, null, 4));
+
+		pdf.end();
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({
+			error: "Failed to export PDF",
 			message: error.message,
 		});
 	}
