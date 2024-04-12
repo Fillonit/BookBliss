@@ -128,8 +128,8 @@ export const columns: ColumnDef<Review>[] = [
         },
         cell: ({ row }) => (
             <div className="lowercase hover:text-amber-600">
-                <a href={`mailto:${row.getValue('email')}`}>
-                    {row.getValue('email')}
+                <a href={`mailto:${row.getValue('rating')}`}>
+                    {row.getValue('rating')}
                 </a>
             </div>
         ),
@@ -242,7 +242,7 @@ export default function ReviewTable() {
     const [isCopied, setIsCopied] = useState(false)
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/contacts')
+        fetch('http://localhost:5000/api/reviews')
             .then((response) => response.json())
             .then((data) => setData(data))
     }, [])
@@ -277,15 +277,15 @@ export default function ReviewTable() {
         <div className="w-full">
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Filter emails..."
+                    placeholder="Filter rating..."
                     value={
                         (table
-                            .getColumn('email')
+                            .getColumn('rating')
                             ?.getFilterValue() as string) ?? ''
                     }
                     onChange={(event) =>
                         table
-                            .getColumn('email')
+                            .getColumn('rating')
                             ?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
