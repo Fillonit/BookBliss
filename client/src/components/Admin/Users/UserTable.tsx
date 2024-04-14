@@ -47,6 +47,14 @@ import {
     HiOutlineChevronRight,
 } from 'react-icons/hi'
 import { FaGoogle } from 'react-icons/fa'
+import {
+    BsFiletypeJson,
+    BsFiletypeXml,
+    BsFiletypeCsv,
+    BsFiletypeYml,
+    BsFileZip,
+    BsCopy,
+} from 'react-icons/bs'
 
 import {
     Dialog,
@@ -469,6 +477,23 @@ export default function UsersTable() {
         fetchData()
     }, [page, pageSize])
 
+    const getFormatIcon = (format: string) => {
+        switch (format) {
+            case 'json':
+                return <BsFiletypeJson className="text-2xl font-bold" />
+            case 'csv':
+                return <BsFiletypeCsv className="text-2xl font-bold" />
+            case 'xml':
+                return <BsFiletypeXml className="text-2xl font-bold" />
+            case 'yaml':
+                return <BsFiletypeYml className="text-2xl font-bold" />
+            case 'zip':
+                return <BsFileZip className="text-2xl font-bold" />
+            default:
+                return <BsFiletypeJson className="text-2xl font-bold" />
+        }
+    }
+
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] =
         React.useState<ColumnFiltersState>([])
@@ -646,57 +671,11 @@ export default function UsersTable() {
                                     hidden columns.
                                 </DialogDescription>
                             </DialogHeader>
-                            <div className="flex items-center space-x-2">
-                                <div className="grid flex-1 gap-2">
+                            <div className="flex flex-row items-center space-x-2 justify-center">
+                                <div className="grid grid-flow-row gap-2 grid-cols-3 items-center">
                                     <Label htmlFor="link" className="sr-only">
                                         Link
                                     </Label>
-                                    {/* <Input
-                                        id="link"
-                                        defaultValue={JSON.stringify(
-                                            table
-                                                .getFilteredSelectedRowModel()
-                                                .rows.map((row) => row.original)
-                                        )}
-                                        readOnly
-                                    /> */}
-                                    {/* </div> */}
-                                    {/* <Button
-                                    type="submit"
-                                    size="sm"
-                                    className={`px-3 ${
-                                        isCopied
-                                            ? 'text-white bg-amber-600 font-bold'
-                                            : ''
-                                    }`}
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(
-                                            JSON.stringify(
-                                                table
-                                                    .getFilteredSelectedRowModel()
-                                                    .rows.map(
-                                                        (row) => row.original
-                                                    )
-                                            )
-                                        )
-                                        setIsCopied(true)
-                                        toast.success('Copied to clipboard!', {
-                                            theme:
-                                                localStorage.getItem(
-                                                    'flowbite-theme-mode'
-                                                ) === 'dark'
-                                                    ? 'dark'
-                                                    : 'light',
-                                        })
-                                    }}
-                                >
-                                    <span className="sr-only">Copy</span>
-                                    {isCopied ? (
-                                        <HiOutlineCheck className="h-4 w-4" />
-                                    ) : (
-                                        <HiOutlineClipboardCopy className="h-4 w-4" />
-                                    )}
-                                </Button> */}
                                     {['json', 'csv', 'xml', 'yaml', 'zip'].map(
                                         (format) => (
                                             <Button
@@ -749,15 +728,47 @@ export default function UsersTable() {
                                                     link.click()
                                                     link.remove()
                                                 }}
-                                                className="text-white font-bold bg-amber-600 hover:bg-amber-700"
+                                                className="text-white bg-amber-600 hover:bg-amber-500"
                                             >
-                                                Export as {format.toUpperCase()}
+                                                {getFormatIcon(format)}
+                                                <p className="text-xs">
+                                                    {format.toUpperCase()}
+                                                </p>
                                             </Button>
                                         )
                                     )}
+                                    <Button
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(
+                                                JSON.stringify(
+                                                    table
+                                                        .getFilteredSelectedRowModel()
+                                                        .rows.map(
+                                                            (row) =>
+                                                                row.original
+                                                        )
+                                                )
+                                            )
+                                            toast.success(
+                                                'Copied to clipboard!',
+                                                {
+                                                    theme:
+                                                        localStorage.getItem(
+                                                            'flowbite-theme-mode'
+                                                        ) === 'dark'
+                                                            ? 'dark'
+                                                            : 'light',
+                                                }
+                                            )
+                                        }}
+                                        className="text-white bg-amber-600 hover:bg-amber-500"
+                                    >
+                                        <BsCopy className="text-2xl font-bold" />
+                                        <p className="text-xs ml-1">Copy</p>
+                                    </Button>
                                 </div>
                             </div>
-                            <DialogFooter className="sm:justify-start">
+                            {/* <DialogFooter className="sm:justify-start">
                                 <DialogClose asChild>
                                     <Button
                                         type="button"
@@ -767,7 +778,7 @@ export default function UsersTable() {
                                         Close
                                     </Button>
                                 </DialogClose>
-                            </DialogFooter>
+                            </DialogFooter> */}
                         </DialogContent>
                     </Dialog>
                 </div>
