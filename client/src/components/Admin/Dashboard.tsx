@@ -4,6 +4,7 @@ import SidebarComponent from '@/components/Admin/Sidebar'
 import { useParams } from 'react-router-dom'
 import HoverCard from '@/components/Admin/Hover'
 import ContactTable from '@/components/Admin/Contact/ContactTable'
+import ReviewTable from '@/components/Admin/Reviews/ReviewTable'
 
 // const API_BASE_URL = 'http://localhost:5000/api/'
 
@@ -58,6 +59,8 @@ const UsersInfo: React.FC = () => {
                         <UsersTable />
                     ) : table === 'contacts' ? (
                         <ContactTable /> 
+                    ) : table === 'reviews' ? (
+                        <ReviewTable />
                     ) : (
                         // <UsersTable />
                         <div className="self-center">
