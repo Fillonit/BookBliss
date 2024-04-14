@@ -1,37 +1,47 @@
 'use client'
 
-import { Card } from 'flowbite-react'
 import { BookCardProps } from '@/types/BookCardProps'
+
+import {
+    CardTitle,
+    CardDescription,
+    CardContent,
+    Card,
+} from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
 export default function BookCard(book: BookCardProps) {
     return (
-        <Card className="flex flex-col items-center max-w-sm mx-auto">
-            <img
-                className="rounded-lg max-h-48 w-full object-fill"
-                src={book.cover}
-                alt={book.title}
-            />
-            <a href={String(book.id)}>
-                <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white mt-4">
+        <Card className="w-full max-w-xs">
+            <div className="grid w-full">
+                <div className="relative w-full">
+                    <img
+                        alt="Book cover"
+                        className="w-full object-cover"
+                        height={400}
+                        src={book.cover}
+                        style={{
+                            aspectRatio: '400/400',
+                            objectFit: 'cover',
+                        }}
+                        width={400}
+                    />
+                </div>
+            </div>
+            <CardContent className="p-4">
+                <CardTitle className="text-base font-semibold">
                     {book.title}
-                </h5>
-            </a>
-            <div className="mb-5 mt-2.5 flex items-center">
-                <span className="ml-3 mr-2 rounded bg-cyan-100 px-2.5 py-0.5 text-xs font-semibold text-cyan-800 dark:bg-cyan-200 dark:text-cyan-800">
-                    {book.rating}
-                </span>
-            </div>
-            <div className="flex items-center justify-between w-full px-4">
-                <span className="text-3xl font-bold text-gray-900 dark:text-white">
-                    ${book.price}
-                </span>
-                <a
-                    href="#"
-                    className="ml-2 rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
-                >
-                    Add to cart
-                </a>
-            </div>
+                </CardTitle>
+                <CardDescription className="mb-4 text-sm truncate">
+                    {book.description.slice(0, 100)}...
+                </CardDescription>
+                <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium bg-amber-600 p-2 rounded-md">
+                        {book.price.toFixed(2)} €
+                    </span>
+                    <Button size="sm">Add to Cart</Button>
+                </div>
+            </CardContent>
         </Card>
     )
 }
