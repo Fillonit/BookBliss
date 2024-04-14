@@ -44,40 +44,39 @@ const Hero = () => {
             <div className="relative z-20 mx-auto max-w-7xl px-6 lg:px-8">
                 <div className="mx-auto max-w-2xl text-center">
                     <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl dark:text-white">
-                        Refreshingly Sustainable:
+                        Dive into the World of Books:
                         <span className="text-amber-800 dark:text-amber-500">
-                            Boxed Water
+                            Book Bliss
                         </span>
                     </h1>
                     <h2 className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                        Choose a more eco-friendly way to hydrate with our 100%
-                        recyclable cartons.
+                        Discover, explore and lose yourself in our vast collection of books across multiple genres.
                     </h2>
-                    <div className="mt-10 flex items-center justify-center gap-x-6">
-                        <a
-                            className="isomorphic-link isomorphic-link--internal inline-flex items-center justify-center gap-2 rounded-xl bg-amber-800 px-4 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-600 dark:bg-amber-700 dark:text-white dark:hover:bg-amber-600 dark:focus:ring-amber-500"
-                            href="/login"
+                <div className="mt-10 flex items-center justify-center gap-x-6">
+                    <a
+                        className="isomorphic-link isomorphic-link--internal inline-flex items-center justify-center gap-2 rounded-xl bg-amber-800 px-4 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-600 dark:bg-amber-700 dark:text-white dark:hover:bg-amber-600 dark:focus:ring-amber-500"
+                        href="/login"
+                    >
+                        Shop Now
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
                         >
-                            Shop Now
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-4 w-4"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                    clipRule="evenodd"
-                                ></path>
-                            </svg>
-                        </a>
-                    </div>
+                            <path
+                                fillRule="evenodd"
+                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                clipRule="evenodd"
+                            ></path>
+                        </svg>
+                    </a>
                 </div>
-                <div className="flex justify-center items-center mt-11">
-                    <HomeBooks />
-                </div>
-                {/* <div className="flex justify-center">
+            </div>
+            <div className="flex justify-center items-center mt-11">
+                <HomeBooks />
+            </div>
+            {/* <div className="flex justify-center">
                     <div className="mx-4 mt-10 max-w-xs">
                         <img
                             className="w-full rounded-2xl border border-gray-100 shadow dark:border-gray-800 hover:scale-105 transition-transform delay-100"
@@ -100,8 +99,8 @@ const Hero = () => {
                         />
                     </div>
                 </div> */}
-            </div>
-        </section>
+        </div>
+        </section >
     )
 }
 
