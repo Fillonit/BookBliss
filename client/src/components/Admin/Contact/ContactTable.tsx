@@ -512,11 +512,10 @@ export default function ContactTable() {
                     {table.getFilteredRowModel().rows.length} row(s) selected.
                 </div>
                 <div className="space-x-2">
-                    <Dialog onOpenChange={() => setIsCopied(false)}>
+                <Dialog>
                         <DialogTrigger asChild>
                             <Button
                                 variant="outline"
-                                size="sm"
                                 disabled={
                                     table.getFilteredSelectedRowModel().rows
                                         .length === 0
@@ -539,58 +538,71 @@ export default function ContactTable() {
                                     <Label htmlFor="link" className="sr-only">
                                         Link
                                     </Label>
-                                    <Input
-                                        id="link"
-                                        defaultValue={JSON.stringify(
-                                            table
-                                                .getFilteredSelectedRowModel()
-                                                .rows.map((row) => row.original)
-                                        )}
-                                        readOnly
-                                    />
-                                </div>
-                                <Button
-                                    type="submit"
-                                    size="sm"
-                                    className={`px-3 ${isCopied
-                                            ? 'text-white bg-amber-600 font-bold'
-                                            : ''
-                                        }`}
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(
-                                            JSON.stringify(
-                                                table
-                                                    .getFilteredSelectedRowModel()
-                                                    .rows.map(
-                                                        (row) => row.original
+                                    {['json', 'csv', 'xml', 'yaml', 'zip'].map(
+                                        (format) => (
+                                            <Button
+                                                key={format}
+                                                onClick={async () => {
+                                                    const response =
+                                                        await fetch(
+                                                            `http://localhost:5000/api/export/${format}`,
+                                                            {
+                                                                method: 'POST',
+                                                                headers: {
+                                                                    'Content-Type':
+                                                                        'application/json',
+                                                                },
+                                                                body: JSON.stringify(
+                                                                    table
+                                                                        .getFilteredSelectedRowModel()
+                                                                        .rows.map(
+                                                                            (
+                                                                                row
+                                                                            ) =>
+                                                                                row.original
+                                                                        )
+                                                                ),
+                                                            }
+                                                        )
+                                                    if (!response.ok) {
+                                                        throw new Error(
+                                                            'Network response was not ok'
+                                                        )
+                                                    }
+                                                    const blob =
+                                                        await response.blob()
+                                                    const url =
+                                                        window.URL.createObjectURL(
+                                                            blob
+                                                        )
+                                                    const link =
+                                                        document.createElement(
+                                                            'a'
+                                                        )
+                                                    link.href = url
+                                                    link.setAttribute(
+                                                        'download',
+                                                        `BookBliss Export - ${new Date()}.${format}`
                                                     )
-                                            )
+                                                    document.body.appendChild(
+                                                        link
+                                                    )
+                                                    link.click()
+                                                    link.remove()
+                                                }}
+                                                className="text-white font-bold bg-amber-600 hover:bg-amber-700"
+                                            >
+                                                Export as {format.toUpperCase()}
+                                            </Button>
                                         )
-                                        setIsCopied(true)
-                                        toast.success('Copied to clipboard!', {
-                                            theme:
-                                                localStorage.getItem(
-                                                    'flowbite-theme-mode'
-                                                ) === 'dark'
-                                                    ? 'dark'
-                                                    : 'light',
-                                        })
-                                    }}
-                                >
-                                    <span className="sr-only">Copy</span>
-                                    {isCopied ? (
-                                        <HiOutlineCheck className="h-4 w-4" />
-                                    ) : (
-                                        <HiOutlineClipboardCopy className="h-4 w-4" />
                                     )}
-                                </Button>
+                                </div>
                             </div>
                             <DialogFooter className="sm:justify-start">
                                 <DialogClose asChild>
                                     <Button
                                         type="button"
                                         variant="secondary"
-                                        onClick={() => setIsCopied(false)}
                                     >
                                         Close
                                     </Button>
