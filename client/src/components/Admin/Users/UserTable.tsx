@@ -46,6 +46,7 @@ import {
     HiOutlineChevronLeft,
     HiOutlineChevronRight,
 } from 'react-icons/hi'
+import { FaGoogle } from 'react-icons/fa'
 
 import {
     Dialog,
@@ -211,7 +212,19 @@ export default function UsersTable() {
                 )
             },
             cell: ({ row }) => (
-                <div className="lowercase hover:text-amber-600">
+                <div
+                    onClick={() => {
+                        navigator.clipboard.writeText(row.getValue('email'))
+                        toast.success('Copied Email to clipboard!', {
+                            theme:
+                                localStorage.getItem('flowbite-theme-mode') ===
+                                'dark'
+                                    ? 'dark'
+                                    : 'light',
+                        })
+                    }}
+                    className="hover:text-amber-600 hover:cursor-copy lowercase"
+                >
                     <a href={`mailto:${row.getValue('email')}`}>
                         {row.getValue('email')}
                     </a>
@@ -232,9 +245,33 @@ export default function UsersTable() {
         },
         {
             accessorKey: 'googleId',
-            header: 'Google ID',
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === 'asc')
+                        }
+                    >
+                        <FaGoogle className="mr-2 w-4 h-4" />
+                        Google
+                    </Button>
+                )
+            },
             cell: ({ row }) => (
-                <div>
+                <div
+                    onClick={() => {
+                        navigator.clipboard.writeText(row.getValue('googleId'))
+                        toast.success('Copied Google ID to clipboard!', {
+                            theme:
+                                localStorage.getItem('flowbite-theme-mode') ===
+                                'dark'
+                                    ? 'dark'
+                                    : 'light',
+                        })
+                    }}
+                    className="hover:text-amber-600 hover:cursor-copy"
+                >
                     {row.getValue('googleId')
                         ? row.getValue('googleId')
                         : 'Account not connected'}
@@ -256,7 +293,23 @@ export default function UsersTable() {
                     </Button>
                 )
             },
-            cell: ({ row }) => <div>{row.getValue('name')}</div>,
+            cell: ({ row }) => (
+                <div
+                    onClick={() => {
+                        navigator.clipboard.writeText(row.getValue('name'))
+                        toast.success('Copied Name to clipboard!', {
+                            theme:
+                                localStorage.getItem('flowbite-theme-mode') ===
+                                'dark'
+                                    ? 'dark'
+                                    : 'light',
+                        })
+                    }}
+                    className="hover:text-amber-600 hover:cursor-copy"
+                >
+                    {row.getValue('name')}
+                </div>
+            ),
         },
         {
             accessorKey: 'role',
