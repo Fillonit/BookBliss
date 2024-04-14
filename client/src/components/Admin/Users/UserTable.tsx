@@ -42,7 +42,7 @@ import {
     HiOutlinePencil,
     HiOutlineTrash,
     // HiOutlineCheck,
-    // HiOutlineFolderDownload,
+    HiOutlineFolderDownload,
     HiOutlineChevronLeft,
     HiOutlineChevronRight,
 } from 'react-icons/hi'
@@ -233,7 +233,13 @@ export default function UsersTable() {
         {
             accessorKey: 'googleId',
             header: 'Google ID',
-            cell: ({ row }) => <div>{row.getValue('googleId')}</div>,
+            cell: ({ row }) => (
+                <div>
+                    {row.getValue('googleId')
+                        ? row.getValue('googleId')
+                        : 'Account not connected'}
+                </div>
+            ),
         },
         {
             accessorKey: 'name',
@@ -568,7 +574,16 @@ export default function UsersTable() {
                 <div className="space-x-2">
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button variant="outline">Export</Button>
+                            <Button
+                                variant="outline"
+                                disabled={
+                                    table.getFilteredSelectedRowModel().rows
+                                        .length === 0
+                                }
+                            >
+                                <HiOutlineFolderDownload className="mr-2 h-4 w-4 text-amber-600 font-bold" />
+                                Export Selected Rows
+                            </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-md">
                             <DialogHeader>
