@@ -77,7 +77,7 @@ const Hero = () => {
                 <div className="flex justify-center items-center mt-11">
                     <HomeBooks />
                 </div>
-                <div className="flex justify-center">
+                {/* <div className="flex justify-center">
                     <div className="mx-4 mt-10 max-w-xs">
                         <img
                             className="w-full rounded-2xl border border-gray-100 shadow dark:border-gray-800 hover:scale-105 transition-transform delay-100"
@@ -99,7 +99,7 @@ const Hero = () => {
                             alt=""
                         />
                     </div>
-                </div>
+                </div> */}
             </div>
         </section>
     )

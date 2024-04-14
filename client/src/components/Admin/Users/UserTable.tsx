@@ -13,7 +13,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from '@tanstack/react-table'
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react'
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Trash } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -59,6 +59,22 @@ import {
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 
+import {
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+} from '@/components/ui/dropdown-menu'
+
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from '@/components/ui/sheet'
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 import { ToastContainer, toast } from 'react-toastify'
@@ -74,217 +90,325 @@ export type User = {
     updatedAt: string
 }
 
-export const columns: ColumnDef<User>[] = [
-    {
-        id: 'select',
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && 'indeterminate')
-                }
-                onCheckedChange={(value) =>
-                    table.toggleAllPageRowsSelected(!!value)
-                }
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    },
-    {
-        accessorKey: 'id',
-        header: 'ID',
-        cell: ({ row }) => <div>{row.getValue('id')}</div>,
-    },
-    {
-        accessorKey: 'email',
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === 'asc')
-                    }
-                >
-                    Email
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => (
-            <div className="lowercase hover:text-amber-600">
-                <a href={`mailto:${row.getValue('email')}`}>
-                    {row.getValue('email')}
-                </a>
-            </div>
-        ),
-    },
-    {
-        accessorKey: 'avatar',
-        header: 'Avatar',
-        cell: ({ row }) => (
-            <Avatar>
-                <AvatarImage src={row.getValue('avatar')} alt="@fillonit" />
-                <AvatarFallback className="uppercase">
-                    {(row.getValue('name') as string)[0]}
-                </AvatarFallback>
-            </Avatar>
-        ),
-    },
-    {
-        accessorKey: 'googleId',
-        header: 'Google ID',
-        cell: ({ row }) => <div>{row.getValue('googleId')}</div>,
-    },
-    {
-        accessorKey: 'name',
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === 'asc')
-                    }
-                >
-                    Name
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => <div>{row.getValue('name')}</div>,
-    },
-    {
-        accessorKey: 'role',
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === 'asc')
-                    }
-                >
-                    Role
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => <div>{row.getValue('role')}</div>,
-    },
-    {
-        accessorKey: 'createdAt',
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === 'asc')
-                    }
-                >
-                    Created At
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => {
-            const date = new Date(row.getValue('createdAt'))
-            return <div>{new Intl.DateTimeFormat('en-US').format(date)}</div>
-        },
-    },
-    {
-        accessorKey: 'updatedAt',
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === 'asc')
-                    }
-                >
-                    Updated At
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => {
-            const date = new Date(row.getValue('updatedAt'))
-            return <div>{new Intl.DateTimeFormat('en-US').format(date)}</div>
-        },
-    },
-    {
-        id: 'actions',
-        enableHiding: false,
-        cell: ({ row }) => {
-            const user = row.original
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() =>
-                                navigator.clipboard.writeText(
-                                    user.id.toString()
-                                )
-                            }
-                        >
-                            <HiOutlineClipboardCopy className="mr-2 h-4 w-4" />
-                            Copy User ID
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                            onClick={() =>
-                                navigator.clipboard.writeText(
-                                    user.email.toString()
-                                )
-                            }
-                        >
-                            <HiOutlineClipboardCopy className="mr-2 h-4 w-4" />
-                            Copy User Email
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                            onClick={() =>
-                                (window.location.href = `/view-user/${user.id}`)
-                            }
-                        >
-                            <HiOutlineEye className="mr-2 h-4 w-4" />
-                            View User Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <HiOutlinePencil className="mr-2 h-4 w-4" />
-                            Edit User Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-500 font-bold hover:text-red-700 hover:bg-red-700">
-                            <HiOutlineTrash className="mr-2 h-4 w-4" />
-                            Delete User
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        },
-    },
-]
 export default function UsersTable() {
-    const [data, setData] = useState<User[]>([])
-    const [isCopied, setIsCopied] = useState(false)
+    const [isSheetOpen, setSheetOpen] = useState(false)
+    const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false)
+    const [selectedUser, setSelectedUser] = useState<User | null>(null)
+    const [userData, setUserData] = useState({ name: '', email: '', role: '' })
+    const [isViewDetailsSheetOpen, setViewDetailsSheetOpen] = useState(false)
+    const [viewDetailsUser, setViewDetailsUser] = useState({
+        name: '',
+        email: '',
+        role: '',
+    })
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/users')
-            .then((response) => response.json())
-            .then((data) => setData(data))
-    }, [])
+        if (selectedUser) {
+            setUserData({
+                ...selectedUser,
+            })
+        }
+    }, [selectedUser])
+
+    const handleInputChange = (name: string, value: string) => {
+        setUserData({
+            ...userData,
+            [name]: value,
+        })
+    }
+
+    const handleSaveChanges = async () => {
+        if (selectedUser) {
+            console.log(userData)
+            const response = await fetch(
+                `http://localhost:5000/api/user/${selectedUser.id}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData),
+                }
+            )
+
+            if (!response.ok) {
+                toast.error('Failed to save changes', {
+                    theme:
+                        localStorage.getItem('flowbite-theme-mode') === 'dark'
+                            ? 'dark'
+                            : 'light',
+                })
+            }
+
+            toast.success('Changes saved successfully', {
+                theme:
+                    localStorage.getItem('flowbite-theme-mode') === 'dark'
+                        ? 'dark'
+                        : 'light',
+            })
+            setSheetOpen(false)
+            const fetchData = async () => {
+                try {
+                    const response = await fetch(
+                        `http://localhost:5000/api/users?limit=${pageSize}&offset=${
+                            page * pageSize
+                        }`
+                    )
+                    const jsonData = await response.json()
+                    setData(jsonData)
+                } catch (error) {
+                    console.error('Error fetching data:', error)
+                }
+            }
+
+            fetchData()
+        }
+    }
+
+    const columns: ColumnDef<User>[] = [
+        {
+            id: 'select',
+            header: ({ table }) => (
+                <Checkbox
+                    checked={
+                        table.getIsAllPageRowsSelected() ||
+                        (table.getIsSomePageRowsSelected() && 'indeterminate')
+                    }
+                    onCheckedChange={(value) =>
+                        table.toggleAllPageRowsSelected(!!value)
+                    }
+                    aria-label="Select all"
+                />
+            ),
+            cell: ({ row }) => (
+                <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    aria-label="Select row"
+                />
+            ),
+            enableSorting: false,
+            enableHiding: false,
+        },
+        {
+            accessorKey: 'id',
+            header: 'ID',
+            cell: ({ row }) => <div>{row.getValue('id')}</div>,
+        },
+        {
+            accessorKey: 'email',
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === 'asc')
+                        }
+                    >
+                        Email
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                )
+            },
+            cell: ({ row }) => (
+                <div className="lowercase hover:text-amber-600">
+                    <a href={`mailto:${row.getValue('email')}`}>
+                        {row.getValue('email')}
+                    </a>
+                </div>
+            ),
+        },
+        {
+            accessorKey: 'avatar',
+            header: 'Avatar',
+            cell: ({ row }) => (
+                <Avatar>
+                    <AvatarImage src={row.getValue('avatar')} alt="@fillonit" />
+                    <AvatarFallback className="uppercase">
+                        {(row.getValue('name') as string)[0]}
+                    </AvatarFallback>
+                </Avatar>
+            ),
+        },
+        {
+            accessorKey: 'googleId',
+            header: 'Google ID',
+            cell: ({ row }) => <div>{row.getValue('googleId')}</div>,
+        },
+        {
+            accessorKey: 'name',
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === 'asc')
+                        }
+                    >
+                        Name
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                )
+            },
+            cell: ({ row }) => <div>{row.getValue('name')}</div>,
+        },
+        {
+            accessorKey: 'role',
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === 'asc')
+                        }
+                    >
+                        Role
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                )
+            },
+            cell: ({ row }) => <div>{row.getValue('role')}</div>,
+        },
+        {
+            accessorKey: 'createdAt',
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === 'asc')
+                        }
+                    >
+                        Created At
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                )
+            },
+            cell: ({ row }) => {
+                const date = new Date(row.getValue('createdAt'))
+                return (
+                    <div>{new Intl.DateTimeFormat('en-DE').format(date)}</div>
+                )
+            },
+        },
+        {
+            accessorKey: 'updatedAt',
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === 'asc')
+                        }
+                    >
+                        Updated At
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                )
+            },
+            cell: ({ row }) => {
+                const date = new Date(row.getValue('updatedAt'))
+                return (
+                    <div>{new Intl.DateTimeFormat('en-DE').format(date)}</div>
+                )
+            },
+        },
+        {
+            id: 'actions',
+            enableHiding: false,
+            cell: ({ row }) => {
+                const user = row.original
+
+                return (
+                    <>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                    <span className="sr-only">Open menu</span>
+                                    <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DropdownMenuItem
+                                    onClick={() =>
+                                        navigator.clipboard.writeText(
+                                            user.id.toString()
+                                        )
+                                    }
+                                >
+                                    <HiOutlineClipboardCopy className="mr-2 h-4 w-4" />
+                                    Copy User ID
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onClick={() =>
+                                        navigator.clipboard.writeText(
+                                            user.email.toString()
+                                        )
+                                    }
+                                >
+                                    <HiOutlineClipboardCopy className="mr-2 h-4 w-4" />
+                                    Copy User Email
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                    onClick={() => {
+                                        setViewDetailsUser(user)
+                                        setViewDetailsSheetOpen(true)
+                                    }}
+                                >
+                                    <HiOutlineEye className="mr-2 h-4 w-4" />
+                                    View User Details
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onClick={() => {
+                                        setSelectedUser(user)
+                                        setSheetOpen(true)
+                                    }}
+                                >
+                                    <HiOutlinePencil className="mr-2 h-4 w-4" />
+                                    Edit User Details
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onClick={() => {
+                                        setDeleteDialogOpen(true)
+                                        setSelectedUser(user)
+                                    }}
+                                    className="text-red-500 font-bold hover:text-red-700 hover:bg-red-700"
+                                >
+                                    <HiOutlineTrash className="mr-2 h-4 w-4" />
+                                    Delete User
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </>
+                )
+            },
+        },
+    ]
+
+    const [data, setData] = useState<User[]>([])
+    const [isCopied, setIsCopied] = useState(false)
+    const [page, setPage] = useState(0)
+    const [pageSize, setPageSize] = useState(5)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(
+                    `http://localhost:5000/api/users?limit=${pageSize}&offset=${
+                        page * pageSize
+                    }`
+                )
+                const jsonData = await response.json()
+                setData(jsonData)
+                console.log(jsonData)
+            } catch (error) {
+                console.error('Error fetching data:', error)
+            }
+        }
+
+        fetchData()
+    }, [page, pageSize])
 
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] =
@@ -353,6 +477,33 @@ export default function UsersTable() {
                                     </DropdownMenuCheckboxItem>
                                 )
                             })}
+                    </DropdownMenuContent>
+                </DropdownMenu>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className={'ml-2'}>
+                            Rows <ChevronDown className="ml-2 h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="">
+                        <DropdownMenuLabel>Rows per Page</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuRadioGroup
+                            value={pageSize.toString()}
+                            onValueChange={(value) =>
+                                setPageSize(Number(value))
+                            }
+                        >
+                            <DropdownMenuRadioItem value={'5'}>
+                                5
+                            </DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem value={'10'}>
+                                10
+                            </DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem value={'20'}>
+                                20
+                            </DropdownMenuRadioItem>
+                        </DropdownMenuRadioGroup>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
@@ -505,23 +656,257 @@ export default function UsersTable() {
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
+                        onClick={() => setPage(Math.max(0, page - 1))}
+                        disabled={page === 0}
                     >
                         <HiOutlineChevronLeft className="h-4 w-4" />
-                        {/* Previous */}
                     </Button>
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
+                        onClick={() => setPage(page + 1)}
+                        disabled={data.length < pageSize}
                     >
-                        {/* Next */}
                         <HiOutlineChevronRight className="h-4 w-4" />
                     </Button>
                 </div>
                 <ToastContainer />
+                {isSheetOpen && selectedUser && (
+                    <Sheet
+                        open={isSheetOpen}
+                        onOpenChange={() => setSheetOpen(false)}
+                    >
+                        <SheetTrigger asChild>
+                            <Button variant="outline">Open</Button>
+                        </SheetTrigger>
+                        <SheetContent>
+                            <SheetHeader>
+                                <SheetTitle>Edit profile</SheetTitle>
+                                <SheetDescription>
+                                    Make changes to your profile here. Click
+                                    save when you're done.
+                                </SheetDescription>
+                            </SheetHeader>
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                        htmlFor="name"
+                                        className="text-right"
+                                    >
+                                        Name
+                                    </Label>
+                                    <Input
+                                        id="name"
+                                        value={userData.name}
+                                        onChange={(event) =>
+                                            handleInputChange(
+                                                'name',
+                                                event.target.value
+                                            )
+                                        }
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                        htmlFor="email"
+                                        className="text-right"
+                                    >
+                                        Email
+                                    </Label>
+                                    <Input
+                                        id="email"
+                                        value={userData.email}
+                                        onChange={(event) =>
+                                            handleInputChange(
+                                                'email',
+                                                event.target.value
+                                            )
+                                        }
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                        htmlFor="role"
+                                        className="text-right"
+                                    >
+                                        Role
+                                    </Label>
+                                    <Input
+                                        id="role"
+                                        value={userData.role}
+                                        onChange={(event) =>
+                                            handleInputChange(
+                                                'role',
+                                                event.target.value
+                                            )
+                                        }
+                                        className="col-span-3"
+                                    />
+                                </div>
+                            </div>
+                            <SheetFooter>
+                                <SheetClose asChild>
+                                    <Button
+                                        type="submit"
+                                        onClick={handleSaveChanges}
+                                    >
+                                        Save changes
+                                    </Button>
+                                </SheetClose>
+                            </SheetFooter>
+                        </SheetContent>
+                    </Sheet>
+                )}
+                {isViewDetailsSheetOpen && viewDetailsUser && (
+                    <Sheet
+                        open={isViewDetailsSheetOpen}
+                        onOpenChange={() => setViewDetailsSheetOpen(false)}
+                    >
+                        <SheetTrigger asChild>
+                            <Button variant="outline">Open</Button>
+                        </SheetTrigger>
+                        <SheetContent>
+                            <SheetHeader>
+                                <SheetTitle>View profile</SheetTitle>
+                                <SheetDescription>
+                                    View details of the selected user here.
+                                </SheetDescription>
+                            </SheetHeader>
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                        htmlFor="name"
+                                        className="text-right"
+                                    >
+                                        Name
+                                    </Label>
+                                    <Input
+                                        id="name"
+                                        value={viewDetailsUser.name}
+                                        disabled
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                        htmlFor="email"
+                                        className="text-right"
+                                    >
+                                        Email
+                                    </Label>
+                                    <Input
+                                        id="email"
+                                        value={viewDetailsUser.email}
+                                        disabled
+                                        className="col-span-3"
+                                    />
+                                </div>
+                            </div>
+                            <SheetFooter>
+                                <SheetClose asChild>
+                                    <Button
+                                        onClick={() =>
+                                            setViewDetailsSheetOpen(false)
+                                        }
+                                    >
+                                        Close
+                                    </Button>
+                                </SheetClose>
+                            </SheetFooter>
+                        </SheetContent>
+                    </Sheet>
+                )}
+                {isDeleteDialogOpen && selectedUser && (
+                    <Dialog
+                        open={isDeleteDialogOpen}
+                        onOpenChange={setDeleteDialogOpen}
+                    >
+                        <DialogTrigger asChild>
+                            <Button variant="outline">Open</Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Delete User</DialogTitle>
+                                <DialogDescription>
+                                    Are you sure you want to delete this user?
+                                </DialogDescription>
+                            </DialogHeader>
+                            <DialogFooter>
+                                <DialogClose asChild>
+                                    <Button
+                                        onClick={() =>
+                                            setDeleteDialogOpen(false)
+                                        }
+                                        variant="secondary"
+                                    >
+                                        Cancel
+                                    </Button>
+                                </DialogClose>
+                                <Button
+                                    onClick={async () => {
+                                        const response = await fetch(
+                                            `http://localhost:5000/api/user/${selectedUser.id}`,
+                                            {
+                                                method: 'DELETE',
+                                            }
+                                        )
+
+                                        if (!response.ok) {
+                                            toast.error(
+                                                'Failed to delete user',
+                                                {
+                                                    theme:
+                                                        localStorage.getItem(
+                                                            'flowbite-theme-mode'
+                                                        ) === 'dark'
+                                                            ? 'dark'
+                                                            : 'light',
+                                                }
+                                            )
+                                        }
+
+                                        toast.success(
+                                            'User deleted successfully',
+                                            {
+                                                theme:
+                                                    localStorage.getItem(
+                                                        'flowbite-theme-mode'
+                                                    ) === 'dark'
+                                                        ? 'dark'
+                                                        : 'light',
+                                            }
+                                        )
+                                        setDeleteDialogOpen(false)
+                                        const fetchData = async () => {
+                                            try {
+                                                const response = await fetch(
+                                                    `http://localhost:5000/api/users?limit=${pageSize}&offset=${
+                                                        page * pageSize
+                                                    }`
+                                                )
+                                                const jsonData =
+                                                    await response.json()
+                                                setData(jsonData)
+                                            } catch (error) {
+                                                console.error(
+                                                    'Error fetching data:',
+                                                    error
+                                                )
+                                            }
+                                        }
+
+                                        fetchData()
+                                    }}
+                                    className="text-white font-bold bg-red-600 hover:bg-red-700"
+                                >
+                                    <Trash className="mr-2 h-4 w-4" /> Delete
+                                </Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
+                )}
             </div>
         </div>
     )

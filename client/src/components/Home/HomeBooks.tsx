@@ -85,11 +85,11 @@ export function HomeBooks() {
                     </>
                 )}
             </Carousel>
-            {books && books.length > 0 && (
+            {/* {books && books.length > 0 && (
                 <div className="mt-[15vh]">
                     <BookCard {...books[0]} />
                 </div>
-            )}
+            )} */}
         </div>
     )
 }
