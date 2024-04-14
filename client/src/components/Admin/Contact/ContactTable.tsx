@@ -538,52 +538,6 @@ export default function ContactTable() {
                                     <Label htmlFor="link" className="sr-only">
                                         Link
                                     </Label>
-                                    {/* <Input
-                                        id="link"
-                                        defaultValue={JSON.stringify(
-                                            table
-                                                .getFilteredSelectedRowModel()
-                                                .rows.map((row) => row.original)
-                                        )}
-                                        readOnly
-                                    /> */}
-                                    {/* </div> */}
-                                    {/* <Button
-                                    type="submit"
-                                    size="sm"
-                                    className={`px-3 ${
-                                        isCopied
-                                            ? 'text-white bg-amber-600 font-bold'
-                                            : ''
-                                    }`}
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(
-                                            JSON.stringify(
-                                                table
-                                                    .getFilteredSelectedRowModel()
-                                                    .rows.map(
-                                                        (row) => row.original
-                                                    )
-                                            )
-                                        )
-                                        setIsCopied(true)
-                                        toast.success('Copied to clipboard!', {
-                                            theme:
-                                                localStorage.getItem(
-                                                    'flowbite-theme-mode'
-                                                ) === 'dark'
-                                                    ? 'dark'
-                                                    : 'light',
-                                        })
-                                    }}
-                                >
-                                    <span className="sr-only">Copy</span>
-                                    {isCopied ? (
-                                        <HiOutlineCheck className="h-4 w-4" />
-                                    ) : (
-                                        <HiOutlineClipboardCopy className="h-4 w-4" />
-                                    )}
-                                </Button> */}
                                     {['json', 'csv', 'xml', 'yaml', 'zip'].map(
                                         (format) => (
                                             <Button
@@ -649,7 +603,6 @@ export default function ContactTable() {
                                     <Button
                                         type="button"
                                         variant="secondary"
-                                        // onClick={() => setIsCopied(false)}
                                     >
                                         Close
                                     </Button>
