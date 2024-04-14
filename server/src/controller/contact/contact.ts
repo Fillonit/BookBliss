@@ -27,6 +27,19 @@ export const getContacts = async (
     res.status(200).json(contacts);
 };
 
+export const getContact = async (
+    req: express.Request,
+    res: express.Response
+) => {
+    const { id } = req.params;
+    const contact = await prisma.contact.findFirst({
+        where: {
+            id: parseInt(id),
+        },
+    });
+    res.status(200).json(contact);
+};
+
 export const deleteContact = async (
 	req: express.Request,
 	res: express.Response
