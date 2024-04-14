@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import BookCard, { BookCardProps } from './BookCard'
+import BookCard from './BookCard'
+import { BookCardProps } from '@/types/BookCardProps'
 import { FetchDataProps } from '@/interfaces/FetchData'
 
 const BookList = () => {

@@ -43,7 +43,7 @@ import {
     HiOutlineEye,
     HiOutlinePencil,
     HiOutlineTrash,
-    HiOutlineCheck,
+    // HiOutlineCheck,
     HiOutlineFolderDownload,
     HiOutlineChevronLeft,
     HiOutlineChevronRight,
@@ -61,10 +61,18 @@ import {
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 
-
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from '@/components/ui/sheet'
 export type Contact = {
     id: number
     email: string
@@ -78,7 +86,11 @@ export default function ContactTable() {
     const [isSheetOpen, setSheetOpen] = useState(false)
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [selectedContact, setSelectedContact] = useState<Contact | null>(null)
-    const [contactData, setContactData] = useState({ name: '', email: '', message: '' })
+    const [contactData, setContactData] = useState({
+        name: '',
+        email: '',
+        message: '',
+    })
     const [isViewDetailsSheetOpen, setViewDetailsSheetOpen] = useState(false)
     const [viewDetailsContact, setViewDetailsContact] = useState({
         name: '',
@@ -86,7 +98,7 @@ export default function ContactTable() {
         message: '',
     })
     const [data, setData] = useState<Contact[]>([])
-    const [isCopied, setIsCopied] = useState(false)
+    // const [isCopied, setIsCopied] = useState(false)
     const [page, setPage] = useState(0)
     const [pageSize, setPageSize] = useState(5)
 
@@ -94,7 +106,8 @@ export default function ContactTable() {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/contacts?limit=${pageSize}&offset=${page * pageSize
+                    `http://localhost:5000/api/contacts?limit=${pageSize}&offset=${
+                        page * pageSize
                     }`
                 )
                 const jsonData = await response.json()
@@ -156,7 +169,8 @@ export default function ContactTable() {
             const fetchData = async () => {
                 try {
                     const response = await fetch(
-                        `http://localhost:5000/api/contacts?limit=${pageSize}&offset=${page * pageSize
+                        `http://localhost:5000/api/contacts?limit=${pageSize}&offset=${
+                            page * pageSize
                         }`
                     )
                     const jsonData = await response.json()
@@ -261,7 +275,9 @@ export default function ContactTable() {
             },
             cell: ({ row }) => {
                 const date = new Date(row.getValue('createdAt'))
-                return <div>{new Intl.DateTimeFormat('en-US').format(date)}</div>
+                return (
+                    <div>{new Intl.DateTimeFormat('en-US').format(date)}</div>
+                )
             },
         },
         {
@@ -281,7 +297,9 @@ export default function ContactTable() {
             },
             cell: ({ row }) => {
                 const date = new Date(row.getValue('updatedAt'))
-                return <div>{new Intl.DateTimeFormat('en-US').format(date)}</div>
+                return (
+                    <div>{new Intl.DateTimeFormat('en-US').format(date)}</div>
+                )
             },
         },
         {
@@ -321,40 +339,39 @@ export default function ContactTable() {
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
-                                    onClick={() => {
-                                        setViewDetailsContact(contact)
-                                        setViewDetailsSheetOpen(true)
-                                    }}
-                                >
-                                    <HiOutlineEye className="mr-2 h-4 w-4" />
-                                    View Contact Details
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    onClick={() => {
-                                        setSelectedContact(contact)
-                                        setSheetOpen(true)
-                                    }}
-                                >
-                                    <HiOutlinePencil className="mr-2 h-4 w-4" />
-                                    Edit Contact Details
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    onClick={() => {
-                                        setDeleteDialogOpen(true)
-                                        setSelectedContact(contact)
-                                    }}
-                                    className="text-red-500 font-bold hover:text-red-700 hover:bg-red-700"
-                                >
-                                    <HiOutlineTrash className="mr-2 h-4 w-4" />
-                                    Delete Contact
-                                </DropdownMenuItem>
+                                onClick={() => {
+                                    setViewDetailsContact(contact)
+                                    setViewDetailsSheetOpen(true)
+                                }}
+                            >
+                                <HiOutlineEye className="mr-2 h-4 w-4" />
+                                View Contact Details
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => {
+                                    setSelectedContact(contact)
+                                    setSheetOpen(true)
+                                }}
+                            >
+                                <HiOutlinePencil className="mr-2 h-4 w-4" />
+                                Edit Contact Details
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => {
+                                    setDeleteDialogOpen(true)
+                                    setSelectedContact(contact)
+                                }}
+                                className="text-red-500 font-bold hover:text-red-700 hover:bg-red-700"
+                            >
+                                <HiOutlineTrash className="mr-2 h-4 w-4" />
+                                Delete Contact
+                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 )
             },
         },
     ]
-
 
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] =
@@ -436,7 +453,7 @@ export default function ContactTable() {
                         <DropdownMenuSeparator />
                         <DropdownMenuRadioGroup
                             value={pageSize.toString()}
-                            onValueChange={(value: any) =>
+                            onValueChange={(value: string) =>
                                 setPageSize(Number(value))
                             }
                         >
@@ -464,10 +481,10 @@ export default function ContactTable() {
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
-                                                    header.column.columnDef
-                                                        .header,
-                                                    header.getContext()
-                                                )}
+                                                      header.column.columnDef
+                                                          .header,
+                                                      header.getContext()
+                                                  )}
                                         </TableHead>
                                     )
                                 })}
@@ -512,7 +529,7 @@ export default function ContactTable() {
                     {table.getFilteredRowModel().rows.length} row(s) selected.
                 </div>
                 <div className="space-x-2">
-                <Dialog>
+                    <Dialog>
                         <DialogTrigger asChild>
                             <Button
                                 variant="outline"
@@ -600,10 +617,7 @@ export default function ContactTable() {
                             </div>
                             <DialogFooter className="sm:justify-start">
                                 <DialogClose asChild>
-                                    <Button
-                                        type="button"
-                                        variant="secondary"
-                                    >
+                                    <Button type="button" variant="secondary">
                                         Close
                                     </Button>
                                 </DialogClose>
@@ -787,7 +801,8 @@ export default function ContactTable() {
                             <DialogHeader>
                                 <DialogTitle>Delete Contact</DialogTitle>
                                 <DialogDescription>
-                                    Are you sure you want to delete this contact?
+                                    Are you sure you want to delete this
+                                    contact?
                                 </DialogDescription>
                             </DialogHeader>
                             <DialogFooter>
@@ -839,7 +854,8 @@ export default function ContactTable() {
                                         const fetchData = async () => {
                                             try {
                                                 const response = await fetch(
-                                                    `http://localhost:5000/api/contacts?limit=${pageSize}&offset=${page * pageSize
+                                                    `http://localhost:5000/api/contacts?limit=${pageSize}&offset=${
+                                                        page * pageSize
                                                     }`
                                                 )
                                                 const jsonData =
