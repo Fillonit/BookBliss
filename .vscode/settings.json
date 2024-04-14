@@ -1,3 +1,4 @@
 {
-	"cSpell.words": ["ratelimit", "UPSTASH"]
+	"cSpell.words": ["ratelimit", "UPSTASH"],
+	"cSpell.enabled": false
 }

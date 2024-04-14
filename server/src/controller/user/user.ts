@@ -3,7 +3,7 @@ import { prisma } from "../../db/client";
 
 export const getUsers = async (req: express.Request, res: express.Response) => {
 	const { limit, offset } = req.query;
-	const limitNumber = Number.parseInt(String(limit ?? "3"));
+	const limitNumber = Number.parseInt(String(limit ?? "5"));
 	const query = String(req.query.query ?? "");
 	const offsetNumber = Number.parseInt(String(offset ?? "0"));
 	const users = await prisma.user.findMany({
@@ -72,7 +72,7 @@ export const updateUser = async (
 ) => {
 	const { id } = req.params;
 	const { body } = req;
-	const { email, name, password } = body;
+	const { email, name, password, role } = body;
 
 	const user = await prisma.user.update({
 		where: {
@@ -82,6 +82,7 @@ export const updateUser = async (
 			email,
 			name,
 			password,
+			role,
 		},
 	});
 	res.status(200).json(user);
