@@ -19,11 +19,15 @@
 	"author": "Fillonit Ibishi",
 	"license": "MIT",
 	"devDependencies": {
+		"@types/archiver": "^6.0.2",
 		"@types/compression": "^1.7.5",
 		"@types/cookie-parser": "^1.4.7",
 		"@types/cors": "^2.8.17",
+		"@types/js-yaml": "^4.0.9",
+		"@types/json2csv": "^5.0.7",
 		"@types/lodash": "^4.14.202",
 		"@types/mongoose": "^5.11.97",
+		"@types/pdfkit": "^0.13.4",
 		"nodemon": "^3.1.0",
 		"prisma": "^5.12.1",
 		"ts-node": "^10.9.2",
@@ -39,7 +43,9 @@
 		"@types/passport-google-oauth20": "^2.0.14",
 		"@upstash/ratelimit": "^1.0.1",
 		"@upstash/redis": "^1.28.4",
+		"archiver": "^7.0.1",
 		"body-parser": "^1.20.2",
+		"builder": "^5.0.0",
 		"compression": "^1.7.4",
 		"cookie-parser": "^1.4.6",
 		"cors": "^2.8.5",
@@ -57,6 +63,7 @@
 		"passport": "^0.7.0",
 		"passport-google-oauth20": "^2.0.0",
 		"pdfkit": "^0.15.0",
+		"xml": "^1.0.1",
 		"xmlbuilder": "^15.1.1"
 	}
 }

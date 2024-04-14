@@ -3,7 +3,8 @@ import { prisma } from "../../db/client";
 import { parse as json2csv } from "json2csv";
 import xmlbuilder from "xmlbuilder";
 import yaml from "js-yaml";
-import { Document } from "pdfkit";
+import Document from "pdfkit";
+import archiver from "archiver";
 
 export const exportJSON = async (
 	req: express.Request,
@@ -120,6 +121,7 @@ export const exportYAML = async (
 		});
 	}
 };
+
 export const exportAll = async (
 	req: express.Request,
 	res: express.Response
@@ -141,7 +143,22 @@ export const exportAll = async (
 		);
 		res.setHeader("Content-type", "application/zip");
 
-		res.send({ json, csv, xml, yamlData });
+		// Create a zip archive
+		const archive = archiver("zip");
+
+		// Pipe the archive data to the response
+		archive.pipe(res);
+
+		// Append the data to the archive
+		archive.append(json, { name: `BookBliss Export - ${new Date()}.json` });
+		archive.append(csv, { name: `BookBliss Export - ${new Date()}.csv` });
+		archive.append(xml, { name: `BookBliss Export - ${new Date()}.xml` });
+		archive.append(yamlData, {
+			name: `BookBliss Export - ${new Date()}yaml`,
+		});
+
+		// Finalize the archive
+		archive.finalize();
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({
@@ -204,7 +221,7 @@ export const exportPDF = async (
 			return res.status(400).json({ message: "No data found" });
 		}
 
-		const pdf = new PDFDocument();
+		const pdf = new Document();
 		pdf.pipe(res);
 
 		pdf.fontSize(25).text("Exported Data", {
@@ -219,6 +236,59 @@ export const exportPDF = async (
 		console.error(error);
 		res.status(500).json({
 			error: "Failed to export PDF",
+			message: error.message,
+		});
+	}
+};
+
+export const getExportTest = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	try {
+		const data = [
+			{
+				id: 34,
+				email: "filloniti@gmail.com",
+				avatar: "https://lh3.googleusercontent.com/a/ACg8ocJZZb_UacdeafTNulBoC0eC6dG-xZDN0fWgrpg4LHZjTmrbt-U=s96-c",
+				googleId: "114218953468530659266",
+				name: "Fillonit Ibishi",
+				role: "admin",
+				createdAt: "2024-04-09T21:50:19.245Z",
+				updatedAt: "2024-04-12T14:41:24.987Z",
+			},
+			{
+				id: 36,
+				email: "referatshqip@gmail.com",
+				avatar: "https://lh3.googleusercontent.com/a/ACg8ocJn3emvdpAsxYbIfRZyMTt-C8gekqvf5jN2iTCGw3OQdAli4g=s96-c",
+				googleId: "114269496347202711158",
+				name: "Referat Shqip",
+				role: "user",
+				createdAt: "2024-04-14T12:37:32.507Z",
+				updatedAt: "2024-04-14T12:37:32.507Z",
+			},
+		];
+		if (!data) {
+			return res.status(400).json({ message: "No data found" });
+		}
+
+		if (typeof data !== "object") {
+			return res.status(400).json({ message: "Data must be an object" });
+		}
+
+		const processedData = JSON.stringify(data);
+
+		res.setHeader(
+			"Content-disposition",
+			`attachment; filename=${new Date().toISOString()}.json`
+		);
+		res.setHeader("Content-type", "application/json");
+
+		res.send(processedData);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({
+			error: "Failed to export JSON",
 			message: error.message,
 		});
 	}
