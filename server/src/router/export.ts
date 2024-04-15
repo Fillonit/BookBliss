@@ -5,6 +5,7 @@ import {
 	exportCSV,
 	exportXML,
 	exportYAML,
+	exportPDF,
 	exportAll,
 	getExportFormats,
 	getExportTest,
@@ -20,5 +21,6 @@ export default (router: express.Router) => {
 	router.post("/export/csv", exportCSV);
 	router.post("/export/xml", exportXML);
 	router.post("/export/yaml", exportYAML);
+	router.post("/export/pdf", exportPDF);
 	router.post("/export/zip", exportAll);
 };
