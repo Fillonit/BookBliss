@@ -7,12 +7,13 @@ import { Sidebar } from 'flowbite-react'
 import { HiBookOpen, HiMail, HiUser } from 'react-icons/hi'
 // import iconDark from '../../assets/iconDark.png'
 // import { twMerge } from "tailwind-merge";
+import { API_URL } from '@/util/envExport'
 
 function SidebarComponent() {
     const [userCount, setUserCount] = useState(0)
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/users/count')
+        fetch(`${API_URL}/api/users/count`)
             .then((response) => response.json())
             .then((data) => setUserCount(data.count))
     }, [])

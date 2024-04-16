@@ -61,6 +61,8 @@ import { Label } from '@/components/ui/label'
 
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+
+import { API_URL } from '@/util/envExport'
 export type Review = {
     id: number
     rating: number
@@ -242,7 +244,7 @@ export default function ReviewTable() {
     const [isCopied, setIsCopied] = useState(false)
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/reviews')
+        fetch(`${API_URL}/api/reviews`)
             .then((response) => response.json())
             .then((data) => setData(data))
     }, [])

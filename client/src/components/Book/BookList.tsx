@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import BookCard from './BookCard'
 import { BookCardProps } from '@/types/BookCardProps'
 import { FetchDataProps } from '@/interfaces/FetchData'
+import { API_URL } from '@/util/envExport'
 
 const BookList = () => {
     const [books, setBooks] = useState<BookCardProps[]>([])
@@ -20,7 +21,7 @@ const BookList = () => {
     const fetchBooks = async (fetchData: FetchDataProps) => {
         try {
             const response = await fetch(
-                `http://localhost:5000/books?offset=${fetchData.offset}&limit=${fetchData.limit}&query=${fetchData.query}&genre=${fetchData.genre}`
+                `${API_URL}/books?offset=${fetchData.offset}&limit=${fetchData.limit}&query=${fetchData.query}&genre=${fetchData.genre}`
             )
             if (response.ok) {
                 const json = await response.json()
@@ -36,7 +37,7 @@ const BookList = () => {
     const fetchBookCount = async (fetchData: FetchDataProps) => {
         try {
             const response = await fetch(
-                `http://localhost:5000/books?query=${fetchData.query}&genre=${fetchData.genre}`
+                `${API_URL}/books?query=${fetchData.query}&genre=${fetchData.genre}`
             )
             if (response.ok) {
                 const json = await response.json()

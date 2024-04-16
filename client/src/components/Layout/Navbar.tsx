@@ -17,6 +17,7 @@ import {
     navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { useEffect, useState } from 'react'
+import { API_URL } from '@/util/envExport'
 
 // import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
 
@@ -70,7 +71,7 @@ function Component() {
     useEffect(() => {
         const sessionToken = localStorage.getItem('sessionToken')
         if (sessionToken) {
-            fetch(`http://localhost:5000/api/auth/user/${sessionToken}`)
+            fetch(`${API_URL}/api/auth/user/${sessionToken}`)
                 .then((response) => response.json())
                 .then((data) => setUser(data))
 
