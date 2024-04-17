@@ -34,6 +34,7 @@ app.use(
 );
 
 const APP_URL = process.env.APP_URL || "http://localhost:5173";
+const API_URL = process.env.API_URL || "http://localhost:5000";
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -45,7 +46,7 @@ passport.use(
 		{
 			clientID: process.env.GOOGLE_OAUTH_CLIENT_ID!,
 			clientSecret: process.env.GOOGLE_OAUTH_SECRET!,
-			callbackURL: `${APP_URL}/auth/google/callback`,
+			callbackURL: `${API_URL}/auth/google/callback`,
 		},
 		async (accessToken, refreshToken, profile, done) => {
 			let sessionToken = await authentication(accessToken, profile.id);
@@ -158,7 +159,7 @@ app.set("x-powered-by", false);
 const server = http.createServer(app);
 
 server.listen(PORT || 8080, () => {
-	console.log(`Server is running on http://localhost:${PORT}/`);
+	console.log(`Server is running on ${API_URL}:${PORT}/`);
 });
 
 import { ratelimitMiddleware } from "./middleware/ratelimit";
