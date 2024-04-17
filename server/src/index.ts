@@ -96,6 +96,7 @@ app.get(
 );
 
 import { prisma } from "./db/client";
+const APP_URL = process.env.APP_URL || "http://localhost:5173";
 
 interface GoogleUser {
 	id: string;
@@ -107,7 +108,7 @@ interface GoogleUser {
 app.get(
 	"/auth/google/callback",
 	passport.authenticate("google", {
-		failureRedirect: "http://localhost:5173/login",
+		failureRedirect: `${APP_URL}/login`,
 	}),
 	async (req: express.Request, res: express.Response) => {
 		try {
@@ -128,7 +129,7 @@ app.get(
 				});
 			}
 
-			res.redirect(`http://localhost:5173/login?id=${googleUser.id}`);
+			res.redirect(`${APP_URL}/login?id=${googleUser.id}`);
 		} catch (error) {
 			console.error(error);
 			if (
