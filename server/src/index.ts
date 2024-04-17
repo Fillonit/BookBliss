@@ -33,6 +33,8 @@ app.use(
 	})
 );
 
+const APP_URL = process.env.APP_URL || "http://localhost:5173";
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -43,7 +45,7 @@ passport.use(
 		{
 			clientID: process.env.GOOGLE_OAUTH_CLIENT_ID!,
 			clientSecret: process.env.GOOGLE_OAUTH_SECRET!,
-			callbackURL: "/auth/google/callback",
+			callbackURL: `${APP_URL}/auth/google/callback`,
 		},
 		async (accessToken, refreshToken, profile, done) => {
 			let sessionToken = await authentication(accessToken, profile.id);
@@ -96,7 +98,6 @@ app.get(
 );
 
 import { prisma } from "./db/client";
-const APP_URL = process.env.APP_URL || "http://localhost:5173";
 
 interface GoogleUser {
 	id: string;
