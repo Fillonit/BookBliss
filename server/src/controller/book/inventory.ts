@@ -21,7 +21,15 @@ export const getInventory = async (
 		take: limitNumber,
 		skip: offsetNumber,
 		include: {
-			Book: true,
+			Book: {
+				select: {
+					title: true,
+					author: true,
+					cover: true,
+					authorId: true,
+					publisherId: true,
+				},
+			},
 		},
 	});
 
