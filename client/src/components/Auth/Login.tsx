@@ -1,3 +1,4 @@
+import { API_URL } from '@/util/envExport'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { toast, UpdateOptions } from 'react-toastify'
@@ -36,7 +37,7 @@ const LoginPage = () => {
             autoClose: 3000,
         })
         try {
-            const response = await fetch(`http://localhost:5000/api/login`, {
+            const response = await fetch(`${API_URL}/api/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -86,7 +87,7 @@ const LoginPage = () => {
         const googleId = params.get('id')
 
         if (googleId) {
-            fetch(`http://localhost:5000/api/user/getByGoogleId/${googleId}`)
+            fetch(`${API_URL}/api/user/getByGoogleId/${googleId}`)
                 .then((response) => response.json())
                 .then((data) => {
                     // console.log(`${JSON.stringify(data)}`);
@@ -116,8 +117,7 @@ const LoginPage = () => {
                     <button
                         className="-2 mt-8 flex items-center justify-center rounded-md border px-4 py-1 outline-none ring-gray-400 ring-offset-2 transition focus:ring-2 hover:border-transparent hover:bg-black hover:text-white"
                         onClick={() =>
-                            (window.location.href =
-                                'http://localhost:5000/auth/google')
+                            (window.location.href = `${API_URL}/auth/google`)
                         }
                     >
                         <img

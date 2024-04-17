@@ -73,6 +73,8 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet'
+
+import { API_URL } from '@/util/envExport'
 export type Contact = {
     id: number
     email: string
@@ -106,7 +108,7 @@ export default function ContactTable() {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/contacts?limit=${pageSize}&offset=${
+                    `${API_URL}/api/contacts?limit=${pageSize}&offset=${
                         page * pageSize
                     }`
                 )
@@ -140,7 +142,7 @@ export default function ContactTable() {
         if (selectedContact) {
             console.log(setContactData)
             const response = await fetch(
-                `http://localhost:5000/api/contact/${selectedContact.id}`,
+                `${API_URL}/api/contact/${selectedContact.id}`,
                 {
                     method: 'PUT',
                     headers: {
@@ -169,7 +171,7 @@ export default function ContactTable() {
             const fetchData = async () => {
                 try {
                     const response = await fetch(
-                        `http://localhost:5000/api/contacts?limit=${pageSize}&offset=${
+                        `${API_URL}/api/contacts?limit=${pageSize}&offset=${
                             page * pageSize
                         }`
                     )
@@ -562,7 +564,7 @@ export default function ContactTable() {
                                                 onClick={async () => {
                                                     const response =
                                                         await fetch(
-                                                            `http://localhost:5000/api/export/${format}`,
+                                                            `${API_URL}/api/export/${format}`,
                                                             {
                                                                 method: 'POST',
                                                                 headers: {
@@ -819,7 +821,7 @@ export default function ContactTable() {
                                 <Button
                                     onClick={async () => {
                                         const response = await fetch(
-                                            `http://localhost:5000/api/contact/${selectedContact.id}`,
+                                            `${API_URL}/api/contact/${selectedContact.id}`,
                                             {
                                                 method: 'DELETE',
                                             }
@@ -854,7 +856,7 @@ export default function ContactTable() {
                                         const fetchData = async () => {
                                             try {
                                                 const response = await fetch(
-                                                    `http://localhost:5000/api/contacts?limit=${pageSize}&offset=${
+                                                    `${API_URL}/api/contacts?limit=${pageSize}&offset=${
                                                         page * pageSize
                                                     }`
                                                 )

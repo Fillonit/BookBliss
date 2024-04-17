@@ -33,6 +33,9 @@ app.use(
 	})
 );
 
+const APP_URL = process.env.APP_URL || "http://localhost:5173";
+const API_URL = process.env.API_URL || "http://localhost:5000";
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -43,7 +46,7 @@ passport.use(
 		{
 			clientID: process.env.GOOGLE_OAUTH_CLIENT_ID!,
 			clientSecret: process.env.GOOGLE_OAUTH_SECRET!,
-			callbackURL: "/auth/google/callback",
+			callbackURL: `${API_URL}/auth/google/callback`,
 		},
 		async (accessToken, refreshToken, profile, done) => {
 			let sessionToken = await authentication(accessToken, profile.id);
@@ -107,7 +110,7 @@ interface GoogleUser {
 app.get(
 	"/auth/google/callback",
 	passport.authenticate("google", {
-		failureRedirect: "http://localhost:5173/login",
+		failureRedirect: `${APP_URL}/login`,
 	}),
 	async (req: express.Request, res: express.Response) => {
 		try {
@@ -128,7 +131,7 @@ app.get(
 				});
 			}
 
-			res.redirect(`http://localhost:5173/login?id=${googleUser.id}`);
+			res.redirect(`${APP_URL}/login?id=${googleUser.id}`);
 		} catch (error) {
 			console.error(error);
 			if (
@@ -156,7 +159,7 @@ app.set("x-powered-by", false);
 const server = http.createServer(app);
 
 server.listen(PORT || 8080, () => {
-	console.log(`Server is running on http://localhost:${PORT}/`);
+	console.log(`Server is running on ${API_URL}:${PORT}/`);
 });
 
 import { ratelimitMiddleware } from "./middleware/ratelimit";

@@ -13,6 +13,7 @@ import BookCard from '../Book/BookCard'
 import { BookCardProps } from '@/types/BookCardProps'
 import Loading from '../Other/Loading'
 import NoResults from '../Other/Exceptions/NoResults'
+import { API_URL } from '@/util/envExport'
 
 export function HomeBooks() {
     const [books, setBooks] = useState<BookCardProps[] | null>([])
@@ -22,7 +23,7 @@ export function HomeBooks() {
     const fetchBooks = async (sorting: string) => {
         try {
             const response = await fetch(
-                `http://localhost:5000/api/books?limit=5&offset=0&sorting=${sorting}`
+                `${API_URL}/api/books?limit=5&offset=0&sorting=${sorting}`
             )
             if (response.ok) {
                 const json = await response.json()

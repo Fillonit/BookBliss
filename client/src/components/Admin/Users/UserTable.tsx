@@ -88,6 +88,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+
+import { API_URL } from '@/util/envExport'
 export type User = {
     id: number
     email: string
@@ -130,7 +132,7 @@ export default function UsersTable() {
         if (selectedUser) {
             console.log(userData)
             const response = await fetch(
-                `http://localhost:5000/api/user/${selectedUser.id}`,
+                `${API_URL}/api/user/${selectedUser.id}`,
                 {
                     method: 'PUT',
                     headers: {
@@ -159,7 +161,7 @@ export default function UsersTable() {
             const fetchData = async () => {
                 try {
                     const response = await fetch(
-                        `http://localhost:5000/api/users?limit=${pageSize}&offset=${
+                        `${API_URL}/api/users?limit=${pageSize}&offset=${
                             page * pageSize
                         }`
                     )
@@ -462,7 +464,7 @@ export default function UsersTable() {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/users?limit=${pageSize}&offset=${
+                    `${API_URL}/api/users?limit=${pageSize}&offset=${
                         page * pageSize
                     }`
                 )
@@ -683,7 +685,7 @@ export default function UsersTable() {
                                                 onClick={async () => {
                                                     const response =
                                                         await fetch(
-                                                            `http://localhost:5000/api/export/${format}`,
+                                                            `${API_URL}/api/export/${format}`,
                                                             {
                                                                 method: 'POST',
                                                                 headers: {
@@ -977,7 +979,7 @@ export default function UsersTable() {
                                 <Button
                                     onClick={async () => {
                                         const response = await fetch(
-                                            `http://localhost:5000/api/user/${selectedUser.id}`,
+                                            `${API_URL}/api/user/${selectedUser.id}`,
                                             {
                                                 method: 'DELETE',
                                             }
@@ -1012,7 +1014,7 @@ export default function UsersTable() {
                                         const fetchData = async () => {
                                             try {
                                                 const response = await fetch(
-                                                    `http://localhost:5000/api/users?limit=${pageSize}&offset=${
+                                                    `${API_URL}/api/users?limit=${pageSize}&offset=${
                                                         page * pageSize
                                                     }`
                                                 )

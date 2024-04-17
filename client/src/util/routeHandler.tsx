@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Navigate, Route } from 'react-router-dom'
+import { API_URL } from './envExport'
 
-const API_BASE_URL = 'http://localhost:5000/api'
+const API_BASE_URL = `${API_URL}/api`
 
 export function PrivateRoute({
     element,
