@@ -4,7 +4,7 @@
 
 import { useEffect, useState } from 'react'
 import { Sidebar } from 'flowbite-react'
-import { HiBookOpen, HiMail, HiUser } from 'react-icons/hi'
+import { HiBookOpen, HiMail, HiUser, HiOutlineInbox } from 'react-icons/hi'
 // import iconDark from '../../assets/iconDark.png'
 // import { twMerge } from "tailwind-merge";
 import { API_URL } from '@/util/envExport'
@@ -47,6 +47,12 @@ function SidebarComponent() {
                     </Sidebar.Item>
                     <Sidebar.Item href="/dashboard/contacts" icon={HiMail}>
                         Contacts
+                    </Sidebar.Item>
+                    <Sidebar.Item
+                        href="/dashboard/inventory"
+                        icon={HiOutlineInbox}
+                    >
+                        Inventory
                     </Sidebar.Item>
                     <Sidebar.Item href="/dashboard/reviews" icon={HiBookOpen}>
                         Reviews

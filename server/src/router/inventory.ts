@@ -14,7 +14,7 @@ import {
 } from "../controller/book/inventory";
 
 export default (router: express.Router) => {
-	router.get("/inventory/:bookId", getInventory);
+	router.get("/inventory/", getInventory);
 	router.post("/inventory/bookIds", getInventoryByBookIds);
 	router.get("/inventory/quantity/:quantity", getInventoryByQuantity);
 	router.get(

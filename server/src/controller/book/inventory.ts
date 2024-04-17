@@ -15,11 +15,14 @@ export const getInventory = async (
 	res: express.Response
 ) => {
 	const { limit, offset } = req.query;
-	const limitNumber = Number.parseInt(String(limit));
-	const offsetNumber = Number.parseInt(String(offset));
+	const limitNumber = Number.parseInt(String(limit ?? "5"));
+	const offsetNumber = Number.parseInt(String(offset ?? "0"));
 	const inventory = await prisma.inventory.findMany({
 		take: limitNumber,
 		skip: offsetNumber,
+		include: {
+			Book: true,
+		},
 	});
 
 	res.status(200).json(inventory);

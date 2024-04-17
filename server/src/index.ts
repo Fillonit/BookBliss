@@ -159,7 +159,7 @@ app.set("x-powered-by", false);
 const server = http.createServer(app);
 
 server.listen(PORT || 8080, () => {
-	console.log(`Server is running on ${API_URL}:${PORT}/`);
+	console.log(`Server is running on ${API_URL}/`);
 });
 
 import { ratelimitMiddleware } from "./middleware/ratelimit";

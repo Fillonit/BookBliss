@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import HoverCard from '@/components/Admin/Hover'
 import ContactTable from '@/components/Admin/Contact/ContactTable'
 import ReviewTable from '@/components/Admin/Reviews/ReviewTable'
+import InventoryTable from '@/components/Admin/Inventory/InventoryTable'
 
 // const API_BASE_URL = 'http://localhost:5000/api/'
 
@@ -58,9 +59,11 @@ const UsersInfo: React.FC = () => {
                     {table === 'users' || table === undefined ? (
                         <UsersTable />
                     ) : table === 'contacts' ? (
-                        <ContactTable /> 
+                        <ContactTable />
                     ) : table === 'reviews' ? (
                         <ReviewTable />
+                    ) : table === 'inventory' ? (
+                        <InventoryTable />
                     ) : (
                         // <UsersTable />
                         <div className="self-center">
