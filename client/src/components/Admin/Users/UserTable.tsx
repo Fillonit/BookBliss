@@ -106,6 +106,7 @@ export default function UsersTable() {
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [selectedUser, setSelectedUser] = useState<User | null>(null)
     const [userData, setUserData] = useState({ name: '', email: '', role: '' })
+    const [selectedRole, setSelectedRole] = useState('')
     const [isViewDetailsSheetOpen, setViewDetailsSheetOpen] = useState(false)
     const [isAddSheetOpen, setAddSheetOpen] = useState(false)
     const [viewDetailsUser, setViewDetailsUser] = useState({
@@ -175,6 +176,49 @@ export default function UsersTable() {
 
             fetchData()
         }
+    }
+
+    const handleSaveChangesAdd = async () => {
+        console.log(userData)
+        const response = await fetch(`${API_URL}/api/user`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        })
+
+        if (!response.ok) {
+            toast.error('Failed to save changes', {
+                theme:
+                    localStorage.getItem('flowbite-theme-mode') === 'dark'
+                        ? 'dark'
+                        : 'light',
+            })
+        }
+
+        toast.success('Changes saved successfully', {
+            theme:
+                localStorage.getItem('flowbite-theme-mode') === 'dark'
+                    ? 'dark'
+                    : 'light',
+        })
+        setSheetOpen(false)
+        const fetchData = async () => {
+            try {
+                const response = await fetch(
+                    `${API_URL}/api/users?limit=${pageSize}&offset=${
+                        page * pageSize
+                    }`
+                )
+                const jsonData = await response.json()
+                setData(jsonData)
+            } catch (error) {
+                console.error('Error fetching data:', error)
+            }
+        }
+
+        fetchData()
     }
 
     const columns: ColumnDef<User>[] = [
@@ -939,6 +983,26 @@ export default function UsersTable() {
                                         htmlFor="email"
                                         className="text-right"
                                     >
+                                        Password
+                                    </Label>
+                                    <Input
+                                        id="password"
+                                        placeholder={'password'}
+                                        onChange={(event) =>
+                                            handleInputChange(
+                                                'password',
+                                                event.target.value
+                                            )
+                                        }
+                                        className="col-span-3"
+                                        type={'password'}
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                        htmlFor="email"
+                                        className="text-right"
+                                    >
                                         Email
                                     </Label>
                                     <Input
@@ -964,21 +1028,26 @@ export default function UsersTable() {
                                         <DropdownMenuTrigger asChild>
                                             <Button
                                                 variant="outline"
-                                                className={'ml-2'}
+                                                className={'px-[7.6rem]'}
                                             >
-                                                Roles{' '}
+                                                <span className="capitalize">
+                                                    {selectedRole
+                                                        ? selectedRole
+                                                        : 'Select a Role'}
+                                                </span>
                                                 <ChevronDown className="ml-2 h-4 w-4" />
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent className="">
                                             <DropdownMenuRadioGroup
-                                                value={'user'}
-                                                onValueChange={(value) =>
+                                                value={selectedRole}
+                                                onValueChange={(value) => {
+                                                    setSelectedRole(value)
                                                     handleInputChange(
                                                         'role',
-                                                        value
+                                                        selectedRole
                                                     )
-                                                }
+                                                }}
                                             >
                                                 <DropdownMenuRadioItem
                                                     value={'user'}
@@ -991,7 +1060,7 @@ export default function UsersTable() {
                                                     Admin
                                                 </DropdownMenuRadioItem>
                                                 <DropdownMenuRadioItem
-                                                    value={'Author'}
+                                                    value={'author'}
                                                 >
                                                     Author
                                                 </DropdownMenuRadioItem>
@@ -1004,7 +1073,7 @@ export default function UsersTable() {
                                 <SheetClose asChild>
                                     <Button
                                         type="submit"
-                                        onClick={handleSaveChanges}
+                                        onClick={handleSaveChangesAdd}
                                     >
                                         Save changes
                                     </Button>
