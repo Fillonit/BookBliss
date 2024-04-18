@@ -42,6 +42,7 @@ import {
     HiOutlinePencil,
     HiOutlineTrash,
     // HiOutlineCheck,
+    HiUserAdd,
     HiOutlineFolderDownload,
     HiOutlineChevronLeft,
     HiOutlineChevronRight,
@@ -639,9 +640,11 @@ export default function UsersTable() {
                 </DropdownMenu>
                 <Button
                     onClick={() => setAddSheetOpen(true)}
-                    className={'mx-2 hover:bg-amber-500'}
+                    className={
+                        'mx-2 hover:bg-amber-500 bg-amber-400 dark:bg-amber-500 dark:hover:bg-amber-400'
+                    }
                 >
-                    Add a User
+                    <HiUserAdd className="h-6 w-6" />
                 </Button>
             </div>
             <div className="rounded-md border">
