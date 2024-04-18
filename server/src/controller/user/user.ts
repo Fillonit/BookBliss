@@ -1,5 +1,6 @@
 import express from "express";
 import { prisma } from "../../db/client";
+import { authentication, random } from "../../util";
 
 export const getUsers = async (req: express.Request, res: express.Response) => {
 	const { limit, offset } = req.query;
@@ -40,17 +41,44 @@ export const createUser = async (
 	req: express.Request,
 	res: express.Response
 ) => {
-	const { email, name, password } = req.body;
+	try {
+		const { email, name, password, role } = req.body;
 
-	const user = await prisma.user.create({
-		data: {
-			email,
-			name,
-			role: "user",
-			password,
-		},
-	});
-	res.status(201).json(user);
+		if (!password) {
+			return res.status(400).json({ error: "Password is required" });
+		}
+
+		console.log(req.body);
+
+		const existingUser = await prisma.user.findUnique({
+			where: { email },
+		});
+
+		if (existingUser) {
+			return res
+				.status(400)
+				.json({ error: "User with this email already exists" });
+		}
+
+		const salt = await random();
+		const sessionToken = await authentication(password, salt);
+		//const pass
+
+		const user = await prisma.user.create({
+			data: {
+				email,
+				name,
+				role: role ?? "user",
+				password,
+				salt,
+				sessionToken,
+			},
+		});
+		res.status(201).json(user);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: "Failed to create user", msg: error });
+	}
 };
 
 export const deleteUser = async (
