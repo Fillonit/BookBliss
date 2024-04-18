@@ -49,7 +49,7 @@ passport.use(
 			callbackURL: `${API_URL}/auth/google/callback`,
 		},
 		async (accessToken, refreshToken, profile, done) => {
-			let sessionToken = await authentication(accessToken, profile.id);
+			//let sessionToken = await authentication(accessToken, profile.id);
 			const existingUser = await prisma.user.findFirst({
 				where: {
 					OR: [
@@ -159,7 +159,7 @@ app.set("x-powered-by", false);
 const server = http.createServer(app);
 
 server.listen(PORT || 8080, () => {
-	console.log(`Server is running on ${API_URL}/`);
+	console.log(`Server is running on ${API_URL}:${PORT}/`);
 });
 
 import { ratelimitMiddleware } from "./middleware/ratelimit";

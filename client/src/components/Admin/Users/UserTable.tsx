@@ -107,6 +107,7 @@ export default function UsersTable() {
     const [selectedUser, setSelectedUser] = useState<User | null>(null)
     const [userData, setUserData] = useState({ name: '', email: '', role: '' })
     const [isViewDetailsSheetOpen, setViewDetailsSheetOpen] = useState(false)
+    const [isAddSheetOpen, setAddSheetOpen] = useState(false)
     const [viewDetailsUser, setViewDetailsUser] = useState({
         name: '',
         email: '',
@@ -592,6 +593,12 @@ export default function UsersTable() {
                         </DropdownMenuRadioGroup>
                     </DropdownMenuContent>
                 </DropdownMenu>
+                <Button
+                    onClick={() => setAddSheetOpen(true)}
+                    className={'mx-2 hover:bg-amber-500'}
+                >
+                    Add a User
+                </Button>
             </div>
             <div className="rounded-md border">
                 <Table>
@@ -876,6 +883,121 @@ export default function UsersTable() {
                                         }
                                         className="col-span-3"
                                     />
+                                </div>
+                            </div>
+                            <SheetFooter>
+                                <SheetClose asChild>
+                                    <Button
+                                        type="submit"
+                                        onClick={handleSaveChanges}
+                                    >
+                                        Save changes
+                                    </Button>
+                                </SheetClose>
+                            </SheetFooter>
+                        </SheetContent>
+                    </Sheet>
+                )}
+                {isAddSheetOpen && (
+                    <Sheet
+                        open={isAddSheetOpen}
+                        onOpenChange={() => setAddSheetOpen(false)}
+                    >
+                        <SheetTrigger asChild>
+                            <Button variant="outline">Open</Button>
+                        </SheetTrigger>
+                        <SheetContent>
+                            <SheetHeader>
+                                <SheetTitle>Add a User</SheetTitle>
+                                <SheetDescription>
+                                    Make changes to your new user here. Click
+                                    save when you're done.
+                                </SheetDescription>
+                            </SheetHeader>
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                        htmlFor="name"
+                                        className="text-right"
+                                    >
+                                        Name
+                                    </Label>
+                                    <Input
+                                        id="name"
+                                        placeholder={'Name'}
+                                        onChange={(event) =>
+                                            handleInputChange(
+                                                'name',
+                                                event.target.value
+                                            )
+                                        }
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                        htmlFor="email"
+                                        className="text-right"
+                                    >
+                                        Email
+                                    </Label>
+                                    <Input
+                                        id="email"
+                                        placeholder={'Email'}
+                                        onChange={(event) =>
+                                            handleInputChange(
+                                                'email',
+                                                event.target.value
+                                            )
+                                        }
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                        htmlFor="role"
+                                        className="text-right"
+                                    >
+                                        Role
+                                    </Label>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                className={'ml-2'}
+                                            >
+                                                Roles{' '}
+                                                <ChevronDown className="ml-2 h-4 w-4" />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent className="">
+                                            <DropdownMenuRadioGroup
+                                                value={'user'}
+                                                onValueChange={(value) =>
+                                                    handleInputChange(
+                                                        'role',
+                                                        value
+                                                    )
+                                                }
+                                            >
+                                                <DropdownMenuRadioItem
+                                                    value={'user'}
+                                                >
+                                                    User
+                                                </DropdownMenuRadioItem>
+                                                <DropdownMenuRadioItem
+                                                    value={'admin'}
+                                                >
+                                                    Admin
+                                                </DropdownMenuRadioItem>
+                                                <DropdownMenuRadioItem
+                                                    value={'Author'}
+                                                >
+                                                    Author
+                                                </DropdownMenuRadioItem>
+                                            </DropdownMenuRadioGroup>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
                                 </div>
                             </div>
                             <SheetFooter>
