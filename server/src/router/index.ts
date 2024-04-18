@@ -6,6 +6,7 @@ import author from "./author";
 import authentication from "./authentication";
 import exportData from "./export";
 import inventory from "./inventory";
+import review from "./review";
 
 const router = express.Router();
 
@@ -17,5 +18,7 @@ export default (): express.Router => {
 	author(router);
 	exportData(router);
 	inventory(router);
+	review(router);
+
 	return router;
 };
