@@ -61,6 +61,7 @@ export const createUser = async (
 		}
 
 		const salt = await random();
+		console.log(salt);
 		const sessionToken = await authentication(password, salt);
 		//const pass
 
@@ -68,7 +69,7 @@ export const createUser = async (
 			data: {
 				email,
 				name,
-				role: role ?? "user",
+				role: role ? role : "user",
 				password,
 				salt,
 				sessionToken,
