@@ -983,14 +983,14 @@ export default function UsersTable() {
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label
-                                        htmlFor="email"
+                                        htmlFor="password"
                                         className="text-right"
                                     >
                                         Password
                                     </Label>
                                     <Input
                                         id="password"
-                                        placeholder={'password'}
+                                        placeholder={'Password'}
                                         onChange={(event) =>
                                             handleInputChange(
                                                 'password',

@@ -63,14 +63,14 @@ export const createUser = async (
 		const salt = await random();
 		console.log(salt);
 		const sessionToken = await authentication(password, salt);
-		//const pass
+		const hashedPassword = authentication(salt, password);
 
 		const user = await prisma.user.create({
 			data: {
 				email,
 				name,
 				role: role ? role : "user",
-				password,
+				password: hashedPassword,
 				salt,
 				sessionToken,
 			},
