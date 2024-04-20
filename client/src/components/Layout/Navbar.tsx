@@ -238,6 +238,41 @@ function NavbarComponent() {
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
+                                <NavigationMenuTrigger>
+                                    Reach Us
+                                </NavigationMenuTrigger>
+                                <NavigationMenuContent>
+                                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                                        <ListItem
+                                            title="Contact"
+                                            href="/contact"
+                                        >
+                                            Reach out to us for any queries or
+                                            feedback.
+                                        </ListItem>
+                                        <ListItem
+                                            title="Features"
+                                            href="https://roadmap.bookbliss.logic-nest.me"
+                                            target="_blank"
+                                        >
+                                            Request a feature or suggest an idea
+                                            for the platform.
+                                        </ListItem>
+                                        <ListItem
+                                            title="Contribute"
+                                            href="/contribute"
+                                        >
+                                            Contribute to the platform by
+                                            submitting your work.
+                                        </ListItem>
+                                        <ListItem title="Apply" href="/apply">
+                                            Apply for an author account to start
+                                            publishing your work.
+                                        </ListItem>
+                                    </ul>
+                                </NavigationMenuContent>
+                            </NavigationMenuItem>
+                            {/* <NavigationMenuItem>
                                 <a href="/contact">
                                     <NavigationMenuLink
                                         className={navigationMenuTriggerStyle()}
@@ -245,7 +280,7 @@ function NavbarComponent() {
                                         Contact
                                     </NavigationMenuLink>
                                 </a>
-                            </NavigationMenuItem>
+                            </NavigationMenuItem> */}
                             <NavigationMenuItem>
                                 <a href="/about">
                                     <NavigationMenuLink
