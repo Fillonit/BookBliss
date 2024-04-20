@@ -2,7 +2,8 @@
 
 import * as React from 'react'
 
-import { Avatar, Dropdown, Navbar } from 'flowbite-react'
+import { Dropdown, Navbar } from 'flowbite-react'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cn } from '@/lib/utils'
 import { Icons } from '@/components/icons'
@@ -23,49 +24,55 @@ import { API_URL } from '@/util/envExport'
 
 const components: { title: string; href: string; description: string }[] = [
     {
-        title: 'Alert Dialog',
-        href: '/docs/primitives/alert-dialog',
-        description:
-            'A modal dialog that interrupts the user with important content and expects a response.',
+        title: 'Books',
+        href: '/books',
+        description: 'A written or printed work consisting of pages.',
     },
     {
-        title: 'Hover Card',
-        href: '/docs/primitives/hover-card',
+        title: 'Novels',
+        href: '/novels',
         description:
-            'For sighted users to preview content available behind a link.',
+            'A long fictional narrative in prose, typically published as a book.',
     },
     {
-        title: 'Progress',
-        href: '/docs/primitives/progress',
+        title: 'Comics',
+        href: '/comics',
         description:
-            'Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.',
+            'A publication that consists of comic art in the form of sequential panels.',
     },
     {
-        title: 'Scroll-area',
-        href: '/docs/primitives/scroll-area',
-        description: 'Visually or semantically separates content.',
+        title: 'Manga',
+        href: '/manga',
+        description: 'Japanese comic books and graphic novels.',
     },
-    {
-        title: 'Tabs',
-        href: '/docs/primitives/tabs',
-        description:
-            'A set of layered sections of content—known as tab panels—that are displayed one at a time.',
-    },
-    {
-        title: 'Tooltip',
-        href: '/docs/primitives/tooltip',
-        description:
-            'A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.',
-    },
+    // {
+    //     title: 'Biographies',
+    //     href: '/books/biographies',
+    //     description: 'An account of someone’s life written by someone else.',
+    // },
+    // {
+    //     title: 'Sci-Fi',
+    //     href: '/books/sci-fi',
+    //     description:
+    //         'A genre of speculative fiction that deals with futuristic concepts.',
+    // },
+    // {
+    //     title: 'Fantasy',
+    //     href: '/books/fantasy',
+    //     description:
+    //         'A genre of speculative fiction set in a fictional universe.',
+    // },
 ]
 
 interface User {
+    id: number
     avatar: string
     name: string
     email: string
+    role: string
 }
 
-function Component() {
+function NavbarComponent() {
     const [user, setUser] = useState<User | null>(null)
 
     useEffect(() => {
@@ -101,15 +108,15 @@ function Component() {
                         arrowIcon={false}
                         inline
                         label={
-                            <Avatar
-                                alt="User settings"
-                                img={
-                                    user
-                                        ? user.avatar
-                                        : 'https://cdn-icons-png.freepik.com/512/6681/6681204.png'
-                                }
-                                rounded
-                            />
+                            <Avatar>
+                                <AvatarImage src={user?.avatar} alt="Avatar" />
+                                <AvatarFallback className="uppercase">
+                                    {user?.name
+                                        .split(' ')
+                                        .map((n) => n[0])
+                                        .join('')}
+                                </AvatarFallback>
+                            </Avatar>
                         }
                     >
                         <Dropdown.Header>
@@ -120,19 +127,25 @@ function Component() {
                                 {user ? user.email : 'guest@bookbliss'}
                             </span>
                         </Dropdown.Header>
+                        {user && user.role === 'admin' && (
+                            <Dropdown.Item href={'/dashboard'}>
+                                Dashboard
+                            </Dropdown.Item>
+                        )}
                         {user ? (
                             <>
-                                <Dropdown.Item href={'/dashboard'}>
-                                    Dashboard
+                                <Dropdown.Item href={`/profile/${user.id}`}>
+                                    Profile
                                 </Dropdown.Item>
                                 <Dropdown.Item className="float-left">
                                     Notifications
                                     {/* <Badge className="ml-4 bg-amber-600 dark:text-white dark:hover:bg-white dark:hover:text-amber-600 font-bold">
-									3
-									</Badge> */}
+            3
+            </Badge> */}
                                 </Dropdown.Item>
-                                <Dropdown.Item>Settings</Dropdown.Item>
-                                <Dropdown.Item>Earnings</Dropdown.Item>
+                                <Dropdown.Item href={'/settings'}>
+                                    Settings
+                                </Dropdown.Item>
                                 <Dropdown.Divider />
                                 <Dropdown.Item onClick={SingOut}>
                                     Sign out
@@ -166,47 +179,49 @@ function Component() {
                                                     className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                                                     href="/"
                                                 >
-                                                    <Icons.logo className="h-6 w-6" />
-                                                    <div className="mb-2 mt-4 text-lg font-medium">
+                                                    <Icons.logo className="h-6 w-6 text-amber-500" />
+                                                    <div className="mb-2 mt-4 text-lg font-bold text-amber-500">
                                                         BookBliss
                                                     </div>
-                                                    {/* <p className="text-sm leading-tight text-muted-foreground">
-													Beautifully designed
-													components that you can copy
-													and paste into your apps.
-													Accessible. Customizable.
-													Open Source.
-												</p> */}
+                                                    <p className="text-sm leading-tight text-muted-foreground">
+                                                        <p className="text-sm">
+                                                            Dive into the World
+                                                            of Books.
+                                                        </p>{' '}
+                                                        Discover, explore and
+                                                        lose yourself in our
+                                                        vast collection of books
+                                                        across multiple genres.
+                                                    </p>
                                                 </a>
                                             </NavigationMenuLink>
                                         </li>
                                         <ListItem
-                                            href="/docs"
-                                            title="Introduction"
+                                            href="/books/popular"
+                                            title="Popular Books"
                                         >
-                                            Re-usable components built using
-                                            Radix UI and Tailwind CSS.
+                                            Discover the most popular books
+                                            across multiple genres.
                                         </ListItem>
                                         <ListItem
-                                            href="/docs/installation"
-                                            title="Installation"
+                                            href="/books/recent"
+                                            title="Recent Books"
                                         >
-                                            How to install dependencies and
-                                            structure your app.
+                                            Explore the latest books added to
+                                            our collection.
                                         </ListItem>
                                         <ListItem
-                                            href="/docs/primitives/typography"
-                                            title="Typography"
+                                            href="/books/featured"
+                                            title="Featured Books"
                                         >
-                                            Styles for headings, paragraphs,
-                                            lists...etc
+                                            Explore the books that we love.
                                         </ListItem>
                                     </ul>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
                                 <NavigationMenuTrigger>
-                                    Components
+                                    Works
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent>
                                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
@@ -223,11 +238,20 @@ function Component() {
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
-                                <a href="/docs">
+                                <a href="/contact">
                                     <NavigationMenuLink
                                         className={navigationMenuTriggerStyle()}
                                     >
-                                        Documentation
+                                        Contact
+                                    </NavigationMenuLink>
+                                </a>
+                            </NavigationMenuItem>
+                            <NavigationMenuItem>
+                                <a href="/about">
+                                    <NavigationMenuLink
+                                        className={navigationMenuTriggerStyle()}
+                                    >
+                                        About
                                     </NavigationMenuLink>
                                 </a>
                             </NavigationMenuItem>
@@ -239,7 +263,7 @@ function Component() {
     )
 }
 
-export default Component
+export default NavbarComponent
 
 const ListItem = React.forwardRef<
     React.ElementRef<'a'>,

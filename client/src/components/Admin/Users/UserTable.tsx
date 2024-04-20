@@ -294,7 +294,10 @@ export default function UsersTable() {
                 <Avatar>
                     <AvatarImage src={row.getValue('avatar')} alt="@fillonit" />
                     <AvatarFallback className="uppercase">
-                        {(row.getValue('name') as string)[0]}
+                        {(row.getValue('name') as string)
+                            .split(' ')
+                            .map((n) => n[0])
+                            .join('')}
                     </AvatarFallback>
                 </Avatar>
             ),
@@ -622,9 +625,10 @@ export default function UsersTable() {
                         <DropdownMenuSeparator />
                         <DropdownMenuRadioGroup
                             value={pageSize.toString()}
-                            onValueChange={(value) =>
+                            onValueChange={(value) => {
                                 setPageSize(Number(value))
-                            }
+                                setPage(0)
+                            }}
                         >
                             <DropdownMenuRadioItem value={'5'}>
                                 5
@@ -851,7 +855,7 @@ export default function UsersTable() {
                         variant="outline"
                         size="sm"
                         onClick={() => setPage(page + 1)}
-                        disabled={data.length < pageSize}
+                        disabled={data.length < pageSize || data.length === 0}
                     >
                         <HiOutlineChevronRight className="h-4 w-4" />
                     </Button>
@@ -919,17 +923,49 @@ export default function UsersTable() {
                                     >
                                         Role
                                     </Label>
-                                    <Input
-                                        id="role"
-                                        value={userData.role}
-                                        onChange={(event) =>
-                                            handleInputChange(
-                                                'role',
-                                                event.target.value
-                                            )
-                                        }
-                                        className="col-span-3"
-                                    />
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                className={'px-[7.6rem]'}
+                                            >
+                                                <span className="capitalize">
+                                                    {selectedRole
+                                                        ? selectedRole
+                                                        : 'Select a Role'}
+                                                </span>
+                                                <ChevronDown className="ml-2 h-4 w-4" />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent className="">
+                                            <DropdownMenuRadioGroup
+                                                value={selectedRole}
+                                                onValueChange={(value) => {
+                                                    setSelectedRole(value)
+                                                    handleInputChange(
+                                                        'role',
+                                                        value
+                                                    )
+                                                }}
+                                            >
+                                                <DropdownMenuRadioItem
+                                                    value={'user'}
+                                                >
+                                                    User
+                                                </DropdownMenuRadioItem>
+                                                <DropdownMenuRadioItem
+                                                    value={'admin'}
+                                                >
+                                                    Admin
+                                                </DropdownMenuRadioItem>
+                                                <DropdownMenuRadioItem
+                                                    value={'author'}
+                                                >
+                                                    Author
+                                                </DropdownMenuRadioItem>
+                                            </DropdownMenuRadioGroup>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
                                 </div>
                             </div>
                             <SheetFooter>

@@ -10,6 +10,7 @@ import Login from '@/components/Auth/Login'
 import Register from '@/components/Auth/Register'
 import AboutUs from '@/components/About/about'
 import Dashboard from '@/components/Admin/Dashboard'
+import Contact from '@/pages/Contact'
 
 // ? COMPONENTS
 import Navbar from '@/components/Layout/Navbar'
@@ -42,6 +43,7 @@ function App() {
                             <Route path="/" element={<Home />} />
                             <Route path="/books" element={<BookList />} />
                             <Route path="/about" element={<AboutUs />} />
+                            <Route path="/contact" element={<Contact />} />
                             <Route
                                 path="/login"
                                 element={<PublicRoute element={<Login />} />}

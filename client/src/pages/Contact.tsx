@@ -38,10 +38,10 @@ const Contact = () => {
 
     return (
         <section
-            className="relative bg-cover bg-center bg-white dark:bg-gray-900"
+            className="relative bg-cover bg-center bg-white dark:bg-gray-900 mt-12 min-h-screen"
             style={{
                 backgroundImage:
-                    "url('https://source.unsplash.com/random/?Books')",
+                    "url('https://source.unsplash.com/random/?Books,dark')",
             }}
         >
             <div className="container px-6 py-12 mx-auto">
@@ -50,7 +50,7 @@ const Contact = () => {
                         Contact us
                     </p>
 
-                    <h1 className="mt-2 text-2xl font-semibold text-gray-300 md:text-3xl dark:text-white">
+                    <h1 className="mt-2 text-2xl font-semibold text-white md:text-3xl dark:text-white">
                         Chat to our friendly team
                     </h1>
 

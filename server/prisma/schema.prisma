@@ -58,7 +58,7 @@ model User {
   id           Int            @id @default(autoincrement())
   email        String         @unique
   password     String
-  avatar       String?        @default("https://res.cloudinary.com/dx3w3vz4w/image/upload/v1626820134/avatars/avatar-1_ukzv9v.png")
+  avatar       String?        @default("")
   googleId     String?        @default("")
   name         String
   role         String         @default("user")
