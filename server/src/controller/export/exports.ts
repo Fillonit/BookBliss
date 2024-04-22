@@ -1,5 +1,5 @@
 import express from "express";
-import { prisma } from "../../db/client";
+// import { prisma } from "../../db/client";
 import { parse as json2csv } from "json2csv";
 import xmlbuilder from "xmlbuilder";
 import yaml from "js-yaml";
@@ -122,6 +122,8 @@ export const exportYAML = async (
 	}
 };
 
+import { Readable } from "stream";
+
 export const exportAll = async (
 	req: express.Request,
 	res: express.Response
@@ -137,28 +139,38 @@ export const exportAll = async (
 		const xml = xmlbuilder.create({ data }).end({ pretty: true });
 		const yamlData = yaml.dump(data);
 
+		const pdf = new Document();
+		let pdfChunks: Buffer[] = [];
+		pdf.on("data", (chunk) => pdfChunks.push(chunk));
+		pdf.fontSize(25).text("Exported Data", { align: "center" });
+		pdf.moveDown();
+		pdf.fontSize(15).text(JSON.stringify(data, null, 4));
+		pdf.end();
+
 		res.setHeader(
 			"Content-disposition",
 			`attachment; filename=${new Date().toISOString()}.zip`
 		);
 		res.setHeader("Content-type", "application/zip");
 
-		// Create a zip archive
 		const archive = archiver("zip");
 
-		// Pipe the archive data to the response
 		archive.pipe(res);
 
-		// Append the data to the archive
 		archive.append(json, { name: `BookBliss Export - ${new Date()}.json` });
 		archive.append(csv, { name: `BookBliss Export - ${new Date()}.csv` });
 		archive.append(xml, { name: `BookBliss Export - ${new Date()}.xml` });
 		archive.append(yamlData, {
-			name: `BookBliss Export - ${new Date()}yaml`,
+			name: `BookBliss Export - ${new Date()}.yaml`,
 		});
 
-		// Finalize the archive
-		archive.finalize();
+		pdf.on("end", () => {
+			const pdfBuffer = Buffer.concat(pdfChunks);
+			archive.append(pdfBuffer, {
+				name: `BookBliss Export - ${new Date()}.pdf`,
+			});
+			archive.finalize();
+		});
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({
