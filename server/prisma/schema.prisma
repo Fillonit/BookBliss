@@ -120,6 +120,7 @@ model Contact {
   name      String
   email     String
   message   String
+  type      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   ip        String   @db.VarChar(30)

@@ -6,13 +6,14 @@ export const createContact = async (
 	res: express.Response
 ) => {
 	const { body, ip } = req;
-	const { name, email, message } = body;
+	const { name, email, message, type } = body;
 
 	const contact = await prisma.contact.create({
 		data: {
 			name: name,
 			email: email,
 			message: message,
+			type: type,
 			ip: ip,
 		},
 	});

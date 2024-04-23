@@ -8,6 +8,7 @@ const Contact = () => {
     const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('')
+    const [type, setType] = useState('feedback')
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         try {
@@ -17,7 +18,7 @@ const Contact = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name: fullName, email, message }),
+                body: JSON.stringify({ name: fullName, email, message, type }),
             })
             if (response.ok) {
                 setFullName('')
@@ -91,7 +92,19 @@ const Contact = () => {
                                 className="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-amber-400 dark:focus:border-amber-400 focus:ring-amber-400 focus:outline-none focus:ring focus:ring-opacity-40"
                             />
                         </div>
-
+                        <div className="mt-4">
+                            <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
+                                Type
+                            </label>
+                            <select
+                                value={type}
+                                onChange={(e) => setType(e.target.value)}
+                                className="block w-full px-5 py-2.5 mt-2 text-gray-700 bg-white border border-gray-200 rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-amber-400 dark:focus:border-amber-400 focus:ring-amber-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                            >
+                                <option value="feedback">Feedback</option>
+                                <option value="report">Report</option>
+                            </select>
+                        </div>
                         <div className="w-full mt-4">
                             <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
                                 Message
