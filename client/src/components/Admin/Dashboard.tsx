@@ -1,5 +1,6 @@
 // import React, { useEffect, useState } from 'react'
 import UsersTable from '@/components/Admin/Users/UserTable'
+import UsersStats from '@/components/Admin/Users/UserStats'
 import SidebarComponent from '@/components/Admin/Sidebar'
 import { useParams } from 'react-router-dom'
 import HoverCard from '@/components/Admin/Hover'
@@ -55,27 +56,43 @@ const UsersInfo: React.FC = () => {
                 <SidebarComponent />
             </div>
             <div className="flex-1 overflow-auto overflow-y-hidden flex flex-col justify-center items-center px-12 py-6">
-                <div className="w-full bg-white dark:bg-gray-900 shadow-md rounded-lg p-6">
-                    {table === 'users' || table === undefined ? (
-                        <UsersTable />
-                    ) : table === 'contacts' ? (
-                        <ContactTable />
-                    ) : table === 'reviews' ? (
-                        <ReviewTable />
-                    ) : table === 'inventory' ? (
-                        <InventoryTable />
-                    ) : (
-                        // <UsersTable />
-                        <div className="self-center">
-                            <p>
-                                The {table} is not available, for any issues or
-                                feedback please contact
-                            </p>
-                            <br />
-                            <HoverCard />
+                {/* <div className="w-full bg-white dark:bg-gray-900 shadow-md rounded-lg p-6"> */}
+                {table === 'users' || table === undefined ? (
+                    <>
+                        <div className={'w-full py-6'}>
+                            <UsersStats />
                         </div>
-                    )}
-                </div>
+                        <div className="w-full bg-white dark:bg-gray-900 shadow-md rounded-lg px-6">
+                            <UsersTable />
+                        </div>
+                    </>
+                ) : table === 'contacts' ? (
+                    <>
+                        <h1 className={'font-bold text-4xl text-white pb-4'}>
+                            {table.charAt(0).toUpperCase() + table.slice(1)}{' '}
+                            Dashboard
+                        </h1>
+                        <div className="w-full bg-white dark:bg-gray-900 shadow-md rounded-lg px-6">
+                            <ContactTable />
+                            {/* <UsersTable /> */}
+                        </div>
+                    </>
+                ) : table === 'reviews' ? (
+                    <ReviewTable />
+                ) : table === 'inventory' ? (
+                    <InventoryTable />
+                ) : (
+                    // <UsersTable />
+                    <div className="self-center">
+                        <p>
+                            The {table} is not available, for any issues or
+                            feedback please contact
+                        </p>
+                        <br />
+                        <HoverCard />
+                    </div>
+                )}
+                {/* </div> */}
             </div>
         </div>
     )
