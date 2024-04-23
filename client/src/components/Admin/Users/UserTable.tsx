@@ -476,7 +476,12 @@ export default function UsersTable() {
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem
                                     onClick={() => {
-                                        setViewDetailsUser(user)
+                                        setViewDetailsUser({
+                                            ...user,
+                                            googleId: user.googleId
+                                                ? user.googleId
+                                                : '',
+                                        })
                                         setViewDetailsSheetOpen(true)
                                     }}
                                 >
