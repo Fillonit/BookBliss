@@ -529,7 +529,6 @@ export default function UsersTable() {
                 )
                 const jsonData = await response.json()
                 setData(jsonData)
-                console.log(jsonData)
             } catch (error) {
                 console.error('Error fetching data:', error)
             }
