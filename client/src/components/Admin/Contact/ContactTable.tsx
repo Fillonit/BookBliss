@@ -78,6 +78,7 @@ import { API_URL } from '@/util/envExport'
 export type Contact = {
     id: number
     email: string
+    type: string
     name: string
     message: string
     createdAt: string
@@ -91,12 +92,14 @@ export default function ContactTable() {
     const [contactData, setContactData] = useState({
         name: '',
         email: '',
+        type: '',
         message: '',
     })
     const [isViewDetailsSheetOpen, setViewDetailsSheetOpen] = useState(false)
     const [viewDetailsContact, setViewDetailsContact] = useState({
         name: '',
         email: '',
+        type: '',
         message: '',
     })
     const [data, setData] = useState<Contact[]>([])
@@ -108,8 +111,7 @@ export default function ContactTable() {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `${API_URL}/api/contacts?limit=${pageSize}&offset=${
-                        page * pageSize
+                    `${API_URL}/api/contacts?limit=${pageSize}&offset=${page * pageSize
                     }`
                 )
                 const jsonData = await response.json()
@@ -171,8 +173,7 @@ export default function ContactTable() {
             const fetchData = async () => {
                 try {
                     const response = await fetch(
-                        `${API_URL}/api/contacts?limit=${pageSize}&offset=${
-                            page * pageSize
+                        `${API_URL}/api/contacts?limit=${pageSize}&offset=${page * pageSize
                         }`
                     )
                     const jsonData = await response.json()
@@ -235,6 +236,27 @@ export default function ContactTable() {
                     <a href={`mailto:${row.getValue('email')}`}>
                         {row.getValue('email')}
                     </a>
+                </div>
+            ),
+        },
+        {
+            accessorKey: 'type',
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === 'asc')
+                        }
+                    >
+                        Type
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                )
+            },
+            cell: ({ row }) => (
+                <div className="lowercase hover:text-amber-600">
+                        {row.getValue('type')}
                 </div>
             ),
         },
@@ -483,10 +505,10 @@ export default function ContactTable() {
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
-                                                      header.column.columnDef
-                                                          .header,
-                                                      header.getContext()
-                                                  )}
+                                                    header.column.columnDef
+                                                        .header,
+                                                    header.getContext()
+                                                )}
                                         </TableHead>
                                     )
                                 })}
@@ -654,9 +676,9 @@ export default function ContactTable() {
                         </SheetTrigger>
                         <SheetContent>
                             <SheetHeader>
-                                <SheetTitle>Edit profile</SheetTitle>
+                                <SheetTitle>Edit Contact</SheetTitle>
                                 <SheetDescription>
-                                    Make changes to your profile here. Click
+                                    Make changes to your Contact here. Click
                                     save when you're done.
                                 </SheetDescription>
                             </SheetHeader>
@@ -698,6 +720,22 @@ export default function ContactTable() {
                                         }
                                         className="col-span-3"
                                     />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="type" className="text-right">
+                                        Type
+                                    </Label>
+                                    <select
+                                        id="type"
+                                        value={contactData.type}
+                                        onChange={(event) =>
+                                            handleInputChange('type', event.target.value)
+                                        }
+                                        className="col-span-3 block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-amber-400 dark:focus:border-amber-400 focus:ring-amber-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                                    >
+                                        <option value="feedback">Feedback</option>
+                                        <option value="report">Report</option>
+                                    </select>
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label
@@ -776,6 +814,17 @@ export default function ContactTable() {
                                         className="col-span-3"
                                     />
                                 </div>
+                            </div>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="type" className="text-right">
+                                    Type
+                                </Label>
+                                <Input
+                                    id="type"
+                                    value={viewDetailsContact.type}
+                                    disabled
+                                    className="col-span-3"
+                                />
                             </div>
                             <SheetFooter>
                                 <SheetClose asChild>
@@ -856,8 +905,7 @@ export default function ContactTable() {
                                         const fetchData = async () => {
                                             try {
                                                 const response = await fetch(
-                                                    `${API_URL}/api/contacts?limit=${pageSize}&offset=${
-                                                        page * pageSize
+                                                    `${API_URL}/api/contacts?limit=${pageSize}&offset=${page * pageSize
                                                     }`
                                                 )
                                                 const jsonData =

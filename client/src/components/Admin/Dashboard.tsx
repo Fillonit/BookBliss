@@ -7,6 +7,7 @@ import HoverCard from '@/components/Admin/Hover'
 import ContactTable from '@/components/Admin/Contact/ContactTable'
 import ReviewTable from '@/components/Admin/Reviews/ReviewTable'
 import InventoryTable from '@/components/Admin/Inventory/InventoryTable'
+import ContactsStats from '@/components/Admin/Contact/ContactStats'
 
 // const API_BASE_URL = 'http://localhost:5000/api/'
 
@@ -69,7 +70,7 @@ const UsersInfo: React.FC = () => {
                 ) : table === 'contacts' ? (
                     <>
                         <div className={'w-full py-6'}>
-                            <UsersStats />
+                            <ContactsStats />
                         </div>
                         <div className="w-full bg-white dark:bg-gray-900 shadow-md rounded-lg px-6">
                             <ContactTable />
