@@ -1207,13 +1207,13 @@ export default function UsersTable() {
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label
-                                        htmlFor="email"
+                                        htmlFor="createdAt"
                                         className="text-right"
                                     >
-                                        Created At
+                                        Created
                                     </Label>
                                     <Input
-                                        id="email"
+                                        id="createdAt"
                                         value={viewDetailsUser.createdAt}
                                         disabled
                                         className="col-span-3"
@@ -1221,13 +1221,13 @@ export default function UsersTable() {
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label
-                                        htmlFor="email"
+                                        htmlFor="updatedAt"
                                         className="text-right"
                                     >
-                                        Updated At
+                                        Updated
                                     </Label>
                                     <Input
-                                        id="email"
+                                        id="updatedAt"
                                         value={viewDetailsUser.updatedAt}
                                         disabled
                                         className="col-span-3"

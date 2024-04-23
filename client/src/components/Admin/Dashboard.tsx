@@ -68,19 +68,32 @@ const UsersInfo: React.FC = () => {
                     </>
                 ) : table === 'contacts' ? (
                     <>
-                        <h1 className={'font-bold text-4xl text-white pb-4'}>
-                            {table.charAt(0).toUpperCase() + table.slice(1)}{' '}
-                            Dashboard
-                        </h1>
+                        <div className={'w-full py-6'}>
+                            <UsersStats />
+                        </div>
                         <div className="w-full bg-white dark:bg-gray-900 shadow-md rounded-lg px-6">
                             <ContactTable />
                             {/* <UsersTable /> */}
                         </div>
                     </>
                 ) : table === 'reviews' ? (
-                    <ReviewTable />
+                    <>
+                        <div className={'w-full py-6'}>
+                            <UsersStats />
+                        </div>
+                        <div className="w-full bg-white dark:bg-gray-900 shadow-md rounded-lg px-6">
+                            <ReviewTable />
+                        </div>
+                    </>
                 ) : table === 'inventory' ? (
-                    <InventoryTable />
+                    <>
+                        <div className={'w-full py-6'}>
+                            <UsersStats />
+                        </div>
+                        <div className="w-full bg-white dark:bg-gray-900 shadow-md rounded-lg px-6">
+                            <InventoryTable />
+                        </div>
+                    </>
                 ) : (
                     // <UsersTable />
                     <div className="self-center">

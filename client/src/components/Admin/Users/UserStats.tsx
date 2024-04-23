@@ -60,8 +60,10 @@ export default function UsersStats() {
                 <CardContent>
                     <div className="text-2xl font-bold">{userCount}</div>
                     <p className="text-xs text-muted-foreground">
-                        {(usersWithGoogle.length / userCount) * 100}% of total
-                        users {'('}
+                        {((usersWithGoogle.length / userCount) * 100).toFixed(
+                            0
+                        )}
+                        % of total users {'('}
                         {`${usersWithGoogle.length} ${
                             usersWithGoogle.length > 1 ? 'users' : 'user'
                         }`}
@@ -79,7 +81,8 @@ export default function UsersStats() {
                 <CardContent>
                     <div className="text-2xl font-bold">{authors.length}</div>
                     <p className="text-xs text-muted-foreground">
-                        {(authors.length / userCount) * 100}% of total users
+                        {((authors.length / userCount) * 100).toFixed(0)}% of
+                        total users
                     </p>
                 </CardContent>
             </Card>
@@ -93,7 +96,8 @@ export default function UsersStats() {
                 <CardContent>
                     <div className="text-2xl font-bold">{admins.length}</div>
                     <p className="text-xs text-muted-foreground">
-                        {(admins.length / userCount) * 100}% of total users
+                        {((admins.length / userCount) * 100).toFixed(0)}% of
+                        total users
                     </p>
                 </CardContent>
             </Card>
