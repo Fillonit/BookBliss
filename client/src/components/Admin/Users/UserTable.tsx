@@ -87,6 +87,8 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
+//import DatePicker from '@/components/Admin/Users/DatePicker'
+
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -114,6 +116,9 @@ export default function UsersTable() {
         name: '',
         email: '',
         role: '',
+        googleId: '',
+        createdAt: '',
+        updatedAt: '',
     })
 
     useEffect(() => {
@@ -1161,6 +1166,65 @@ export default function UsersTable() {
                                     <Input
                                         id="email"
                                         value={viewDetailsUser.email}
+                                        disabled
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                        htmlFor="email"
+                                        className="text-right"
+                                    >
+                                        Role
+                                    </Label>
+                                    <Input
+                                        id="email"
+                                        value={viewDetailsUser.role}
+                                        disabled
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                        htmlFor="email"
+                                        className="text-right"
+                                    >
+                                        Google ID
+                                    </Label>
+                                    <Input
+                                        id="email"
+                                        value={
+                                            viewDetailsUser.googleId ||
+                                            'Account not connected'
+                                        }
+                                        disabled
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                        htmlFor="email"
+                                        className="text-right"
+                                    >
+                                        Created At
+                                    </Label>
+                                    <Input
+                                        id="email"
+                                        value={viewDetailsUser.createdAt}
+                                        disabled
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                        htmlFor="email"
+                                        className="text-right"
+                                    >
+                                        Updated At
+                                    </Label>
+                                    <Input
+                                        id="email"
+                                        value={viewDetailsUser.updatedAt}
                                         disabled
                                         className="col-span-3"
                                     />

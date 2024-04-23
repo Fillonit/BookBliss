@@ -28,7 +28,9 @@ export default function UsersStats() {
         fetch(`${API_URL}/api/users`)
             .then((response) => response.json())
             .then((data) => setUsers(data))
+    }, [])
 
+    useEffect(() => {
         if (users.length > 0) {
             const authors = users.filter((user) => user.role === 'author')
             setAuthors(authors)
@@ -37,11 +39,10 @@ export default function UsersStats() {
             const usersWithGoogle = users.filter((user) => user.googleId !== '')
             setUsersWithGoogle(usersWithGoogle)
 
-            // Calculate average interactions
             const totalInteractions = users.reduce((acc) => acc + 13.5, 0)
             setInteractions(totalInteractions / users.length)
         }
-    }, [])
+    }, [users])
 
     useEffect(() => {
         fetch(`${API_URL}/api/users/count`)
@@ -59,9 +60,12 @@ export default function UsersStats() {
                 <CardContent>
                     <div className="text-2xl font-bold">{userCount}</div>
                     <p className="text-xs text-muted-foreground">
-                        {usersWithGoogle.length}{' '}
-                        {usersWithGoogle.length > 1 ? 'users' : 'user'} with
-                        Google
+                        {(usersWithGoogle.length / userCount) * 100}% of total
+                        users {'('}
+                        {`${usersWithGoogle.length} ${
+                            usersWithGoogle.length > 1 ? 'users' : 'user'
+                        }`}
+                        {')'} use Google
                     </p>
                 </CardContent>
             </Card>
