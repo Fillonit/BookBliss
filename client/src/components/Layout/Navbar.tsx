@@ -18,6 +18,8 @@ import {
     navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { useEffect, useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { API_URL } from '@/util/envExport'
 
 // import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
@@ -79,10 +81,35 @@ function NavbarComponent() {
         const sessionToken = localStorage.getItem('sessionToken')
         if (sessionToken) {
             fetch(`${API_URL}/api/auth/user/${sessionToken}`)
-                .then((response) => response.json())
-                .then((data) => setUser(data))
-
-            console.log(user)
+                .then((response) => {
+                    if (!response.ok) {
+                        localStorage.removeItem('sessionToken')
+                        window.location.href = '/login'
+                        throw new Error('Network response was not ok')
+                    }
+                    return response.json()
+                })
+                .then((data) => {
+                    if (data.status === 400) {
+                        localStorage.removeItem('sessionToken')
+                        window.location.href = '/login'
+                    } else {
+                        setUser(data)
+                    }
+                })
+                .catch((error) => {
+                    console.log(
+                        'There has been a problem with your fetch operation: ',
+                        error.message
+                    )
+                    toast.error('Failed to load user data. Please try again.', {
+                        theme:
+                            localStorage.getItem('flowbite-theme-mode') ===
+                            'dark'
+                                ? 'dark'
+                                : 'light',
+                    })
+                })
         }
     }, [])
 
@@ -294,6 +321,17 @@ function NavbarComponent() {
                     </NavigationMenu>
                 </Navbar.Collapse>
             </Navbar>
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </div>
     )
 }
