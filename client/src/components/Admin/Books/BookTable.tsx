@@ -87,7 +87,7 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
-//import DatePicker from '@/components/Admin/Users/DatePicker'
+//import DatePicker from '@/components/Admin/Books/DatePicker'
 
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -98,43 +98,44 @@ type EditableBook = Pick<BookCardProps, 'title' | 'description' | 'id'>
 export default function BookTable() {
     const [isSheetOpen, setSheetOpen] = useState(false)
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false)
-    const [selectedUser, setSelectedUser] = useState<BookCardProps | null>(null)
-    const [userData, setUserData] = useState<EditableBook>({ title: '', description: '', id: -1 })
+    const [selectedBook, setSelectedBook] = useState<BookCardProps | null>(null)
+    const [bookData, setBookData] = useState<EditableBook>({ title: '', description: '', id: -1 })
     const [isViewDetailsSheetOpen, setViewDetailsSheetOpen] = useState(false)
-    const [viewDetailsUser, setViewDetailsUser] = useState({
-        name: '',
-        email: '',
-        role: '',
-        googleId: '',
-        createdAt: '',
-        updatedAt: '',
+    const [viewDetailsBook, setViewDetailsBook] = useState<BookCardProps>({
+            title: '',
+            description: '',
+            id: -1,
+            author: '',
+            cover: '',
+            rating: 0,
+            price: 0,
+            genre: ''
     })
-    console.log("THIS IS BEING RENDERED");
     useEffect(() => {
-        if (selectedUser) {
-            setUserData({
-                ...selectedUser,
+        if (selectedBook) {
+            setBookData({
+                ...selectedBook,
             })
         }
-    }, [selectedUser])
+    }, [selectedBook])
     const handleInputChange = (name: string, value: string) => {
-        setUserData({
-            ...userData,
+        setBookData({
+            ...bookData,
             [name]: value,
         })
     }
 
     const handleSaveChanges = async () => {
-        if (selectedUser) {
-            console.log(userData)
+        if (selectedBook) {
             const response = await fetch(
-                `${API_URL}/api/user/${selectedUser.id}`,
+                `${API_URL}/api/books/${selectedBook.id}`,
                 {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
+                        'session': localStorage.getItem('sessionToken') as string
                     },
-                    body: JSON.stringify(userData),
+                    body: JSON.stringify(bookData),
                 }
             )
 
@@ -145,6 +146,7 @@ export default function BookTable() {
                             ? 'dark'
                             : 'light',
                 })
+                return;
             }
 
             toast.success('Changes saved successfully', {
@@ -162,7 +164,7 @@ export default function BookTable() {
                         }`
                     )
                     const jsonData = await response.json()
-                    setData(jsonData)
+                    setData(jsonData.data)
                 } catch (error) {
                     console.error('Error fetching data:', error)
                 }
@@ -220,7 +222,7 @@ export default function BookTable() {
             cell: ({ row }) => (
                 <div
                     onClick={() => {
-                        navigator.clipboard.writeText(row.getValue('email'))
+                        navigator.clipboard.writeText(row.getValue('title'))
                         toast.success('Copied Title to clipboard!', {
                             theme:
                                 localStorage.getItem('flowbite-theme-mode') ===
@@ -244,7 +246,7 @@ export default function BookTable() {
                 <Avatar>
                     <AvatarImage src={row.getValue('cover')} alt="@fillonit" />
                     <AvatarFallback className="uppercase">
-                        {(row.getValue('name') as string)
+                        {(row.getValue('cover') as string)
                             .split(' ')
                             .map((n) => n[0])
                             .join('')}
@@ -383,22 +385,22 @@ export default function BookTable() {
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                     onClick={() => {
-                                        setSelectedUser(user)
+                                        setSelectedBook(user)
                                         setSheetOpen(true)
                                     }}
                                 >
                                     <HiOutlinePencil className="mr-2 h-4 w-4" />
-                                    Edit User Details
+                                    Edit Book Details
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                     onClick={() => {
                                         setDeleteDialogOpen(true)
-                                        setSelectedUser(user)
+                                        setSelectedBook(user)
                                     }}
                                     className="text-red-500 font-bold hover:text-red-700 hover:bg-red-700"
                                 >
                                     <HiOutlineTrash className="mr-2 h-4 w-4" />
-                                    Delete User
+                                    Delete Book
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -421,7 +423,7 @@ export default function BookTable() {
                     }`
                 )
                 const jsonData = await response.json()
-                setData(jsonData)
+                setData(jsonData.data)
             } catch (error) {
                 console.error('Error fetching data:', error)
             }
@@ -477,15 +479,15 @@ export default function BookTable() {
         <div className="w-full">
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Filter emails..."
+                    placeholder="Search"
                     value={
                         (table
-                            .getColumn('email')
+                            .getColumn('title')
                             ?.getFilterValue() as string) ?? ''
                     }
                     onChange={(event) =>
                         table
-                            .getColumn('email')
+                            .getColumn('title')
                             ?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
@@ -756,7 +758,7 @@ export default function BookTable() {
                 </div>
                 <ToastContainer />
             
-                {isSheetOpen && selectedUser && (
+                {isSheetOpen && selectedBook && (
                     <Sheet
                         open={isSheetOpen}
                         onOpenChange={() => setSheetOpen(false)}
@@ -766,9 +768,9 @@ export default function BookTable() {
                         </SheetTrigger>
                         <SheetContent>
                             <SheetHeader>
-                                <SheetTitle>Edit profile</SheetTitle>
+                                <SheetTitle>Edit book</SheetTitle>
                                 <SheetDescription>
-                                    Make changes to your profile here. Click
+                                    Make changes to this book here. Click
                                     save when you're done.
                                 </SheetDescription>
                             </SheetHeader>
@@ -782,7 +784,7 @@ export default function BookTable() {
                                     </Label>
                                     <Input
                                         id="title"
-                                        value={userData.title}
+                                        value={bookData.title}
                                         onChange={(event) =>
                                             handleInputChange(
                                                 'title',
@@ -801,7 +803,7 @@ export default function BookTable() {
                                     </Label>
                                     <Input
                                         id="description"
-                                        value={userData.description}
+                                        value={bookData.description}
                                         onChange={(event) =>
                                             handleInputChange(
                                                 'description',
@@ -825,7 +827,7 @@ export default function BookTable() {
                         </SheetContent>
                     </Sheet>
                 )}
-                {isViewDetailsSheetOpen && viewDetailsUser && (
+                {isViewDetailsSheetOpen && viewDetailsBook && (
                     <Sheet
                         open={isViewDetailsSheetOpen}
                         onOpenChange={() => setViewDetailsSheetOpen(false)}
@@ -835,66 +837,65 @@ export default function BookTable() {
                         </SheetTrigger>
                         <SheetContent>
                             <SheetHeader>
-                                <SheetTitle>View profile</SheetTitle>
+                                <SheetTitle>View book</SheetTitle>
                                 <SheetDescription>
-                                    View details of the selected user here.
+                                    View details of the selected book here.
                                 </SheetDescription>
                             </SheetHeader>
                             <div className="grid gap-4 py-4">
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label
-                                        htmlFor="name"
+                                        htmlFor="title"
                                         className="text-right"
                                     >
-                                        Name
+                                        Title
                                     </Label>
                                     <Input
-                                        id="name"
-                                        value={viewDetailsUser.name}
+                                        id="title"
+                                        value={viewDetailsBook.title}
                                         disabled
                                         className="col-span-3"
                                     />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label
-                                        htmlFor="email"
+                                        htmlFor="description"
                                         className="text-right"
                                     >
-                                        Email
+                                        Description
                                     </Label>
                                     <Input
-                                        id="email"
-                                        value={viewDetailsUser.email}
+                                        id="description"
+                                        value={viewDetailsBook.description}
                                         disabled
                                         className="col-span-3"
                                     />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label
-                                        htmlFor="email"
+                                        htmlFor="rating"
                                         className="text-right"
                                     >
-                                        Role
+                                        Rating
                                     </Label>
                                     <Input
-                                        id="email"
-                                        value={viewDetailsUser.role}
+                                        id="rating"
+                                        value={viewDetailsBook.rating}
                                         disabled
                                         className="col-span-3"
                                     />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label
-                                        htmlFor="email"
+                                        htmlFor="price"
                                         className="text-right"
                                     >
-                                        Google ID
+                                        Price
                                     </Label>
                                     <Input
-                                        id="email"
+                                        id="price"
                                         value={
-                                            viewDetailsUser.googleId ||
-                                            'Account not connected'
+                                            viewDetailsBook.price
                                         }
                                         disabled
                                         className="col-span-3"
@@ -902,28 +903,28 @@ export default function BookTable() {
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label
-                                        htmlFor="createdAt"
+                                        htmlFor="author"
                                         className="text-right"
                                     >
-                                        Created
+                                        Author
                                     </Label>
                                     <Input
-                                        id="createdAt"
-                                        value={viewDetailsUser.createdAt}
+                                        id="author"
+                                        value={viewDetailsBook.author}
                                         disabled
                                         className="col-span-3"
                                     />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label
-                                        htmlFor="updatedAt"
+                                        htmlFor="genre"
                                         className="text-right"
                                     >
-                                        Updated
+                                        Genre
                                     </Label>
                                     <Input
-                                        id="updatedAt"
-                                        value={viewDetailsUser.updatedAt}
+                                        id="genre"
+                                        value={viewDetailsBook.genre}
                                         disabled
                                         className="col-span-3"
                                     />
@@ -943,7 +944,7 @@ export default function BookTable() {
                         </SheetContent>
                     </Sheet>
                 )}
-                {isDeleteDialogOpen && selectedUser && (
+                {isDeleteDialogOpen && selectedBook && (
                     <Dialog
                         open={isDeleteDialogOpen}
                         onOpenChange={setDeleteDialogOpen}
@@ -953,9 +954,9 @@ export default function BookTable() {
                         </DialogTrigger>
                         <DialogContent>
                             <DialogHeader>
-                                <DialogTitle>Delete User</DialogTitle>
+                                <DialogTitle>Delete Book</DialogTitle>
                                 <DialogDescription>
-                                    Are you sure you want to delete this user?
+                                    Are you sure you want to delete this book?
                                 </DialogDescription>
                             </DialogHeader>
                             <DialogFooter>
@@ -972,15 +973,18 @@ export default function BookTable() {
                                 <Button
                                     onClick={async () => {
                                         const response = await fetch(
-                                            `${API_URL}/api/user/${selectedUser.id}`,
+                                            `${API_URL}/api/books/${selectedBook.id}`,
                                             {
-                                                method: 'DELETE',
+                                                headers: {
+                                                    'session': localStorage.getItem('sessionToken') as string
+                                                },                                                
+                                                method: 'DELETE'
                                             }
                                         )
 
                                         if (!response.ok) {
                                             toast.error(
-                                                'Failed to delete user',
+                                                'Failed to delete book',
                                                 {
                                                     theme:
                                                         localStorage.getItem(
@@ -990,10 +994,11 @@ export default function BookTable() {
                                                             : 'light',
                                                 }
                                             )
+                                            return;
                                         }
 
                                         toast.success(
-                                            'User deleted successfully',
+                                            'Book deleted successfully',
                                             {
                                                 theme:
                                                     localStorage.getItem(

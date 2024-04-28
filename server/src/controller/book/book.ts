@@ -35,17 +35,10 @@ export const getBooks = async (req: express.Request, res: express.Response) => {
 		},
 	});
 
-	setTimeout(() => {
-		res.status(200).json({
-			message: "Successfully fetched books.",
-			data: books,
-		});
-	}, 2000);
-
-	// res.status(200).json({
-	// 	message: "Successfully fetched books.",
-	// 	data: books,
-	// });
+	res.status(200).json({
+		message: "Successfully fetched books.",
+		data: books,
+	});
 };
 
 export const getBook = async (req: express.Request, res: express.Response) => {
@@ -72,22 +65,20 @@ export const updateBook = async (
 	const book = await prisma.book.findFirst({
 		where: {
 			id: Number.parseInt(id),
-			authorId: user.id,
 		},
 	});
-	if (!book && user.role !== "admin") {
+	if (!book || (book.authorId !== user.id && user.role !== "admin")) {
 		return res
 			.status(401)
 			.json({ message: "Book does not exist or you do not have access" });
 	}
-	const { price, description, title } = req.body;
+	const { description, title } = req.body;
 
 	await prisma.book.update({
 		where: {
 			id: Number.parseInt(id),
 		},
 		data: {
-			price,
 			description,
 			title,
 			updatedAt: new Date(),
@@ -141,8 +132,9 @@ export const deleteBook = async (
 	req: express.Request,
 	res: express.Response
 ) => {
-	const { session } = req.headers;
+	const session = req.headers['session'];
 	const { id } = req.params;
+
 	const user = await getUserBySessionToken(session as string);
 	if (!user || user.role === "user") {
 		return res.status(401).json({ message: "Unauthorized" });
@@ -152,6 +144,7 @@ export const deleteBook = async (
 			id: Number.parseInt(id),
 		},
 	});
+	console.log(book);
 	if (book.authorId !== user.id && user.role !== "admin") {
 		return res
 			.status(401)
