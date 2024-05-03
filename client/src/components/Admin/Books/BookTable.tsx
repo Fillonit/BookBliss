@@ -38,16 +38,16 @@ import {
 import { useEffect, useState } from 'react'
 import {
     HiOutlineClipboardCopy,
-    HiOutlineEye,
+    // HiOutlineEye,
     HiOutlinePencil,
     HiOutlineTrash,
     // HiOutlineCheck,
-    HiUserAdd,
+    // HiUserAdd,
     HiOutlineFolderDownload,
     HiOutlineChevronLeft,
     HiOutlineChevronRight,
 } from 'react-icons/hi'
-import { FaGoogle } from 'react-icons/fa'
+// import { FaGoogle } from 'react-icons/fa'
 import {
     BsFiletypeJson,
     BsFiletypeXml,
@@ -99,17 +99,21 @@ export default function BookTable() {
     const [isSheetOpen, setSheetOpen] = useState(false)
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [selectedUser, setSelectedUser] = useState<BookCardProps | null>(null)
-    const [userData, setUserData] = useState<EditableBook>({ title: '', description: '', id: -1 })
-    const [isViewDetailsSheetOpen, setViewDetailsSheetOpen] = useState(false)
-    const [viewDetailsUser, setViewDetailsUser] = useState({
-        name: '',
-        email: '',
-        role: '',
-        googleId: '',
-        createdAt: '',
-        updatedAt: '',
+    const [userData, setUserData] = useState<EditableBook>({
+        title: '',
+        description: '',
+        id: -1,
     })
-    console.log("THIS IS BEING RENDERED");
+    // const [isViewDetailsSheetOpen, setViewDetailsSheetOpen] = useState(false)
+    // const [viewDetailsUser, setViewDetailsUser] = useState({
+    //     name: '',
+    //     email: '',
+    //     role: '',
+    //     googleId: '',
+    //     createdAt: '',
+    //     updatedAt: '',
+    // })
+    console.log('THIS IS BEING RENDERED')
     useEffect(() => {
         if (selectedUser) {
             setUserData({
@@ -270,7 +274,9 @@ export default function BookTable() {
             cell: ({ row }) => (
                 <div
                     onClick={() => {
-                        navigator.clipboard.writeText(row.getValue('description'))
+                        navigator.clipboard.writeText(
+                            row.getValue('description')
+                        )
                         toast.success('Copied Description to clipboard!', {
                             theme:
                                 localStorage.getItem('flowbite-theme-mode') ===
@@ -318,9 +324,7 @@ export default function BookTable() {
                 )
             },
             cell: ({ row }) => {
-                return (
-                    <div>{row.getValue('price')}</div>
-                )
+                return <div>{row.getValue('price')}</div>
             },
         },
         {
@@ -339,9 +343,7 @@ export default function BookTable() {
                 )
             },
             cell: ({ row }) => {
-                return (
-                    <div>{row.getValue('author')}</div>
-                )
+                return <div>{row.getValue('author')}</div>
             },
         },
         {
@@ -755,7 +757,7 @@ export default function BookTable() {
                     </Button>
                 </div>
                 <ToastContainer />
-            
+
                 {isSheetOpen && selectedUser && (
                     <Sheet
                         open={isSheetOpen}
@@ -825,7 +827,7 @@ export default function BookTable() {
                         </SheetContent>
                     </Sheet>
                 )}
-                {isViewDetailsSheetOpen && viewDetailsUser && (
+                {/* {isViewDetailsSheetOpen && viewDetailsUser && (
                     <Sheet
                         open={isViewDetailsSheetOpen}
                         onOpenChange={() => setViewDetailsSheetOpen(false)}
@@ -942,7 +944,7 @@ export default function BookTable() {
                             </SheetFooter>
                         </SheetContent>
                     </Sheet>
-                )}
+                )} */}
                 {isDeleteDialogOpen && selectedUser && (
                     <Dialog
                         open={isDeleteDialogOpen}
