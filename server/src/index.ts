@@ -153,7 +153,7 @@ app.use(
 	})
 );
 app.use(morgan("dev"));
-
+app.set("trust proxy", true);
 app.set("x-powered-by", false);
 
 const server = http.createServer(app);

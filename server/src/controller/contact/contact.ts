@@ -5,8 +5,9 @@ export const createContact = async (
 	req: express.Request,
 	res: express.Response
 ) => {
-	const { body, ip } = req;
+	const { body } = req;
 	const { name, email, message, type } = body;
+	const ip = req.headers["x-forwarded-for"]?.toString() ?? req.ip.toString();
 
 	const contact = await prisma.contact.create({
 		data: {
@@ -21,24 +22,24 @@ export const createContact = async (
 };
 
 export const getContacts = async (
-    req: express.Request,
-    res: express.Response
+	req: express.Request,
+	res: express.Response
 ) => {
-    const contacts = await prisma.contact.findMany();
-    res.status(200).json(contacts);
+	const contacts = await prisma.contact.findMany();
+	res.status(200).json(contacts);
 };
 
 export const getContact = async (
-    req: express.Request,
-    res: express.Response
+	req: express.Request,
+	res: express.Response
 ) => {
-    const { id } = req.params;
-    const contact = await prisma.contact.findFirst({
-        where: {
-            id: parseInt(id),
-        },
-    });
-    res.status(200).json(contact);
+	const { id } = req.params;
+	const contact = await prisma.contact.findFirst({
+		where: {
+			id: parseInt(id),
+		},
+	});
+	res.status(200).json(contact);
 };
 
 export const deleteContact = async (
