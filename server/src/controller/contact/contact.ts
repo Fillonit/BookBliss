@@ -7,8 +7,9 @@ export const createContact = async (
 ) => {
 	const { body } = req;
 	const { name, email, message, type } = body;
-	const ip =
-		req.headers["x-forwarded-for"][0]?.toString() ?? req.ip[0].toString();
+	let ip = Array.isArray(req.headers["x-forwarded-for"])
+		? req.headers["x-forwarded-for"][0]
+		: req.headers["x-forwarded-for"]?.split(",")[0] || req.ip;
 
 	const contact = await prisma.contact.create({
 		data: {
