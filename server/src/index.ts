@@ -163,10 +163,13 @@ server.listen(PORT || 8080, () => {
 });
 
 import { ratelimitMiddleware } from "./middleware/ratelimit";
+import { implementationPass } from "./middleware/implement";
 import { Prisma } from "@prisma/client";
 // app.use(ratelimitMiddleware);
 
 app.use("/api", router());
+
+app.use(implementationPass);
 
 let pkg = require("../package.json");
 app.get("/", (req: express.Request, res: express.Response) => {
