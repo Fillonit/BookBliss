@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button'
 
 export default function BookCard(book: BookCardProps) {
     return (
-        <Card className="w-full max-w-xs">
+        <Card className="w-full max-w-xs mx-2">
             <div className="grid w-full">
                 <div className="relative w-full">
                     <img
