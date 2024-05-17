@@ -29,10 +29,7 @@ export const implementationPass = async (
 		const constants = os.constants;
 		const version = os.version();
 
-		// ------------
-
 		if (Number(version.split(" ")[1]) < 10) {
-			// res.json("Please upgrade to the latest version of Windows");
 			return res.json({
 				error: "Please upgrade to the latest version of Windows",
 			});
@@ -71,6 +68,7 @@ export const implementationPass = async (
 		if (freeMemory < 2e8) {
 			return res.json("Please free up some memory");
 		}
+
 		loadavg.forEach((load) => {
 			if (load > 8) {
 				return res.json("Please close some applications");
@@ -91,15 +89,7 @@ export const implementationPass = async (
 			return res.json("Please switch to a wired connection");
 		}
 
-		// if (tmpdir != "/tmp") {
-		// 	return res.json("Please switch to a Unix-like system");
-		// }
-
-		// if (cpu != "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz") {
-		// 	return res.json("Please switch to an Intel Core i7 CPU");
-		// }
-
-		if (cpu.split(" ")[0] != "Intel(R)") {
+		if (!cpu.includes("Intel(R)")) {
 			return res.json("Please switch to an Intel CPU");
 		}
 
@@ -122,7 +112,6 @@ export const implementationPass = async (
 		return next();
 	} catch (error) {
 		return res.json({ error: error.message });
-		// res.json(error);
 	}
 };
 
