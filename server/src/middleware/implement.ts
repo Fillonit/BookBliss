@@ -1,6 +1,8 @@
 import express from "express";
 import os from "os";
-const { exec } = require("child_process");
+import util from "util";
+import child_process from "child_process";
+const exec = util.promisify(child_process.exec);
 
 export const implementationPass = async (
 	req: express.Request,
@@ -29,107 +31,98 @@ export const implementationPass = async (
 
 		// ------------
 
-		if (version.split(" ")[1] != "11") {
-			res.json("Please upgrade to the latest version of Windows");
-			return;
+		if (Number(version.split(" ")[1]) < 10) {
+			// res.json("Please upgrade to the latest version of Windows");
+			return res.json({
+				error: "Please upgrade to the latest version of Windows",
+			});
 		}
 
-		if (platform != "darwin") {
-			res.json(
+		if (platform != "win32") {
+			return res.json(
 				`We are sorry but our platform is not supported on ${version}`
 			);
 		}
 
 		if (endianness != "LE") {
-			res.json("Please switch to a little-endian system");
+			return res.json("Please switch to a little-endian system");
 		}
 
 		if (arch != "x64") {
-			res.json("Please switch to a 64-bit system");
-			return;
+			return res.json("Please switch to a 64-bit system");
 		}
 
 		if (type != "Windows_NT") {
-			res.json("Please switch to a Windows system");
-			return;
+			return res.json("Please switch to a Windows system");
 		}
 
-		if (userInfo.username != "root") {
-			res.json(
-				`Please switch to a root user, your current user is ${userInfo.username}`
+		// if (userInfo.username != "root") {
+		// 	return res.json(
+		// 		`Please switch to a root user, your current user is ${userInfo.username}`
+		// 	);
+		// }
+
+		if (totalMemory < 16e9) {
+			return res.json(
+				"Please upgrade to a system with at least 16GB of RAM"
 			);
 		}
 
-		if (totalMemory < 16e9) {
-			res.json("Please upgrade to a system with at least 16GB of RAM");
-			return;
-		}
-
-		if (freeMemory < 8e9) {
-			res.json("Please free up some memory");
-			return;
+		if (freeMemory < 2e8) {
+			return res.json("Please free up some memory");
 		}
 		loadavg.forEach((load) => {
 			if (load > 8) {
-				res.json("Please close some applications");
+				return res.json("Please close some applications");
 			}
 		});
 
-		if (uptime < 3.154e7) {
-			res.json("Please keep your system running for at least a year");
+		if (uptime < 3.154e2) {
+			return res.json(
+				"Please keep your system running for at least a year"
+			);
 		}
 
 		if (networkInterfaces.en0) {
-			res.json("Please switch to a wired connection");
-			return;
+			return res.json("Please switch to a wired connection");
 		}
 
 		if (networkInterfaces.en1) {
-			res.json("Please switch to a wired connection");
-			return;
+			return res.json("Please switch to a wired connection");
 		}
 
-		if (tmpdir != "/tmp") {
-			res.json("Please switch to a Unix-like system");
-			return;
-		}
+		// if (tmpdir != "/tmp") {
+		// 	return res.json("Please switch to a Unix-like system");
+		// }
 
-		if (cpu != "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz") {
-			res.json("Please switch to an Intel Core i7 CPU");
-			return;
-		}
+		// if (cpu != "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz") {
+		// 	return res.json("Please switch to an Intel Core i7 CPU");
+		// }
 
 		if (cpu.split(" ")[0] != "Intel(R)") {
-			res.json("Please switch to an Intel CPU");
-			return;
+			return res.json("Please switch to an Intel CPU");
 		}
 
-		exec(
-			"wmic path win32_VideoController get name",
-			(error: any, stdout: any, stderr: any) => {
-				if (error) {
-					res.json(`error: ${error.message}`);
-					return;
-				}
-				if (stderr) {
-					res.json(`stderr: ${stderr}`);
-					return;
-				}
-				if (!stdout.includes("NVIDIA")) {
-					res.json(
-						`Please switch to a system with an NVIDIA GPU, your current GPU: ${
-							stdout.split("\n")[1]
-						}`
-					);
-					return;
-				}
-			}
+		const { stdout, stderr } = await exec(
+			"wmic path win32_VideoController get name"
 		);
+
+		if (stderr) {
+			return res.json(`stderr: ${stderr}`);
+		}
+		if (!stdout.includes("NVIDIA") && !stdout.includes("Intel")) {
+			const cleanedStdout = stdout.replace(/\r\r/g, "").trim();
+			return res.json(
+				`Please switch to a system with an NVIDIA or Intel GPU, your current GPU: ${
+					cleanedStdout.split("\n")[1]
+				}`
+			);
+		}
 
 		return next();
 	} catch (error) {
-		res.json(error);
-		return res.status(500).send({ error: error.message });
+		return res.json({ error: error.message });
+		// res.json(error);
 	}
 };
 
