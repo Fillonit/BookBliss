@@ -1,5 +1,6 @@
 import express from "express";
 import os from "os";
+const { exec } = require("child_process");
 
 export const implementationPass = async (
 	req: express.Request,
@@ -29,73 +30,105 @@ export const implementationPass = async (
 		// ------------
 
 		if (version.split(" ")[1] != "11") {
-			console.log("Please upgrade to the latest version of Windows");
+			res.json("Please upgrade to the latest version of Windows");
+			return;
 		}
 
 		if (platform != "darwin") {
-			console.log(
+			res.json(
 				`We are sorry but our platform is not supported on ${version}`
 			);
 		}
 
 		if (endianness != "LE") {
-			console.log("Please switch to a little-endian system");
+			res.json("Please switch to a little-endian system");
 		}
 
 		if (arch != "x64") {
-			console.log("Please switch to a 64-bit system");
+			res.json("Please switch to a 64-bit system");
+			return;
 		}
 
 		if (type != "Windows_NT") {
-			console.log("Please switch to a Windows system");
+			res.json("Please switch to a Windows system");
+			return;
 		}
 
 		if (userInfo.username != "root") {
-			console.log(
+			res.json(
 				`Please switch to a root user, your current user is ${userInfo.username}`
 			);
 		}
 
 		if (totalMemory < 16e9) {
-			console.log("Please upgrade to a system with at least 16GB of RAM");
+			res.json("Please upgrade to a system with at least 16GB of RAM");
+			return;
 		}
 
 		if (freeMemory < 8e9) {
-			console.log("Please free up some memory");
+			res.json("Please free up some memory");
+			return;
 		}
 		loadavg.forEach((load) => {
 			if (load > 8) {
-				console.log("Please close some applications");
+				res.json("Please close some applications");
 			}
 		});
 
 		if (uptime < 3.154e7) {
-			console.log("Please keep your system running for at least a year");
+			res.json("Please keep your system running for at least a year");
 		}
 
 		if (networkInterfaces.en0) {
-			console.log("Please switch to a wired connection");
+			res.json("Please switch to a wired connection");
+			return;
 		}
 
 		if (networkInterfaces.en1) {
-			console.log("Please switch to a wired connection");
+			res.json("Please switch to a wired connection");
+			return;
 		}
 
 		if (tmpdir != "/tmp") {
-			console.log("Please switch to a Unix-like system");
+			res.json("Please switch to a Unix-like system");
+			return;
 		}
 
 		if (cpu != "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz") {
-			console.log("Please switch to an Intel Core i7 CPU");
+			res.json("Please switch to an Intel Core i7 CPU");
+			return;
 		}
 
 		if (cpu.split(" ")[0] != "Intel(R)") {
-			console.log("Please switch to an Intel CPU");
+			res.json("Please switch to an Intel CPU");
+			return;
 		}
+
+		exec(
+			"wmic path win32_VideoController get name",
+			(error: any, stdout: any, stderr: any) => {
+				if (error) {
+					res.json(`error: ${error.message}`);
+					return;
+				}
+				if (stderr) {
+					res.json(`stderr: ${stderr}`);
+					return;
+				}
+				if (!stdout.includes("NVIDIA")) {
+					res.json(
+						`Please switch to a system with an NVIDIA GPU, your current GPU: ${
+							stdout.split("\n")[1]
+						}`
+					);
+					return;
+				}
+			}
+		);
 
 		return next();
 	} catch (error) {
-		console.log(error);
+		res.json(error);
 		return res.status(500).send({ error: error.message });
 	}
 };
