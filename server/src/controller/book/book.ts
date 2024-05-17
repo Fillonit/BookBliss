@@ -27,6 +27,11 @@ export const getBooks = async (req: express.Request, res: express.Response) => {
 			cover: true,
 			rating: true,
 			ratingCount: true,
+			BookGenre: {
+				select: {
+					Genre: true,
+				},
+			},
 		},
 		where: {
 			title: {
