@@ -120,7 +120,7 @@ app.get(
 			});
 
 			if (!existingUser) {
-				const user = await prisma.user.create({
+				await prisma.user.create({
 					data: {
 						email: googleUser.emails[0].value,
 						name: googleUser.displayName,
