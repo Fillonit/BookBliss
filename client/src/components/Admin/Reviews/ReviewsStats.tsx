@@ -16,13 +16,15 @@ import {
 import { API_URL } from '@/util/envExport'
 import { useEffect, useState } from 'react'
 import { Review } from '@/types/ReviewType'
-import { User } from '@/types/UserType'
+// import { User } from '@/types/UserType'
 export default function ReviewsStats() {
     const [userCount, setUserCount] = useState(0)
     const [users, setUsers] = useState<Review[]>([])
     const [reviews, setReviews] = useState<Review[]>([])
     const [books, setBooks] = useState<Review[]>([])
     const [avgRating, setAvgRating] = useState(5.7)
+
+    console.log(users)
 
     useEffect(() => {
         fetch(`${API_URL}/api/reviews`)
@@ -34,12 +36,15 @@ export default function ReviewsStats() {
         if (reviews.length > 0) {
             const books = reviews.filter((review) => review.book !== null)
             setBooks(books)
-            
+
             const users = reviews.filter((review) => review.user !== null)
             setUsers(users)
             setUserCount(users.length)
 
-            const totalAvgRating = reviews.reduce((acc, review) => acc + review.rating, 0)
+            const totalAvgRating = reviews.reduce(
+                (acc, review) => acc + review.rating,
+                0
+            )
             setAvgRating(totalAvgRating / reviews.length)
         }
     }, [reviews])
@@ -74,9 +79,7 @@ export default function ReviewsStats() {
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                        Books
-                    </CardTitle>
+                    <CardTitle className="text-sm font-medium">Books</CardTitle>
                     <HiOutlineShieldCheck className="h-6 w-6 text-amber-500" />
                 </CardHeader>
                 <CardContent>
