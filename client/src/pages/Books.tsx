@@ -39,7 +39,8 @@ import {
     HiOutlineCash,
     HiOutlineSelector,
     HiOutlineViewGrid,
-    HiOutlineStar
+    HiOutlineStar,
+    HiOutlineCalendar
 } from 'react-icons/hi'
 
 const BooksPage = () => {
@@ -82,7 +83,7 @@ const BooksPage = () => {
     let filters = [
         {
             title: 'Genre',
-            icon: <HiOutlineViewGrid className="h-6 w-6 mr-2" />,
+            icon: <HiOutlineViewGrid className="h-6 w-6 mr-2 text-amber-600" />,
             options: [
                 {name: 'Fiction', desc: 'A genre that involves imaginative narrative, particularly in literature.'},
                 {name: 'Non-Fiction', desc: 'A genre that describes factual accounts.'},
@@ -93,7 +94,7 @@ const BooksPage = () => {
         },
         {
             title: 'Price',
-            icon: <HiOutlineCash className="h-6 w-6 mr-2" />,
+            icon: <HiOutlineCash className="h-6 w-6 mr-2 text-amber-600" />,
             options: [
                 {name: 'Under $10', desc: 'Books that are priced under $10.'},
                 {name: '$10 - $20', desc: 'Books that are priced between $10 and $20.'},
@@ -104,12 +105,22 @@ const BooksPage = () => {
         },
         {
             title: 'Review',
-            icon: <HiOutlineStar className="h-6 w-6 mr-2" />,
+            icon: <HiOutlineStar className="h-6 w-6 mr-2 text-amber-600" />,
             options: [
                 {name: 'Most Popular', desc: 'Books that are the most popular.'},
                 {name: 'Least Popular', desc: 'Books that are the least popular.'},
                 {name: 'Hottest', desc: 'Books that are the hottest.'},
                 {name: 'Suggested', desc: 'Books that are suggested.'}
+            ]
+        },
+        {
+            title: 'Release Date',
+            icon: <HiOutlineCalendar className="h-6 w-6 mr-2 text-amber-600" />,
+            options: [
+                {name: 'Newest', desc: 'Books that are the newest.'},
+                {name: 'Oldest', desc: 'Books that are the oldest.'},
+                {name: 'Upcoming', desc: 'Books that are upcoming.'},
+                {name: 'Recently Released', desc: 'Books that are recently released.'}
             ]
         }
     ]
@@ -151,9 +162,9 @@ const BooksPage = () => {
                 </DropdownMenu> */}
                 {filters.map((filter) => (
                     <>
-                    <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">
+                    {/* <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">
                         By {filter.title}
-                    </h3>
+                    </h3> */}
                     <Popover key={filter.title}>
                         <PopoverTrigger asChild>
                             <Button
