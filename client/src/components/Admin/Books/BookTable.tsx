@@ -38,16 +38,16 @@ import {
 import { useEffect, useState } from 'react'
 import {
     HiOutlineClipboardCopy,
-    HiOutlineEye,
+    // HiOutlineEye,
     HiOutlinePencil,
     HiOutlineTrash,
     // HiOutlineCheck,
-    HiUserAdd,
+    // HiUserAdd,
     HiOutlineFolderDownload,
     HiOutlineChevronLeft,
     HiOutlineChevronRight,
 } from 'react-icons/hi'
-import { FaGoogle } from 'react-icons/fa'
+// import { FaGoogle } from 'react-icons/fa'
 import {
     BsFiletypeJson,
     BsFiletypeXml,
@@ -272,7 +272,9 @@ export default function BookTable() {
             cell: ({ row }) => (
                 <div
                     onClick={() => {
-                        navigator.clipboard.writeText(row.getValue('description'))
+                        navigator.clipboard.writeText(
+                            row.getValue('description')
+                        )
                         toast.success('Copied Description to clipboard!', {
                             theme:
                                 localStorage.getItem('flowbite-theme-mode') ===
@@ -320,9 +322,7 @@ export default function BookTable() {
                 )
             },
             cell: ({ row }) => {
-                return (
-                    <div>{row.getValue('price')}</div>
-                )
+                return <div>{row.getValue('price')}</div>
             },
         },
         {
@@ -341,9 +341,7 @@ export default function BookTable() {
                 )
             },
             cell: ({ row }) => {
-                return (
-                    <div>{row.getValue('author')}</div>
-                )
+                return <div>{row.getValue('author')}</div>
             },
         },
         {

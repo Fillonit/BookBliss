@@ -123,7 +123,7 @@ model Contact {
   type      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  ip        String   @db.VarChar(30)
+  ip        String   @db.VarChar(200)
 }
 
 model UserProgress {

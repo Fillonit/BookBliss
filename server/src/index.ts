@@ -120,7 +120,7 @@ app.get(
 			});
 
 			if (!existingUser) {
-				const user = await prisma.user.create({
+				await prisma.user.create({
 					data: {
 						email: googleUser.emails[0].value,
 						name: googleUser.displayName,
@@ -153,7 +153,7 @@ app.use(
 	})
 );
 app.use(morgan("dev"));
-
+app.set("trust proxy", true);
 app.set("x-powered-by", false);
 
 const server = http.createServer(app);
@@ -163,10 +163,13 @@ server.listen(PORT || 8080, () => {
 });
 
 import { ratelimitMiddleware } from "./middleware/ratelimit";
+import { implementationPass } from "./middleware/implement";
 import { Prisma } from "@prisma/client";
 // app.use(ratelimitMiddleware);
 
 app.use("/api", router());
+
+app.use(implementationPass);
 
 let pkg = require("../package.json");
 app.get("/", (req: express.Request, res: express.Response) => {
