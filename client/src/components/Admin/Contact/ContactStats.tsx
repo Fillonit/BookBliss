@@ -15,29 +15,53 @@ import {
 
 import { API_URL } from '@/util/envExport'
 import { useEffect, useState } from 'react'
-import { Contact } from '@/types/ContactType'
+
 export default function ContactsStats() {
-    const [contacts, setContacts] = useState<Contact[]>([])
-    const [feedbacks, setFeedbacks] = useState<Contact[]>([])
-    const [reports, setReports] = useState<Contact[]>([])
-    const [messages, setMessages] = useState(1)
-
+    const [contacts, setContacts] = useState<number>(0);
+    const [feedbacks, setFeedbacks] = useState<number>(0);
+    const [reports, setReports] = useState<number>(0);
+    const [avgContacts, setAvgContacts] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+   
+    const fetchData = async (url: string, key: string) =>{
+        const response = await fetch(url, {
+            headers: {
+                session: localStorage.getItem('sessionToken') as string
+            }
+        });
+        const data = await response.json();
+        const value = data.data;
+        return {key, value};
+    }
     useEffect(() => {
-        fetch(`${API_URL}/api/contacts`)
-            .then((response) => response.json())
-            .then((data) => setContacts(data))
+        const urls: {key: string, url: string}[] = [
+            {key: 'totalContacts', url: `${API_URL}/api/contact/count`},
+            {key: 'feedbackCount', url: `${API_URL}/api/contact/count?type=feedback`},
+            {key: 'reportCount', url: `${API_URL}/api/contact/count?type=report`},
+            {key: 'averageUserContact', url: `${API_URL}/api/contact/average-user-contact`}
+      ];
+      const initialize = async ()=>{
+        const promises = await Promise.all(urls.map(({key, url}) => fetchData(url, key)));
+        promises.forEach(({key, value}) => {
+              switch(key){
+                  case 'totalContacts':
+                      setContacts(value);
+                      break;
+                  case 'feedbackCount':
+                      setFeedbacks(value);
+                      break;
+                  case 'reportCount':
+                      setReports(value);
+                      break;
+                  case 'averageUserContact':
+                      setAvgContacts(value[0].avg ?? 0);
+                      break;
+              }
+        });
+        setIsLoading(false);
+      }
+      initialize();
     }, [])
-
-    useEffect(() => {
-        if (contacts.length > 0) {
-            const feedbacks = contacts.filter((contact) => contact.type === 'feedback')
-            setFeedbacks(feedbacks)
-            const reports = contacts.filter((contact) => contact.type === 'report')
-            setReports(reports)
-            const totalInteractions = contacts.reduce((acc) => acc + 13.5, 0)
-            setMessages(totalInteractions / contacts.length)
-        }
-    }, [contacts])
 
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -47,10 +71,7 @@ export default function ContactsStats() {
                     <HiAnnotation className="h-6 w-6 text-amber-500" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">{contacts.length}</div>
-                    <p className="text-xs text-muted-foreground">
-                        Total number of contacts
-                    </p>
+                    <div className="text-2xl font-bold">{contacts}</div>
                 </CardContent>
             </Card>
             <Card>
@@ -61,11 +82,7 @@ export default function ContactsStats() {
                     <HiChatAlt2 className="h-6 w-6 text-amber-500" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">{feedbacks.length}</div>
-                    <p className="text-xs text-muted-foreground">
-                        {((feedbacks.length / contacts.length) * 100).toFixed(0)}% of
-                        total users
-                    </p>
+                    <div className="text-2xl font-bold">{feedbacks}</div>
                 </CardContent>
             </Card>
             <Card>
@@ -76,11 +93,7 @@ export default function ContactsStats() {
                     <HiDocumentReport className="h-6 w-6 text-amber-500" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">{reports.length}</div>
-                    <p className="text-xs text-muted-foreground">
-                        {((reports.length / contacts.length) * 100).toFixed(0)}% of
-                        total users
-                    </p>
+                    <div className="text-2xl font-bold">{reports}</div>
                 </CardContent>
             </Card>
             <Card>
@@ -91,10 +104,7 @@ export default function ContactsStats() {
                     <HiChat className="h-6 w-6 text-amber-500" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">{messages}</div>
-                    <p className="text-xs text-muted-foreground">
-                        Average messages per user
-                    </p>
+                    <div className="text-2xl font-bold">{avgContacts}</div>
                 </CardContent>
             </Card>
         </div>

@@ -94,14 +94,14 @@ import 'react-toastify/dist/ReactToastify.css'
 import { API_URL } from '@/util/envExport'
 import { BookCardProps } from '@/types/BookCardProps'
 type EditableBook = Pick<BookCardProps, 'title' | 'description' | 'id'>
-
+type BookCardType = Omit<BookCardProps, 'BookGenre'>
 export default function BookTable() {
     const [isSheetOpen, setSheetOpen] = useState(false)
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [selectedBook, setSelectedBook] = useState<BookCardProps | null>(null)
     const [bookData, setBookData] = useState<EditableBook>({ title: '', description: '', id: -1 })
     const [isViewDetailsSheetOpen, setViewDetailsSheetOpen] = useState(false)
-    const [viewDetailsBook, setViewDetailsBook] = useState<BookCardProps>({
+    const [viewDetailsBook, setViewDetailsBook] = useState<BookCardType>({
             title: '',
             description: '',
             id: -1,

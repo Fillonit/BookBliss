@@ -48,7 +48,6 @@ export const getBooks = async (req: express.Request, res: express.Response) => {
 
 export const getBook = async (req: express.Request, res: express.Response) => {
 	const { id } = req.params;
-
 	const book = await prisma.book.findFirst({
 		where: {
 			id: Number.parseInt(id),
@@ -90,6 +89,83 @@ export const updateBook = async (
 		},
 	});
 	res.status(200).json({ message: "Successfully updated book" });
+};
+export const countBooks = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const { session } = req.headers;
+	const query = String(req.query.query ?? "");
+
+	const user = await getUserBySessionToken(session as string);
+
+	if (!user || user.role !== "admin") {
+		return res.status(401).json({ message: "Unauthorized" });
+	}
+    
+	const count = await prisma.book.count({
+		where: {
+			title: {
+				contains: query,
+			}
+		}
+	})
+	res.status(200).json({ message: "Successfully fetched count", data: count});
+};
+export const averagePrice = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const { session } = req.headers;
+
+	const user = await getUserBySessionToken(session as string);
+	if (!user || user.role !== "admin") {
+		return res.status(401).json({ message: "Unauthorized" });
+	}
+
+	const avgPrice = await prisma.book.aggregate({
+		_avg: {
+			price: true
+		}
+	})
+	res.status(200).json({ message: "Successfully fetched price", data: avgPrice._avg.price});
+};
+export const averageRating = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const { session } = req.headers;
+
+	const user = await getUserBySessionToken(session as string);
+	if (!user || user.role !== "admin") {
+		return res.status(401).json({ message: "Unauthorized" });
+	}
+
+	const avgRating = await prisma.book.aggregate({
+		_avg: {
+			rating: true
+		}
+	});
+	res.status(200).json({ message: "Successfully fetched rating", data: avgRating._avg.rating });
+};
+
+export const averageTimeToRead = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const { session } = req.headers;
+
+	const user = await getUserBySessionToken(session as string);
+	if (!user || user.role !== "admin") {
+		return res.status(401).json({ message: "Unauthorized" });
+	}
+
+	const avgTimeToRead = await prisma.book.aggregate({
+		_avg: {
+			timeToRead: true
+		}
+	});
+	res.status(200).json({ message: "Successfully fetched time to read", data: avgTimeToRead._avg.timeToRead });
 };
 
 export const createBook = async (
@@ -149,7 +225,7 @@ export const deleteBook = async (
 			id: Number.parseInt(id),
 		},
 	});
-	console.log(book);
+
 	if (book.authorId !== user.id && user.role !== "admin") {
 		return res
 			.status(401)

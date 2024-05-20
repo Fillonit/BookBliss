@@ -61,7 +61,7 @@ export const createUser = async (
 		}
 
 		const salt = await random();
-		console.log(salt);
+
 		const sessionToken = await authentication(password, salt);
 		const hashedPassword = authentication(salt, password);
 

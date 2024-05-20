@@ -12,13 +12,13 @@ export const login = async (req: express.Request, res: express.Response) => {
 		if (!email || !password) {
 			return res.status(400).json({ message: "Missing fields" });
 		}
-
+        console.log(email);
 		let user = await prisma.user.findUnique({
 			where: {
 				email: email,
 			},
 		});
-
+		console.log(user);
 		if (!user) {
 			return res.status(400).json({ message: "User not found" });
 		}
@@ -67,6 +67,7 @@ export const register = async (req: express.Request, res: express.Response) => {
 		}
 
 		const existingUser = await prisma.user.findUnique({ where: { email } });
+        
 
 		if (existingUser) {
 			return res.status(400).json({ message: "User already exists" });
