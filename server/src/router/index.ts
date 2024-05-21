@@ -7,6 +7,7 @@ import authentication from "./authentication";
 import exportData from "./export";
 import inventory from "./inventory";
 import review from "./review";
+import genre from "./genre";
 
 const router = express.Router();
 
@@ -19,6 +20,7 @@ export default (): express.Router => {
 	exportData(router);
 	inventory(router);
 	review(router);
+	genre(router);
 
 	return router;
 };
