@@ -55,7 +55,7 @@ const UsersInfo: React.FC = () => {
     //     fetchData()
     // }, [])
     return (
-        <div className="flex h-screen bg-[url(https://fillonit.shx.gg/6xgRkVEmj.gif)] bg-contain py-10">
+        <div className="flex h-screen bg-gradient-to-bl from-slate-700 via-slate-800 to-slate-900 bg-contain py-10">
             <div className="w-64 bg-white border-r dark:bg-gray-800">
                 <SidebarComponent />
             </div>
