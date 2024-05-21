@@ -1,3 +1,4 @@
+import * as React from 'react'
 // import { Card, CardContent } from '@/components/ui/card'
 import {
     Carousel,
@@ -11,7 +12,7 @@ import { DropdownProps } from '../Other/Dropdown'
 import { useEffect, useState } from 'react'
 import BookCard from '../Book/BookCard'
 import { BookCardProps } from '@/types/BookCardProps'
-import Loading from '../Other/Loading'
+import SkeletonCardBook from '../Other/Loading'
 import NoResults from '../Other/Exceptions/NoResults'
 import { API_URL } from '@/util/envExport'
 
@@ -50,7 +51,7 @@ export function HomeBooks() {
         { label: 'Highest rated', value: 'rating' },
     ]
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center w-full">
             <Dropdown
                 dropdownOptions={filters}
                 defaultValue="createdAt"
@@ -64,15 +65,19 @@ export function HomeBooks() {
                 opts={{
                     align: 'start',
                 }}
-                className="w-full h-48"
+                className="w-full min-w-96 mt-4"
             >
-                {loading && <Loading />}
+                {loading && <SkeletonCardBook count={4} />}
                 {!loading && books && books.length > 0 && (
                     <CarouselContent>
                         {books.map((book, index) => (
-                            <CarouselItem key={index} className="">
-                                <div className="p-6">
+                            <CarouselItem key={index} className="basis-1/4">
+                                <div className="p-1">
+                                    {/* <Card> */}
+                                    {/* <CardContent className="flex aspect-square items-center justify-center p-6"> */}
                                     <BookCard {...book} />
+                                    {/* </CardContent> */}
+                                    {/* </Card> */}
                                 </div>
                             </CarouselItem>
                         ))}
@@ -86,11 +91,6 @@ export function HomeBooks() {
                     </>
                 )}
             </Carousel>
-            {/* {books && books.length > 0 && (
-                <div className="mt-[15vh]">
-                    <BookCard {...books[0]} />
-                </div>
-            )} */}
         </div>
     )
 }

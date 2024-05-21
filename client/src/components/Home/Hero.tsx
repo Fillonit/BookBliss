@@ -50,33 +50,34 @@ const Hero = () => {
                         </span>
                     </h1>
                     <h2 className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                        Discover, explore and lose yourself in our vast collection of books across multiple genres.
+                        Discover, explore and lose yourself in our vast
+                        collection of books across multiple genres.
                     </h2>
-                <div className="mt-10 flex items-center justify-center gap-x-6">
-                    <a
-                        className="isomorphic-link isomorphic-link--internal inline-flex items-center justify-center gap-2 rounded-xl bg-amber-800 px-4 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-600 dark:bg-amber-700 dark:text-white dark:hover:bg-amber-600 dark:focus:ring-amber-500"
-                        href="/login"
-                    >
-                        Shop Now
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
+                    <div className="mt-10 flex items-center justify-center gap-x-6">
+                        <a
+                            className="isomorphic-link isomorphic-link--internal inline-flex items-center justify-center gap-2 rounded-xl bg-amber-800 px-4 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-600 dark:bg-amber-700 dark:text-white dark:hover:bg-amber-600 dark:focus:ring-amber-500"
+                            href="/login"
                         >
-                            <path
-                                fillRule="evenodd"
-                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                            ></path>
-                        </svg>
-                    </a>
+                            Shop Now
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-4 w-4"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                            >
+                                <path
+                                    fillRule="evenodd"
+                                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                    clipRule="evenodd"
+                                ></path>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div className="flex justify-center items-center mt-11">
-                <HomeBooks />
-            </div>
-            {/* <div className="flex justify-center">
+                <div className="flex justify-center items-center mt-11">
+                    <HomeBooks />
+                </div>
+                {/* <div className="flex justify-center">
                     <div className="mx-4 mt-10 max-w-xs">
                         <img
                             className="w-full rounded-2xl border border-gray-100 shadow dark:border-gray-800 hover:scale-105 transition-transform delay-100"
@@ -99,8 +100,8 @@ const Hero = () => {
                         />
                     </div>
                 </div> */}
-        </div>
-        </section >
+            </div>
+        </section>
     )
 }
 
