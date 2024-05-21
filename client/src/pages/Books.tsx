@@ -43,8 +43,33 @@ import {
     HiOutlineCalendar,
 } from 'react-icons/hi'
 
+type Genre = {
+    id: number;
+    name: string;
+    description?: string;
+};
+
 const BooksPage = () => {
-    const [books, setBooks] = useState([])
+    const [books, setBooks] = useState<BookCardProps[]>([])
+    const [genres, setGenres] = useState<Genre[]>([]);
+
+    const fetchGenres = async () => {
+        try {
+            const response = await fetch(`${API_URL}/api/genres`);
+            if (response.ok) {
+                const json: Genre[] = await response.json();
+                setGenres(json);
+            } else {
+                console.error("Failed to fetch genres:", response.status, response.statusText);
+            }
+        } catch (e) {
+            console.error("Error fetching genres:", e);
+        }
+    };
+
+    useEffect(() => {
+        fetchGenres();
+    }, []);
 
     const fetchBooks = async () => {
         try {
@@ -76,28 +101,10 @@ const BooksPage = () => {
         {
             title: 'Genre',
             icon: <HiOutlineViewGrid className="h-6 w-6 mr-2 text-amber-600" />,
-            options: [
-                {
-                    name: 'Fiction',
-                    desc: 'A genre that involves imaginative narrative, particularly in literature.',
-                },
-                {
-                    name: 'Non-Fiction',
-                    desc: 'A genre that describes factual accounts.',
-                },
-                {
-                    name: 'Mystery',
-                    desc: 'A genre that involves suspense and intrigue.',
-                },
-                {
-                    name: 'Romance',
-                    desc: 'A genre that focuses on the romantic relationships between characters.',
-                },
-                {
-                    name: 'Sci-Fi',
-                    desc: 'A genre that involves speculative science and technology.',
-                },
-            ],
+            options: genres.map(genre => ({
+                name: genre.name,
+                desc: genre.description || 'No description available.',
+            })) ?? [{ name: 'None', desc: 'No genre specified.' }],
         },
         {
             title: 'Price',

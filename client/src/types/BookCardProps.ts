@@ -10,6 +10,7 @@ export interface BookCardProps {
     BookGenre?: [
         {
             Genre: {
+                description: any
                 name: string
             }
         }
