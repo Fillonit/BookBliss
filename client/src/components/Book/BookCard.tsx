@@ -24,7 +24,8 @@ export default function BookCard(book: BookCardProps) {
                     <HiStar className="text-xl" /> {book.rating}
                 </span>
                 <span className="absolute bottom-0 right-0 bg-white text-amber-600 px-2 py-1 m-2 rounded dark:bg-slate-900 dark:text-white">
-                    {book.BookGenre[0]?.Genre.name ?? 'None'}
+                    {(book.BookGenre && book.BookGenre[0]?.Genre.name) ??
+                        'None'}
                 </span>
             </div>
             <CardContent className="p-4 flex-grow">

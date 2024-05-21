@@ -7,7 +7,7 @@ export interface BookCardProps {
     rating: number
     price: number
     genre: string
-    BookGenre: [
+    BookGenre?: [
         {
             Genre: {
                 name: string

@@ -22,25 +22,25 @@ import {
 } from '@/components/ui/popover'
 // import { ChevronDownIcon } from '@radix-ui/react-icons'
 
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-    DropdownMenuRadioGroup,
-    DropdownMenuRadioItem,
-} from '@/components/ui/dropdown-menu'
+// import {
+//     DropdownMenu,
+//     DropdownMenuCheckboxItem,
+//     DropdownMenuContent,
+//     DropdownMenuItem,
+//     DropdownMenuLabel,
+//     DropdownMenuSeparator,
+//     DropdownMenuTrigger,
+//     DropdownMenuRadioGroup,
+//     DropdownMenuRadioItem,
+// } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 // import { ChevronDown } from 'lucide-react'
 import {
     HiOutlineCash,
-    HiOutlineSelector,
+    // HiOutlineSelector,
     HiOutlineViewGrid,
     HiOutlineStar,
-    HiOutlineCalendar
+    HiOutlineCalendar,
 } from 'react-icons/hi'
 
 const BooksPage = () => {
@@ -72,57 +72,82 @@ const BooksPage = () => {
         fetchBookData()
     }, [])
 
-    let genres = [
-        {name: 'Fiction', desc: 'A genre that involves imaginative narrative, particularly in literature.'},
-        {name: 'Non-Fiction', desc: 'A genre that describes factual accounts.'},
-        {name: 'Mystery', desc: 'A genre that involves suspense and intrigue.'},
-        {name: 'Romance', desc: 'A genre that focuses on the romantic relationships between characters.'},
-        {name: 'Sci-Fi', desc: 'A genre that involves speculative science and technology.'}
-    ];
-
-    let filters = [
+    const filters = [
         {
             title: 'Genre',
             icon: <HiOutlineViewGrid className="h-6 w-6 mr-2 text-amber-600" />,
             options: [
-                {name: 'Fiction', desc: 'A genre that involves imaginative narrative, particularly in literature.'},
-                {name: 'Non-Fiction', desc: 'A genre that describes factual accounts.'},
-                {name: 'Mystery', desc: 'A genre that involves suspense and intrigue.'},
-                {name: 'Romance', desc: 'A genre that focuses on the romantic relationships between characters.'},
-                {name: 'Sci-Fi', desc: 'A genre that involves speculative science and technology.'}
-            ]
+                {
+                    name: 'Fiction',
+                    desc: 'A genre that involves imaginative narrative, particularly in literature.',
+                },
+                {
+                    name: 'Non-Fiction',
+                    desc: 'A genre that describes factual accounts.',
+                },
+                {
+                    name: 'Mystery',
+                    desc: 'A genre that involves suspense and intrigue.',
+                },
+                {
+                    name: 'Romance',
+                    desc: 'A genre that focuses on the romantic relationships between characters.',
+                },
+                {
+                    name: 'Sci-Fi',
+                    desc: 'A genre that involves speculative science and technology.',
+                },
+            ],
         },
         {
             title: 'Price',
             icon: <HiOutlineCash className="h-6 w-6 mr-2 text-amber-600" />,
             options: [
-                {name: 'Under $10', desc: 'Books that are priced under $10.'},
-                {name: '$10 - $20', desc: 'Books that are priced between $10 and $20.'},
-                {name: '$20 - $30', desc: 'Books that are priced between $20 and $30.'},
-                {name: '$30 - $40', desc: 'Books that are priced between $30 and $40.'},
-                {name: 'Over $40', desc: 'Books that are priced over $40.'}
-            ]
+                { name: 'Under $10', desc: 'Books that are priced under $10.' },
+                {
+                    name: '$10 - $20',
+                    desc: 'Books that are priced between $10 and $20.',
+                },
+                {
+                    name: '$20 - $30',
+                    desc: 'Books that are priced between $20 and $30.',
+                },
+                {
+                    name: '$30 - $40',
+                    desc: 'Books that are priced between $30 and $40.',
+                },
+                { name: 'Over $40', desc: 'Books that are priced over $40.' },
+            ],
         },
         {
             title: 'Review',
             icon: <HiOutlineStar className="h-6 w-6 mr-2 text-amber-600" />,
             options: [
-                {name: 'Most Popular', desc: 'Books that are the most popular.'},
-                {name: 'Least Popular', desc: 'Books that are the least popular.'},
-                {name: 'Hottest', desc: 'Books that are the hottest.'},
-                {name: 'Suggested', desc: 'Books that are suggested.'}
-            ]
+                {
+                    name: 'Most Popular',
+                    desc: 'Books that are the most popular.',
+                },
+                {
+                    name: 'Least Popular',
+                    desc: 'Books that are the least popular.',
+                },
+                { name: 'Hottest', desc: 'Books that are the hottest.' },
+                { name: 'Suggested', desc: 'Books that are suggested.' },
+            ],
         },
         {
             title: 'Release Date',
             icon: <HiOutlineCalendar className="h-6 w-6 mr-2 text-amber-600" />,
             options: [
-                {name: 'Newest', desc: 'Books that are the newest.'},
-                {name: 'Oldest', desc: 'Books that are the oldest.'},
-                {name: 'Upcoming', desc: 'Books that are upcoming.'},
-                {name: 'Recently Released', desc: 'Books that are recently released.'}
-            ]
-        }
+                { name: 'Newest', desc: 'Books that are the newest.' },
+                { name: 'Oldest', desc: 'Books that are the oldest.' },
+                { name: 'Upcoming', desc: 'Books that are upcoming.' },
+                {
+                    name: 'Recently Released',
+                    desc: 'Books that are recently released.',
+                },
+            ],
+        },
     ]
 
     return (
@@ -162,39 +187,48 @@ const BooksPage = () => {
                 </DropdownMenu> */}
                 {filters.map((filter) => (
                     <>
-                    {/* <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">
+                        {/* <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">
                         By {filter.title}
                     </h3> */}
-                    <Popover key={filter.title}>
-                        <PopoverTrigger asChild>
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                className="ml-auto w-full mb-4 py-5"
-                            >
-                                {filter.icon}
-                                <span className='text-lg'>{filter.title}</span>
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="p-0" align="end">
-                            <Command>
-                                <CommandInput placeholder={`Select new ${filter.title.toLowerCase()}...`} />
-                                <CommandList>
-                                    <CommandEmpty>No options found.</CommandEmpty>
-                                    <CommandGroup>
-                                        {filter.options.map((option) => (
-                                            <CommandItem key={option.name} className="teamaspace-y-1 flex flex-col items-start px-4 py-2">
-                                                <p>{option.name}</p>
-                                                <p className="text-sm text-muted-foreground">
-                                                    {option.desc}
-                                                </p>
-                                            </CommandItem>
-                                        ))}
-                                    </CommandGroup>
-                                </CommandList>
-                            </Command>
-                        </PopoverContent>
-                    </Popover>
+                        <Popover key={filter.title}>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="ml-auto w-full mb-4 py-5"
+                                >
+                                    {filter.icon}
+                                    <span className="text-lg">
+                                        {filter.title}
+                                    </span>
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="p-0" align="end">
+                                <Command>
+                                    <CommandInput
+                                        placeholder={`Select new ${filter.title.toLowerCase()}...`}
+                                    />
+                                    <CommandList>
+                                        <CommandEmpty>
+                                            No options found.
+                                        </CommandEmpty>
+                                        <CommandGroup>
+                                            {filter.options.map((option) => (
+                                                <CommandItem
+                                                    key={option.name}
+                                                    className="teamaspace-y-1 flex flex-col items-start px-4 py-2"
+                                                >
+                                                    <p>{option.name}</p>
+                                                    <p className="text-sm text-muted-foreground">
+                                                        {option.desc}
+                                                    </p>
+                                                </CommandItem>
+                                            ))}
+                                        </CommandGroup>
+                                    </CommandList>
+                                </Command>
+                            </PopoverContent>
+                        </Popover>
                     </>
                 ))}
             </div>
