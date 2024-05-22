@@ -7,10 +7,10 @@ import {
 } from '@/components/ui/card'
 
 import {
-    HiOutlineUserGroup,
     HiOutlinePencilAlt,
     HiOutlineCursorClick,
     HiOutlineShieldCheck,
+    HiOutlineBookOpen
 } from 'react-icons/hi'
 
 import { API_URL } from '@/util/envExport'
@@ -68,7 +68,7 @@ export default function BookStats() {
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Total books</CardTitle>
-                    <HiOutlineUserGroup className="h-6 w-6 text-amber-500" />
+                    <HiOutlineBookOpen className="h-6 w-6 text-amber-500" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">{totalBooks}</div>

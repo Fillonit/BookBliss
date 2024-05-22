@@ -169,7 +169,7 @@ import { Prisma } from "@prisma/client";
 
 app.use("/api", router());
 
-app.use(implementationPass);
+//app.use(implementationPass);
 
 let pkg = require("../package.json");
 app.get("/", (req: express.Request, res: express.Response) => {

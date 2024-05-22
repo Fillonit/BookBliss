@@ -97,7 +97,33 @@ export const deleteReview = async (
 	});
 	res.status(200).json(review);
 };
+export const reviewCount = async (
+    req: express.Request,
+    res: express.Response
+) => {
+    const q = String(req.query.query ?? "");
 
+    const count = q ? await prisma.review.count({
+        where: {
+            OR: [
+            {
+             user: {
+                name: {
+                    contains: q,
+                },
+              }
+            },
+            {
+             comment: {
+                contains: q
+             }
+            }
+            ]
+        }
+    }) : await prisma.review.count();
+
+    res.status(200).json({ message: "Successfully fetched count", data: count });
+}
 export const updateReview = async (
     req: express.Request,
     res: express.Response

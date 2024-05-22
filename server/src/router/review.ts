@@ -6,6 +6,7 @@ import {
     createReview,
     deleteReview,
     getReviews,
+    reviewCount,
 } from "../controller/review/review";
 
 import { ratelimitMiddleware } from "../middleware/ratelimit";
@@ -15,5 +16,6 @@ export default (router: express.Router) => {
     router.get("/reviews", getReviews);
     router.delete("/review/:id", deleteReview);
     router.put("/review/:id", updateReview);
+    router.get("/review/count", reviewCount);
     router.get("/review/:id", getReview);
 };

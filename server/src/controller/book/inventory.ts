@@ -35,7 +35,22 @@ export const getInventory = async (
 
 	res.status(200).json(inventory);
 };
+export const getInventoryCount = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const q = String(req.query.q ?? "");
 
+	const count = q == "" ? await prisma.inventory.count() : 
+	await prisma.inventory.count({where:{
+		Book: {
+			title: {
+				contains: q,
+			},
+		},	
+	}});
+	res.status(200).json({ message: "Successfully fetched count", data: count });
+};
 export const getInventoryItem = async (
 	req: express.Request,
 	res: express.Response

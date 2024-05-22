@@ -63,7 +63,7 @@ export const getAvgUserContact = async (req: express.Request, res: express.Respo
 	  SELECT AVG(avg_user_rating) AS avg 
 	  FROM (SELECT ip, CAST(COUNT(*) AS FLOAT) AS avg_user_rating
 	        FROM Contact
-			GROUP BY ip);
+			GROUP BY ip)s;
 	`;
 	console.log(feedbacks);
 	res.status(200).json({message: "Successfully fetched average contact per user", data: feedbacks });
