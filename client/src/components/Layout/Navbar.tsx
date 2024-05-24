@@ -161,7 +161,7 @@ function NavbarComponent() {
                         )}
                         {user ? (
                             <>
-                                <Dropdown.Item href={`/profile/${user.id}`}>
+                                <Dropdown.Item href={`/profile`}>
                                     Profile
                                 </Dropdown.Item>
                                 <Dropdown.Item className="float-left">

@@ -19,6 +19,7 @@ import BookList from '@/components/Book/BookList'
 import Footer from '@/components/Layout/Footer'
 
 import { PublicRoute, PrivateRoute } from '@/util/routeHandler'
+import Profile from './components/User/Profile'
 function App() {
     // const [userId, setUserId] = useState(localStorage.getItem("userId"));
     return (
@@ -70,6 +71,10 @@ function App() {
                                 element={
                                     <PrivateRoute element={<Dashboard />} />
                                 }
+                            />
+                            <Route
+                                path="/profile"
+                                element={<PrivateRoute element={<Profile />} />}
                             />
                             {/* <Route path="/dashboard" element={<Dashboard />} />
                             <Route
