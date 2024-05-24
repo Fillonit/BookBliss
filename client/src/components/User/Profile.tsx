@@ -84,12 +84,10 @@ const Profile = () => {
         }
     }
 
-    // Get current books
     const indexOfLastBook = currentPage * booksPerPage
     const indexOfFirstBook = indexOfLastBook - booksPerPage
     const currentBooks = savedBooks.slice(indexOfFirstBook, indexOfLastBook)
 
-    // Change page
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
     if (!userData) {
@@ -97,8 +95,8 @@ const Profile = () => {
     }
 
     return (
-        <div className="bg-blue-200 py-5 min-h-screen flex items-center justify-center">
-            <div className="bg-white shadow-md rounded-lg overflow-hidden w-full max-w-md">
+        <div className="bg-slate-400 dark:bg-gray-700 py-5 min-h-screen flex items-center justify-center">
+            <div className="bg-gray-200 dark:bg-gray-500 shadow-md rounded-lg overflow-hidden w-full max-w-md">
                 <div
                     className="h-48 flex items-end p-4 bg-black"
                     style={{
@@ -124,8 +122,10 @@ const Profile = () => {
                     </div>
                 </div>
                 <div className="p-4">
-                    <h3 className="text-lg font-semibold mb-3">About</h3>
-                    <div className="bg-gray-100 p-4 rounded-lg">
+                    <h3 className="text-lg font-semibold mb-3 dark:text-gray-800">
+                        About
+                    </h3>
+                    <div className="bg-gray-100 dark:bg-gray-400 p-4 rounded-lg dark:text-gray-800">
                         <p className="italic mb-2">{userData.bio}</p>
                         <p className="mb-2">
                             <strong>Email:</strong> {userData.email}
@@ -137,7 +137,7 @@ const Profile = () => {
                     </div>
                     <div className="mt-4">
                         <div className="flex justify-between items-center mb-3">
-                            <h4 className="text-lg font-semibold">
+                            <h4 className="text-lg font-semibold dark:text-gray-800">
                                 Saved Books
                             </h4>
                         </div>
