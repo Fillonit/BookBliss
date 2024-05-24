@@ -8,6 +8,7 @@ import exportData from "./export";
 import inventory from "./inventory";
 import review from "./review";
 import genre from "./genre";
+import savedbooks from "./savedbooks";
 
 const router = express.Router();
 
@@ -21,6 +22,7 @@ export default (): express.Router => {
 	inventory(router);
 	review(router);
 	genre(router);
+	savedbooks(router);
 
 	return router;
 };
