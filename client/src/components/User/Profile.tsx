@@ -2,6 +2,7 @@ import { API_URL } from '@/util/envExport'
 import { User } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FaEdit } from 'react-icons/fa'
+import SidebarProfile from '../../components/User/SidebarProfile'
 
 interface SavedBook {
     id: number
@@ -122,6 +123,7 @@ const Profile = () => {
                     </div>
                 </div>
                 <div className="p-4">
+                    <SidebarProfile />
                     <h3 className="text-lg font-semibold mb-3 dark:text-gray-800">
                         About
                     </h3>
@@ -163,7 +165,7 @@ const Profile = () => {
                                     <li key={number + 1} className="mx-2">
                                         <button
                                             onClick={() => paginate(number + 1)}
-                                            className="px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 rounded-lg"
+                                            className="px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 rounded-full"
                                         >
                                             {number + 1}
                                         </button>
