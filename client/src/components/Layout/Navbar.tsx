@@ -154,9 +154,14 @@ function NavbarComponent() {
                                 {user ? user.email : 'guest@bookbliss'}
                             </span>
                         </Dropdown.Header>
-                        {user && user.role === 'admin' && (
+                        {user && user.role == 'admin' && (
                             <Dropdown.Item href={'/dashboard'}>
                                 Dashboard
+                            </Dropdown.Item>
+                        )}
+                         {user && user.role == 'author' && (
+                            <Dropdown.Item href={'/book/create'}>
+                                Create a book
                             </Dropdown.Item>
                         )}
                         {user ? (

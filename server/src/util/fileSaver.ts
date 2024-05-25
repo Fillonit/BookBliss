@@ -2,9 +2,11 @@ import multer from "multer";
 import express from "express";
 import path from "path";
 
+const destinationDirectory = path.join(__dirname, '../attachments');
+
 const storage = multer.diskStorage({
     destination: (req: express.Request, file: Express.Multer.File , cb) => {
-        cb(null, '../attachments');
+        cb(null, destinationDirectory);
     },
     filename: (req: express.Request, file: Express.Multer.File, cb) => {
         cb(null, Date.now() + path.extname(file.originalname));

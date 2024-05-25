@@ -177,17 +177,19 @@ export const createBook = async (
 	if (!user || user.role !== "author") {
 		return res.status(401).json({ message: "Unauthorized" });
 	}
-
-	const { price, description, title, pages, words, timeToRead } = req.body;
+    const data = JSON.parse(req.body.other);
+	const { price, description, title, pages, words, timeToRead, publisher, genres } = data;
+	console.log(data);
 
 	const coverFile = Array.isArray(req.files)
 		? req.files[0].filename
 		: req.files["cover"][0].filename;
+
 	const pdfFile = Array.isArray(req.files)
 		? req.files[0].filename
 		: req.files["cover"][0].filename;
 
-	await prisma.book.create({
+	const createdBook = await prisma.book.create({
 		data: {
 			price: price as number,
 			description: description as string,
@@ -204,9 +206,16 @@ export const createBook = async (
 			authorId: user.id,
 			createdAt: new Date(),
 			updatedAt: new Date(),
+			publisherId: publisher
 		},
 	});
-	res.status(200).json({ message: "Successfully updated book" });
+	await prisma.bookGenre.createMany({
+		data: Object.keys(genres).map(key=>({
+           bookId: createdBook.id,
+		   genreId: genres[key].id
+		}))
+	})
+	res.status(200).json({ message: "Successfully created book" });
 };
 
 export const deleteBook = async (

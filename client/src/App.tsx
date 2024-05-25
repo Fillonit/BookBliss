@@ -22,6 +22,7 @@ import Footer from '@/components/Layout/Footer'
 
 import { PublicRoute, PrivateRoute } from '@/util/routeHandler'
 import Profile from './components/User/Profile'
+import CreateBook from './pages/CreateBook'
 function App() {
     // const [userId, setUserId] = useState(localStorage.getItem("userId"));
     return (
@@ -64,24 +65,30 @@ function App() {
                             <Route
                                 path="/admin"
                                 element={
-                                    <PrivateRoute element={<BookList />} />
+                                    <PrivateRoute requiredRole='admin' element={<BookList />} />
                                 }
                             />
                             <Route
                                 path="/dashboard"
                                 element={
-                                    <PrivateRoute element={<Dashboard />} />
+                                    <PrivateRoute requiredRole='admin' element={<Dashboard />} />
+                                }
+                            />
+                             <Route
+                                path="/book/create"
+                                element={
+                                    <PrivateRoute requiredRole='author' element={<CreateBook />} />
                                 }
                             />
                             <Route
                                 path="/dashboard/:table"
                                 element={
-                                    <PrivateRoute element={<Dashboard />} />
+                                    <PrivateRoute requiredRole='admin' element={<Dashboard />} />
                                 }
                             />
                             <Route
                                 path="/profile"
-                                element={<PrivateRoute element={<Profile />} />}
+                                element={<PublicRoute element={<Profile />} />}
                             />
                             {/* <Route path="/dashboard" element={<Dashboard />} />
                             <Route
