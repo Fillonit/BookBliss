@@ -12,6 +12,8 @@ import AboutUs from '@/components/About/about'
 import Dashboard from '@/components/Admin/Dashboard'
 import Contact from '@/pages/Contact'
 import BooksPage from './pages/Books'
+// import SingleCard from '@/components/SingleCard'
+import SingleCard from '@/components/SingleCard/singleCard'
 
 // ? COMPONENTS
 import Navbar from '@/components/Layout/Navbar'
@@ -46,6 +48,11 @@ function App() {
                             <Route path="/books" element={<BooksPage />} />
                             <Route path="/about" element={<AboutUs />} />
                             <Route path="/contact" element={<Contact />} />
+
+                            <Route
+                                path="/singleCard/:id"
+                                element={<SingleCard />}
+                            />
                             <Route
                                 path="/login"
                                 element={<PublicRoute element={<Login />} />}

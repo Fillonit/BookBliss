@@ -115,7 +115,7 @@ export default function About() {
                 <div className="container px-5 mx-auto">
                     <div className="flex flex-col md:flex-row justify-center text-center">
                         <div className="p-4 md:w-1/5 sm:w-1/3 w-full flex-1 flex flex-col">
-                            <div className="border-2 border-gray-200 px-4 py-6 rounded-lg dark:bg-slate-800 dark:border-none flex-grow">
+                            <div className="border-2 border-gray-200 bg-white px-4 py-6 rounded-lg dark:bg-slate-800 dark:border-none flex-grow">
                                 <svg
                                     fill="none"
                                     stroke="currentColor"
@@ -137,7 +137,7 @@ export default function About() {
                             </div>
                         </div>
                         <div className="p-4 md:w-1/5 sm:w-1/3 w-full flex-1 flex flex-col">
-                            <div className="border-2 border-gray-200 px-4 py-6 rounded-lg dark:bg-slate-800 dark:border-none flex-grow">
+                            <div className="border-2 border-gray-200 bg-white px-4 py-6 rounded-lg dark:bg-slate-800 dark:border-none flex-grow">
                                 <svg
                                     fill="none"
                                     stroke="currentColor"
@@ -160,7 +160,7 @@ export default function About() {
                             </div>
                         </div>
                         <div className="p-4 md:w-1/5 sm:w-1/3 w-full flex-1 flex flex-col">
-                            <div className="border-2 border-gray-200 px-4 py-6 rounded-lg dark:bg-slate-800 dark:border-none flex-grow">
+                            <div className="border-2 border-gray-200 bg-white px-4 py-6 rounded-lg dark:bg-slate-800 dark:border-none flex-grow">
                                 <svg
                                     fill="none"
                                     stroke="currentColor"

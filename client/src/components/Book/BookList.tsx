@@ -6,10 +6,10 @@ import { API_URL } from '@/util/envExport'
 
 const BookList = () => {
     const [books, setBooks] = useState<BookCardProps[]>([])
-    const [bookCount, setBookCount] = useState<number>(0) // This will be used to determine the number of books to show on the page
+    const [bookCount, setBookCount] = useState<number>(0)
     const [fetchData, setFetchData] = useState<FetchDataProps>({
         offset: 0,
-        limit: 8, // Initially show 8 books
+        limit: 8,
         query: '',
         genre: [],
     })

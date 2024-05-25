@@ -13,3 +13,7 @@
     -webkit-filter: invert(100%);
     filter: invert(100%);
 }
+
+body {
+    @apply z-index-0;
+}

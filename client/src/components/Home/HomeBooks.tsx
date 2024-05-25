@@ -65,7 +65,7 @@ export function HomeBooks() {
                 opts={{
                     align: 'start',
                 }}
-                className="w-full min-w-96 mt-4"
+                className="w-full min-w-96 mt-4 "
             >
                 {loading && <SkeletonCardBook count={4} />}
                 {!loading && books && books.length > 0 && (
