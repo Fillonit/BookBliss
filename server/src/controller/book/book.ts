@@ -1,15 +1,21 @@
 import express from "express";
 import { prisma } from "../../db/client";
 import { getUserBySessionToken } from "../user/authentication";
-import { set } from "lodash";
-const validSortings = ["createdAt", "rating", "ratingCount"];
+import crypto from "crypto";
+
+const VALID_SORTINGS = ["createdAt", "rating", "ratingCount"];
+const DISCOUNT_CODE_LENGTH = 36;
+
 export const getBooks = async (req: express.Request, res: express.Response) => {
 	const { limit, offset } = req.query;
+	const { session } = req.headers;
+	const user = await getUserBySessionToken(session as string);
+    console.log("session "+session)
 	const limitNumber = Number.parseInt(String(limit ?? "16"));
 	const query = String(req.query.query ?? "");
 	const offsetNumber = Number.parseInt(String(offset ?? "0"));
 	const sorting = String(req.query.sorting ?? "createdAt") || "createdAt";
-	if (!validSortings.includes(sorting))
+	if (!VALID_SORTINGS.includes(sorting))
 		return res.status(400).json({ message: "Invalid sorting value." });
 
 	const books = await prisma.book.findMany({
@@ -27,6 +33,7 @@ export const getBooks = async (req: express.Request, res: express.Response) => {
 			cover: true,
 			rating: true,
 			ratingCount: true,
+			authorId: true,
 			BookGenre: {
 				select: {
 					Genre: true,
@@ -39,12 +46,53 @@ export const getBooks = async (req: express.Request, res: express.Response) => {
 			},
 		},
 	});
+   
+    const booksWithPermissions = books.map(book => ({
+		...book,
+		hasPermission: user && book.authorId === user.id,
+	}));
 
 	res.status(200).json({
 		message: "Successfully fetched books.",
-		data: books,
+		data: booksWithPermissions,
 	});
 };
+
+export const generateTicket = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const { session } = req.headers;
+	const { id } = req.params;
+	const user = await getUserBySessionToken(session as string);
+	console.log(id);
+
+	if(!user) return res.status(401).json({ message: "Unauthorized" });
+    
+	console.log(user);
+	const {duration, discount} = req.body;
+    if(discount < 0 || discount > 100) return res.status(400).json({ message: "Invalid discount value" });
+
+	const book = await prisma.book.findFirst({
+		where: {
+			id: Number.parseInt(id),
+		},
+	});
+
+    if(book.authorId != user.id) return res.status(401).json({ message: "Unauthorized" });
+
+	const code = crypto.randomBytes(DISCOUNT_CODE_LENGTH).toString('hex').slice(0, DISCOUNT_CODE_LENGTH);
+
+	await prisma.discountTicket.create({
+		data: {
+			bookId: Number.parseInt(id.toString()),
+			validUntil: new Date(new Date().getTime() + 1000 * 60 * 60 * duration),
+			discountPercentage: Number.parseFloat(discount.toString()),
+            discountCode: code
+		},
+	});
+	res.status(200).json({ message: "Successfully created ticket", data: code });
+}
 
 export const getBook = async (req: express.Request, res: express.Response) => {
 	const { id } = req.params;
