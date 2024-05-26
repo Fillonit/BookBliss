@@ -159,7 +159,7 @@ function NavbarComponent() {
                                 Dashboard
                             </Dropdown.Item>
                         )}
-                         {user && user.role == 'author' && (
+                        {user && user.role == 'author' && (
                             <Dropdown.Item href={'/book/create'}>
                                 Create a book
                             </Dropdown.Item>
@@ -211,8 +211,8 @@ function NavbarComponent() {
                                                     className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b   from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                                                     href="/"
                                                 >
-                                                    <Icons.logo className="h-6 w-6 text-amber-500" />
-                                                    <div className="mb-2 mt-4 text-lg font-bold text-amber-500">
+                                                    <Icons.logo className="h-6 w-6 text-amber-600" />
+                                                    <div className="mb-2 mt-4 text-lg font-bold text-amber-600">
                                                         BookBliss
                                                     </div>
                                                     <p className="text-sm leading-tight text-muted-foreground">

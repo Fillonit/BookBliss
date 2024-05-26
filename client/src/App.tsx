@@ -65,25 +65,37 @@ function App() {
                             <Route
                                 path="/admin"
                                 element={
-                                    <PrivateRoute requiredRole='admin' element={<BookList />} />
+                                    <PrivateRoute
+                                        requiredRole="admin"
+                                        element={<BookList />}
+                                    />
                                 }
                             />
                             <Route
                                 path="/dashboard"
                                 element={
-                                    <PrivateRoute requiredRole='admin' element={<Dashboard />} />
+                                    <PrivateRoute
+                                        requiredRole="admin"
+                                        element={<Dashboard />}
+                                    />
                                 }
                             />
-                             <Route
+                            <Route
                                 path="/book/create"
                                 element={
-                                    <PrivateRoute requiredRole='author' element={<CreateBook />} />
+                                    <PrivateRoute
+                                        requiredRole="author"
+                                        element={<CreateBook />}
+                                    />
                                 }
                             />
                             <Route
                                 path="/dashboard/:table"
                                 element={
-                                    <PrivateRoute requiredRole='admin' element={<Dashboard />} />
+                                    <PrivateRoute
+                                        requiredRole="admin"
+                                        element={<Dashboard />}
+                                    />
                                 }
                             />
                             <Route

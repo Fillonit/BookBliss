@@ -5,6 +5,8 @@ const SidebarProfile = () => {
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [initialName, setInitialName] = useState('')
+    const [initialEmail, setInitialEmail] = useState('')
 
     useEffect(() => {
         fetchUserData()
@@ -12,13 +14,15 @@ const SidebarProfile = () => {
 
     const fetchUserData = async () => {
         try {
-            const response = await fetch(`${API_URL}/api/user`)
+            const response = await fetch(`${API_URL}/api/user/1`)
             if (!response.ok) {
                 throw new Error('Failed to fetch user data')
             }
             const userData = await response.json()
             setName(userData.name)
             setEmail(userData.email)
+            setInitialName(userData.name)
+            setInitialEmail(userData.email)
         } catch (error) {
             console.error('Error fetching user data:', error)
         }
@@ -30,17 +34,31 @@ const SidebarProfile = () => {
 
     const handleUpdateProfile = async (e: { preventDefault: () => void }) => {
         e.preventDefault()
+        const updateData: { name?: string; email?: string } = {}
+        if (name !== initialName) {
+            updateData.name = name
+        }
+        if (email !== initialEmail) {
+            updateData.email = email
+        }
+
         try {
-            const response = await fetch(`${API_URL}/api/user`, {
+            const response = await fetch(`${API_URL}/api/user/1`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name, email }),
+                body: JSON.stringify(updateData),
             })
             if (!response.ok) {
                 throw new Error('Failed to update profile')
             }
+            const updatedData = await response.json()
+            setName(updatedData.name)
+            setEmail(updatedData.email)
+            setInitialName(updatedData.name)
+            setInitialEmail(updatedData.email)
+            setDrawerOpen(false)
         } catch (error) {
             console.error('Error updating profile:', error)
         }
@@ -48,10 +66,10 @@ const SidebarProfile = () => {
 
     return (
         <>
-            <div className="text-center m-5 ">
+            <div className="text-center m-5">
                 <button
                     id="updateProfileButton"
-                    className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                    className="text-black dark:text-white hover:bg-gray-50 bg-white shadow-md font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-slate-800 dark:hover:bg-slate-700 focus:outline-none dark:focus:ring-slate-80 transition-colors duration-200 ease-in-out cursor-pointer"
                     type="button"
                     onClick={toggleDrawer}
                     aria-controls="drawer-update-Profile-default"
@@ -63,9 +81,9 @@ const SidebarProfile = () => {
 
             <div
                 id="drawer-update-profile-default"
-                className={`fixed top-0 left-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform ${
+                className={`fixed top-5 left-0 z-40 mt-10 w-2/4 h-screen max-w-md p-4 overflow-y-auto transition-transform ${
                     drawerOpen ? 'translate-x-0' : '-translate-x-full'
-                } bg-white dark:bg-gray-800`}
+                } bg-white dark:bg-gray-800 shadow-md dark:text-white`}
                 tabIndex={drawerOpen ? 0 : -1}
                 aria-labelledby="drawer-label"
                 aria-hidden={!drawerOpen}
@@ -125,7 +143,7 @@ const SidebarProfile = () => {
                                 Email
                             </label>
                             <input
-                                type="text"
+                                type="email"
                                 id="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -135,10 +153,10 @@ const SidebarProfile = () => {
                             />
                         </div>
                     </div>
-                    <div className="bottom-0 left-0 flex justify-center w-full pb-4 mt-4 space-x-4 sm:absolute sm:px-4 sm:mt-0">
+                    <div className="bottom-0 left-0 flex justify-center w-full mb-[4rem] pb-4 mt-4 space-x-4 sm:absolute sm:px-4 sm:mt-0">
                         <button
                             type="submit"
-                            className="w-full justify-center text-white bg-slate-500 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                            className="w-full justify-center text-white bg-amber-700 dark:bg-slate-700 dark:hover:bg-slate-900 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors duration-200 ease-in-out cursor-pointer"
                         >
                             Update
                         </button>
@@ -148,4 +166,5 @@ const SidebarProfile = () => {
         </>
     )
 }
+
 export default SidebarProfile
