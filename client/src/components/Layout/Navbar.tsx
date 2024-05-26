@@ -292,7 +292,10 @@ function NavbarComponent() {
                                             Contribute to the platform by
                                             submitting your work.
                                         </ListItem>
-                                        <ListItem title="Apply" href="/apply">
+                                        <ListItem
+                                            title="Apply"
+                                            href="/client/src/pages/Apply.tsx"
+                                        >
                                             Apply for an author account to start
                                             publishing your work.
                                         </ListItem>
