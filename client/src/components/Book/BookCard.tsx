@@ -13,7 +13,7 @@ import { HiStar } from 'react-icons/hi'
 
 export default function BookCard(book: BookCardProps) {
     return (
-        <Card className="flex flex-col w-full max-w-xs mx-2 bg-white shadow-lg rounded-lg overflow-hidden dark:bg-slate-950 shadow-md mb-2">
+        <Card className="flex flex-col w-full max-w-xs mx-2 bg-white rounded-lg overflow-hidden dark:bg-slate-950 shadow-md mb-2">
             <div className="relative">
                 <img
                     alt="Book cover"

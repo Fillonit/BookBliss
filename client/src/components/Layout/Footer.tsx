@@ -1,20 +1,9 @@
 'use client'
 
-import {
-    faDribbble,
-    faFacebook,
-    faGithub,
-    faInstagram,
-    faTwitter,
-} from '@fortawesome/free-brands-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Footer } from 'flowbite-react/lib/esm/components/Footer'
-
 const footer = () => {
     return (
         <footer className="relative overflow-hidden bottom-0 left-0  flex h-[350px] z-[-999]">
             {' '}
-            {/* Removed 'fixed' class and added 'mt-auto' */}
             <div className="absolute inset-0 -z-10 max-w-[100vw]">
                 <svg
                     className="absolute inset-0 w-full h-full scale-[5] scale-y-[3] origin-bottom"
@@ -76,7 +65,9 @@ const footer = () => {
                 </svg>
             </div>
             <section className="flex flex-col justify-end gap-5 pb-10 pl-15 w-full md:items-center md:pl-0 md:gap-5">
-                <p className="text-xs m-0">© 2024 All rights reserved</p>
+                <p className="text-xs m-0 font-bold font-sans text-white">
+                    © 2024 All rights reserved
+                </p>
             </section>
         </footer>
     )
