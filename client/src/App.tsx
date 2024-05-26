@@ -98,10 +98,7 @@ function App() {
                                     />
                                 }
                             />
-                            <Route
-                                path="/profile"
-                                element={<PublicRoute element={<Profile />} />}
-                            />
+                            <Route path="/profile" element={<Profile />} />
                             {/* <Route path="/dashboard" element={<Dashboard />} />
                             <Route
                                 path="/dashboard/:table"

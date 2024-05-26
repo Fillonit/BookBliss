@@ -60,7 +60,7 @@ export function PublicRoute({
 }: React.ComponentProps<typeof Route>) {
     const sessionToken = localStorage.getItem('sessionToken')
 
-    if (sessionToken) {
+    if (!sessionToken) {
         return React.cloneElement(element as React.ReactElement<unknown>, props)
     } else {
         return <Navigate to="/" />
