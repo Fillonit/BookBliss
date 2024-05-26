@@ -21,7 +21,11 @@ const BookList = () => {
     const fetchBooks = async (fetchData: FetchDataProps) => {
         try {
             const response = await fetch(
-                `${API_URL}/books?offset=${fetchData.offset}&limit=${fetchData.limit}&query=${fetchData.query}&genre=${fetchData.genre}`
+                `${API_URL}/books?offset=${fetchData.offset}&limit=${fetchData.limit}&query=${fetchData.query}&genre=${fetchData.genre}`, {
+                    headers:{
+                        'session': localStorage.getItem('sessionToken') as string  
+                    }
+                }
             )
             if (response.ok) {
                 const json = await response.json()
@@ -81,17 +85,7 @@ const BookList = () => {
             </div>
             <div className="grid grid-cols-1 gap-6 px-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {books.map((book: BookCardProps) => (
-                    <BookCard
-                        key={book.id}
-                        id={book.id}
-                        title={book.title}
-                        author={book.author}
-                        description={book.description}
-                        cover={book.cover}
-                        rating={book.rating}
-                        price={book.price}
-                        genre={book.genre}
-                    />
+                    <BookCard {...book}/>
                 ))}
                 {/*add some sort of pagination here*/}
             </div>

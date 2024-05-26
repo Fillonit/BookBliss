@@ -7,11 +7,16 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import morgan from "morgan";
+import path from "path";
 import session from "express-session";
-
 /* ! Google OAuth packages ! */
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import serveFilesWithCondition from "./middleware/pdfPermission";
+import { prisma } from "./db/client";
+import { ratelimitMiddleware } from "./middleware/ratelimit";
+import { implementationPass } from "./middleware/implement";
+import { Prisma } from "@prisma/client";
 
 dotenv.config();
 const { PORT, MONGO_URL, NODE_ENV } = process.env;
@@ -98,7 +103,11 @@ app.get(
 	passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-import { prisma } from "./db/client";
+const attachmentsPath = path.join(__dirname, './attachments');
+app.use('/files', express.static(attachmentsPath));
+app.use('/pdfs', serveFilesWithCondition);
+
+
 
 interface GoogleUser {
 	id: string;
@@ -161,10 +170,6 @@ const server = http.createServer(app);
 server.listen(PORT || 8080, () => {
 	console.log(`Server is running on ${API_URL}/`);
 });
-
-import { ratelimitMiddleware } from "./middleware/ratelimit";
-import { implementationPass } from "./middleware/implement";
-import { Prisma } from "@prisma/client";
 // app.use(ratelimitMiddleware);
 
 app.use("/api", router());

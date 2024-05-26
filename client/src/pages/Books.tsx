@@ -57,8 +57,8 @@ const BooksPage = () => {
         try {
             const response = await fetch(`${API_URL}/api/genres`);
             if (response.ok) {
-                const json: Genre[] = await response.json();
-                setGenres(json);
+                const json: {message: string, data: Genre[]} = await response.json();
+                setGenres(json.data);
             } else {
                 console.error("Failed to fetch genres:", response.status, response.statusText);
             }

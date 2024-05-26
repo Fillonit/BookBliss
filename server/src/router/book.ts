@@ -1,6 +1,9 @@
 import express from "express";
 
-import { getBooks, getBook, updateBook, createBook, deleteBook, countBooks, averagePrice, averageRating, averageTimeToRead } from "../controller/book/book";
+import { getBooks, getBook, updateBook, 
+	     createBook, deleteBook, countBooks, 
+		 averagePrice, averageRating, 
+		 averageTimeToRead, generateTicket } from "../controller/book/book";
 import upload from "../util/fileSaver";
 
 import { ratelimitMiddleware } from "../middleware/ratelimit";
@@ -15,4 +18,5 @@ export default (router: express.Router) => {
 	router.get("/books/average-rating", averageRating);
 	router.get('/books/average-time-to-read', averageTimeToRead);
 	router.get("/books/:id", getBook);
+	router.post("/books/:id/discount-tickets", generateTicket)
 };

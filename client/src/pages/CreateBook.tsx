@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   FileInput,
@@ -9,6 +9,7 @@ import {
 } from 'flowbite-react';
 import GenreGrid, { Genre } from '@/components/Genre/GenreGrid';
 import { API_URL } from '@/util/envExport';
+import { toast } from 'react-toastify';
 
 const genres = [{id: 1, name: 'Fiction'}, 
                 {id: 2, name: 'Non-Fiction'},
@@ -16,8 +17,10 @@ const genres = [{id: 1, name: 'Fiction'},
                 {id: 4, name: 'Biography'}, 
                 {id: 5, name:'Fantasy'}];
 
-const publishers = [{id: 1, name: 'Publisher A'}, {id: 2, name:'Publisher B'}, {id: 3, name:'Publisher C'}];
-
+interface Publisher {
+  id: number;
+  name: string;
+}
 interface CreateBookFormProps {
     title: string;
     price: number | null;
@@ -29,6 +32,8 @@ interface CreateBookFormProps {
 }
 
 export default function CreateBook() {
+  const [genres, setGenres] = useState<Genre[]>([]);
+  const [publishers, setPublishers] = useState<Publisher[]>([]);
   const [form, setForm] = useState<CreateBookFormProps>({
     title: '',
     price: null,
@@ -39,7 +44,7 @@ export default function CreateBook() {
     publisher: null
   });
 
-  const setGenres = (genres: {[key: string]: Genre})=>{
+  const setGenres_ = (genres: {[key: string]: Genre})=>{
      setForm(prev=>({...prev, genres}));
   }
 
@@ -105,11 +110,25 @@ export default function CreateBook() {
         },
         body: body
     })
+    if(response.ok) toast.success('Book created successfully');
+    else toast.error('Failed to create book');
   };
+  useEffect(()=>{
+    fetch(`${API_URL}/api/publishers`, {
+        headers: {
+            'session': localStorage.getItem('sessionToken') as string
+        }
+    }).then(res=>res.json()).then(data=>setPublishers(data.data));
 
+    fetch(`${API_URL}/api/genres`, {
+      headers: {
+          'session': localStorage.getItem('sessionToken') as string
+      }
+     }).then(res=>res.json()).then(data=>setGenres(data.data));
+  }, [])
   return (
     <div className="container mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-6">Create Book</h1>
+      <h1 className="text-2xl font-bold mb-6 mt-20">Create Book</h1>
       <form onSubmit={handleSubmit} className="space-y-6 p-11">
         <div className='flex justify-between'>
         <div style={{width: "40%"}}>
@@ -161,19 +180,9 @@ export default function CreateBook() {
           />
         </div>
 
-        <div>
-          <Label htmlFor="pdf" value="PDF of the Book" />
-          <FileInput
-            id="pdf"
-            name="pdf"
-            accept="application/pdf"
-            onChange={handleChange}
-            required
-          />
-        </div>
         </div>
         <div style={{width: "40%"}}>
-        <GenreGrid setGenres={setGenres} genres={form.genres} />
+        <GenreGrid setGenres={setGenres_} genres={form.genres} />
         <div>
           <Label htmlFor="genres" value="Genres" />
           <Select
@@ -206,6 +215,16 @@ export default function CreateBook() {
               </option>
             ))}
           </Select>
+        </div>
+        <div>
+          <Label htmlFor="pdf" value="PDF of the Book" />
+          <FileInput
+            id="pdf"
+            name="pdf"
+            accept="application/pdf"
+            onChange={handleChange}
+            required
+          />
         </div>
         </div>
         </div>

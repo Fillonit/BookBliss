@@ -20,6 +20,11 @@ export const getUsers = async (req: express.Request, res: express.Response) => {
 			createdAt: true,
 			updatedAt: true,
 		},
+		where: {
+			name: {
+				contains: query
+			}
+		}
 	});
 	res.status(200).json(users);
 };
