@@ -2,9 +2,15 @@ import multer from "multer";
 import express from "express";
 import path from "path";
 
+const destinationDirectory = path.join(__dirname, '../attachments');
+const pdfDirectory = path.join(__dirname, '../pdfs')
+
 const storage = multer.diskStorage({
     destination: (req: express.Request, file: Express.Multer.File , cb) => {
-        cb(null, '../attachments');
+        if(file.fieldname === 'pdf')
+          cb(null, pdfDirectory);
+        else 
+          cb(null, destinationDirectory);
     },
     filename: (req: express.Request, file: Express.Multer.File, cb) => {
         cb(null, Date.now() + path.extname(file.originalname));

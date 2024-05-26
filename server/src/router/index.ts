@@ -9,6 +9,7 @@ import inventory from "./inventory";
 import review from "./review";
 import genre from "./genre";
 import savedbooks from "./savedbooks";
+import publisher from "./publisher";
 
 const router = express.Router();
 
@@ -23,6 +24,6 @@ export default (): express.Router => {
 	review(router);
 	genre(router);
 	savedbooks(router);
-
+	publisher(router);
 	return router;
 };

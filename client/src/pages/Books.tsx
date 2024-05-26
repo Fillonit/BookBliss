@@ -1,6 +1,4 @@
 // import { Alert, Toast } from 'flowbite-react';
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import { useEffect, useState } from 'react'
 import { API_URL } from '@/util/envExport'
 
@@ -44,32 +42,36 @@ import {
 } from 'react-icons/hi'
 
 type Genre = {
-    id: number;
-    name: string;
-    description?: string;
-};
+    id: number
+    name: string
+    description?: string
+}
 
 const BooksPage = () => {
     const [books, setBooks] = useState<BookCardProps[]>([])
-    const [genres, setGenres] = useState<Genre[]>([]);
+    const [genres, setGenres] = useState<Genre[]>([])
 
     const fetchGenres = async () => {
         try {
-            const response = await fetch(`${API_URL}/api/genres`);
+            const response = await fetch(`${API_URL}/api/genres`)
             if (response.ok) {
-                const json: Genre[] = await response.json();
-                setGenres(json);
+                const json: {message: string, data: Genre[]} = await response.json();
+                setGenres(json.data);
             } else {
-                console.error("Failed to fetch genres:", response.status, response.statusText);
+                console.error(
+                    'Failed to fetch genres:',
+                    response.status,
+                    response.statusText
+                )
             }
         } catch (e) {
-            console.error("Error fetching genres:", e);
+            console.error('Error fetching genres:', e)
         }
-    };
+    }
 
     useEffect(() => {
-        fetchGenres();
-    }, []);
+        fetchGenres()
+    }, [])
 
     const fetchBooks = async () => {
         try {
@@ -87,12 +89,6 @@ const BooksPage = () => {
     useEffect(() => {
         async function fetchBookData() {
             await Promise.all([fetchBooks()])
-            toast.success('Books fetched successfully', {
-                theme:
-                    localStorage.getItem('flowbite-theme-mode') === 'dark'
-                        ? 'dark'
-                        : 'light',
-            })
         }
         fetchBookData()
     }, [])
@@ -101,7 +97,7 @@ const BooksPage = () => {
         {
             title: 'Genre',
             icon: <HiOutlineViewGrid className="h-6 w-6 mr-2 text-amber-600" />,
-            options: genres.map(genre => ({
+            options: genres.map((genre) => ({
                 name: genre.name,
                 desc: genre.description || 'No description available.',
             })) ?? [{ name: 'None', desc: 'No genre specified.' }],
@@ -202,7 +198,7 @@ const BooksPage = () => {
                                 <Button
                                     variant="outline"
                                     size="sm"
-                                    className="ml-auto w-full mb-4 py-5"
+                                    className="ml-auto w-full mb-4 py-5 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors duration-200 ease-in-out flex items-center justify-start px-4"
                                 >
                                     {filter.icon}
                                     <span className="text-lg">
@@ -239,8 +235,6 @@ const BooksPage = () => {
                     </>
                 ))}
             </div>
-
-            {/* Main content */}
             <div className="w-2/3 p-10 flex flex-wrap">
                 {books.map((book: BookCardProps) => (
                     <div key={book.id} className="w-full sm:w-1/2 lg:w-1/4 p-2">
@@ -248,8 +242,6 @@ const BooksPage = () => {
                     </div>
                 ))}
             </div>
-
-            <ToastContainer />
         </section>
     )
 }

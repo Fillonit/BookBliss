@@ -1,7 +1,5 @@
 import { API_URL } from '@/util/envExport'
-import { User } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { FaEdit } from 'react-icons/fa'
 import SidebarProfile from '../../components/User/SidebarProfile'
 
 interface SavedBook {
@@ -30,7 +28,6 @@ const Profile = () => {
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [booksPerPage] = useState<number>(2)
     const [savedBooks, setSavedBooks] = useState<SavedBook[]>([])
-
     useEffect(() => {
         const fetchUserData = async () => {
             const sessionToken = localStorage.getItem('sessionToken')
@@ -96,8 +93,8 @@ const Profile = () => {
     }
 
     return (
-        <div className="bg-slate-400 dark:bg-gray-700 py-5 min-h-screen flex items-center justify-center">
-            <div className="bg-gray-200 dark:bg-gray-500 shadow-md rounded-lg overflow-hidden w-full max-w-md">
+        <div className="bg-white dark:bg-slate-700 py-5 min-h-screen flex items-center justify-center mt-11">
+            <div className="bg-white dark:bg-slate-900 rounded-lg overflow-hidden w-full max-w-4xl shadow-lg">
                 <div
                     className="h-48 flex items-end p-4 bg-black"
                     style={{
@@ -113,21 +110,20 @@ const Profile = () => {
                             alt="Profile"
                             className="w-36 h-36 rounded-full border-4 border-white"
                         />
-                        <button className="absolute bottom-2 right-2 bg-white text-black rounded-full p-1 shadow-md">
-                            <FaEdit />
-                        </button>
-                    </div>
-                    <div className="ml-4 text-white">
-                        <h5 className="text-2xl">{userData.name}</h5>
-                        <p>{userData.location}</p>
+                        <div className=" text-white flex flex-col justify-left">
+                            <h5 className="text-2xl ml-6 mt-6">
+                                {userData.name}
+                            </h5>
+                            <p>{userData.location}</p>
+                            <SidebarProfile />
+                        </div>
                     </div>
                 </div>
                 <div className="p-4">
-                    <SidebarProfile />
-                    <h3 className="text-lg font-semibold mb-3 dark:text-gray-800">
+                    <h3 className="text-lg font-semibold mb-3 dark:text-white">
                         About
                     </h3>
-                    <div className="bg-gray-100 dark:bg-gray-400 p-4 rounded-lg dark:text-gray-800">
+                    <div className="bg-white dark:bg-slate-800 p-4 rounded-lg dark:text-white shadow-md">
                         <p className="italic mb-2">{userData.bio}</p>
                         <p className="mb-2">
                             <strong>Email:</strong> {userData.email}
@@ -139,7 +135,7 @@ const Profile = () => {
                     </div>
                     <div className="mt-4">
                         <div className="flex justify-between items-center mb-3">
-                            <h4 className="text-lg font-semibold dark:text-gray-800">
+                            <h4 className="text-lg font-semibold dark:text-white">
                                 Saved Books
                             </h4>
                         </div>
@@ -153,7 +149,7 @@ const Profile = () => {
                                 />
                             ))}
                         </div>
-                        <nav className="mt-4 " aria-label="Pagination">
+                        <nav className="mt-4" aria-label="Pagination">
                             <ul className="flex justify-center">
                                 {[
                                     ...Array(
@@ -165,7 +161,7 @@ const Profile = () => {
                                     <li key={number + 1} className="mx-2">
                                         <button
                                             onClick={() => paginate(number + 1)}
-                                            className="px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 rounded-full"
+                                            className="px-3 py-1 text-sm font-medium dark:text-slate-200 text-slate-700 hover:bg-gray-300 dark:hover:bg-slate-700 dark:focus:ring-slate-700 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 rounded-full duration-150 ease-in-out transition-colors"
                                         >
                                             {number + 1}
                                         </button>

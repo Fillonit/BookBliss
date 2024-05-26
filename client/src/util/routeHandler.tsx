@@ -6,8 +6,9 @@ const API_BASE_URL = `${API_URL}/api`
 
 export function PrivateRoute({
     element,
+    requiredRole,
     ...props
-}: React.ComponentProps<typeof Route>) {
+}: React.ComponentProps<typeof Route> & { requiredRole: 'admin' | 'author' }) {
     const [role, setRole] = useState<string | null>(null)
     const sessionToken = localStorage.getItem('sessionToken')
 
@@ -46,7 +47,7 @@ export function PrivateRoute({
 
     if (role === null) {
         return null
-    } else if (role === 'admin') {
+    } else if (role === requiredRole) {
         return React.cloneElement(element as React.ReactElement<unknown>, props)
     } else {
         return <Navigate to="/" />
