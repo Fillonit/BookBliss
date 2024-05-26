@@ -8,7 +8,7 @@ export function PrivateRoute({
     element,
     requiredRole,
     ...props
-}: React.ComponentProps<typeof Route> & {requiredRole: 'admin' | 'author'}) {
+}: React.ComponentProps<typeof Route> & { requiredRole: 'admin' | 'author' }) {
     const [role, setRole] = useState<string | null>(null)
     const sessionToken = localStorage.getItem('sessionToken')
 
@@ -60,7 +60,7 @@ export function PublicRoute({
 }: React.ComponentProps<typeof Route>) {
     const sessionToken = localStorage.getItem('sessionToken')
 
-    if (!sessionToken) {
+    if (sessionToken) {
         return React.cloneElement(element as React.ReactElement<unknown>, props)
     } else {
         return <Navigate to="/" />
