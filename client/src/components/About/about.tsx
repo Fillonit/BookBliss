@@ -1,38 +1,29 @@
 import { useEffect, useState } from 'react'
 import { API_URL } from '@/util/envExport'
+import { Loader2Icon } from 'lucide-react'
 
 export default function About() {
-    const [totalBooks, setTotalBooks] = useState<number>(0)
-    const [totalUsers, setTotalUsers] = useState<number>(0)
-    const [totalAuthors, setTotalAuthors] = useState<number>(0)
-    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [totalBooks, setTotalBooks] = useState<number | null>(null)
+    const [totalUsers, setTotalUsers] = useState<number | null>(null)
+    const [totalAuthors, setTotalAuthors] = useState<number | null>(null)
 
     useEffect(() => {
         const fetchData = async () => {
-            const responseBooks = await fetch(`${API_URL}/api/books/count`, {
-                headers: {
-                    session: localStorage.getItem('sessionToken') as string,
-                },
+            fetch(`${API_URL}/api/books/count`).then(async (responseBooks) => {
+                const dataBooks = await responseBooks.json()
+                setTotalBooks(dataBooks.data)
             })
-            const dataBooks = await responseBooks.json()
-            setTotalBooks(dataBooks.data)
 
-            const responseUsers = await fetch(`${API_URL}/api/users`, {
-                headers: {
-                    session: localStorage.getItem('sessionToken') as string,
-                },
+            fetch(`${API_URL}/api/users/count`).then(async (responseUsers) => {
+                const dataUsers = await responseUsers.json()
+                setTotalUsers(dataUsers.data)
             })
-            const dataUsers = await responseUsers.json()
-            setTotalUsers(dataUsers.length)
 
-            const authors = dataUsers.filter(
-                (user: any) => user.role === 'author'
-            )
-            setTotalAuthors(authors.length)
-
-            setIsLoading(false)
+            fetch(`${API_URL}/api/users/count?role=author`).then(async (response) => {
+                const dataAuthors = await response.json()
+                setTotalAuthors(dataAuthors.data)
+            })
         }
-
         fetchData()
     }, [])
 
@@ -129,7 +120,7 @@ export default function About() {
                                     <path d="M20.88 18.09A5 5 0 0018 9h-1.26A8 8 0 103 16.29"></path>
                                 </svg>
                                 <h2 className="title-font font-medium sm:text-2xl text-3xl text-gray-900 dark:text-white">
-                                    {totalBooks}
+                                    {totalBooks !== null ? totalBooks : <Loader2Icon/>}
                                 </h2>
                                 <p className="leading-relaxed dark:text-gray-200">
                                     Books
@@ -152,7 +143,7 @@ export default function About() {
                                     <path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"></path>
                                 </svg>
                                 <h2 className="title-font font-medium text-3xl text-gray-900 dark:text-white">
-                                    {totalUsers}
+                                    {totalUsers !== null ? totalUsers : <Loader2Icon/>}
                                 </h2>
                                 <p className="leading-relaxed dark:text-gray-200">
                                     Users
@@ -174,7 +165,7 @@ export default function About() {
                                     <path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"></path>
                                 </svg>
                                 <h2 className="title-font font-medium text-3xl text-gray-900 dark:text-white">
-                                    {totalAuthors}
+                                    {totalAuthors !== null ? totalAuthors : <Loader2Icon/>}
                                 </h2>
                                 <p className="leading-relaxed dark:text-gray-200">
                                     Authors
