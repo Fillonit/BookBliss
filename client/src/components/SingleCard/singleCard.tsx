@@ -100,24 +100,16 @@ const SingleCard = () => {
                     className="w-1/2"
                 >
                     <CarouselContent className="mr-2">
+                        <BookCard {...book} hasPermission={false} />
                         <CarouselItem className="basis-1/4 ">
                             <div className="p-1">
-                                <BookCard {...book} />
+                                <BookCard {...book} hasPermission={false} />
                             </div>
                         </CarouselItem>
+                        <BookCard {...book} hasPermission={false} />
                         <CarouselItem className="basis-1/4 ">
                             <div className="p-1">
-                                <BookCard {...book} />
-                            </div>
-                        </CarouselItem>
-                        <CarouselItem className="basis-1/4 ">
-                            <div className="p-1">
-                                <BookCard {...book} />
-                            </div>
-                        </CarouselItem>
-                        <CarouselItem className="basis-1/4 ">
-                            <div className="p-1">
-                                <BookCard {...book} />
+                                <BookCard {...book} hasPermission={false} />
                             </div>
                         </CarouselItem>
                     </CarouselContent>
