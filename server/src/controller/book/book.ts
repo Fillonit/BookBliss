@@ -171,14 +171,7 @@ export const countBooks = async (
 	req: express.Request,
 	res: express.Response
 ) => {
-	const { session } = req.headers;
 	const query = String(req.query.query ?? "");
-
-	const user = await getUserBySessionToken(session as string);
-
-	if (!user || user.role !== "admin") {
-		return res.status(401).json({ message: "Unauthorized" });
-	}
     
 	const count = await prisma.book.count({
 		where: {

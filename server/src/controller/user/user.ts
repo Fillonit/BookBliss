@@ -140,11 +140,21 @@ export const getUsersCount = async (
 	res: express.Response
 ) => {
 	const q = String(req.query.query ?? ""); 
-
-	const count = q ? await prisma.user.count({where: {
-	    name: {
-			contains: q
+	const role = String(req.query.role ?? "");
+    console.log(role);
+	const count = await prisma.user.count({where: {
+		AND: [
+	     {
+		   name: q ? {
+			 contains: q
+		   } : {}
+	    },
+		{
+           role: role ? {
+		   	 equals: role
+		   } : {}
 		}
-	}}) : await prisma.user.count();
+	   ]
+	}})
 	res.status(200).json({ message: "Successfully fetched count.", data: count });
 };
