@@ -12,7 +12,7 @@ import AboutUs from '@/components/About/about'
 import Dashboard from '@/components/Admin/Dashboard'
 import Contact from '@/pages/Contact'
 import BooksPage from './pages/Books'
-// import SingleCard from '@/components/SingleCard'
+import ApplicationForm from './pages/Apply'
 import SingleCard from '@/components/SingleCard/singleCard'
 
 // ? COMPONENTS
@@ -49,7 +49,10 @@ function App() {
                             <Route path="/books" element={<BooksPage />} />
                             <Route path="/about" element={<AboutUs />} />
                             <Route path="/contact" element={<Contact />} />
-
+                            <Route
+                                path="/apply"
+                                element={<ApplicationForm />}
+                            />
                             <Route
                                 path="/singleCard/:id"
                                 element={<SingleCard />}
@@ -98,10 +101,7 @@ function App() {
                                     />
                                 }
                             />
-                            <Route
-                                path="/profile"
-                                element={<PublicRoute element={<Profile />} />}
-                            />
+                            <Route path="/profile" element={<Profile />} />
                             {/* <Route path="/dashboard" element={<Dashboard />} />
                             <Route
                                 path="/dashboard/:table"
