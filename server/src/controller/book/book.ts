@@ -10,20 +10,23 @@ export const getBooks = async (req: express.Request, res: express.Response) => {
 	const { limit, offset } = req.query;
 	const { session } = req.headers;
 	const user = await getUserBySessionToken(session as string);
-    console.log("session "+session)
+ 
 	const limitNumber = Number.parseInt(String(limit ?? "16"));
 	const query = String(req.query.query ?? "");
 	const offsetNumber = Number.parseInt(String(offset ?? "0"));
+
 	const sorting = String(req.query.sorting ?? "createdAt") || "createdAt";
-	if (!VALID_SORTINGS.includes(sorting))
-		return res.status(400).json({ message: "Invalid sorting value." });
+	const genres = String(req.query.genres ?? "").split(",").map(Number).filter(id => id > 0);
+    
+	const minPrice = Number.parseFloat(String(req.query.minPrice ?? "0"));
+	const maxPrice = Number.parseFloat(String(req.query.maxPrice ?? "1000"));
 
 	const books = await prisma.book.findMany({
 		take: limitNumber,
 		skip: offsetNumber,
-		orderBy: {
-			[sorting]: "desc",
-		},
+		orderBy: VALID_SORTINGS.includes(sorting) ? {
+			 [sorting]: "desc"
+		} : undefined,
 		select: {
 			id: true,
 			title: true,
@@ -41,11 +44,37 @@ export const getBooks = async (req: express.Request, res: express.Response) => {
 			},
 		},
 		where: {
-			title: {
-				contains: query,
-			},
+			AND: [
+				{
+					title: {
+						contains: query,
+					},
+				},
+				{
+					OR: genres.length === 0
+						? [] // No additional genre filter if genres array is empty
+						: [
+							{
+								BookGenre: {
+									some: {
+										genreId: {
+											in: genres,
+										},
+									},
+								},
+							},
+						],
+				},
+				{
+					price: {
+						gte: minPrice,
+						lte: maxPrice,
+					}
+				}
+			],
 		},
 	});
+	
    
     const booksWithPermissions = books.map(book => ({
 		...book,
