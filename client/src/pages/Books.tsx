@@ -5,35 +5,19 @@ import { Range } from 'react-range';
 import BookCard from '@/components/Book/BookCard';
 import { BookCardProps } from '@/types/BookCardProps';
 
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from '@/components/ui/command';
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from '@/components/ui/popover';
 import { Button, Label, Select } from 'flowbite-react';
-import {
-    HiOutlineCash,
-    HiOutlineViewGrid,
-    HiOutlineStar,
-    HiOutlineCalendar,
-} from 'react-icons/hi';
+
 import GenreGrid from '@/components/Genre/GenreGrid';
+import { Loader2Icon } from 'lucide-react';
 import { Dropdown, DropdownProps } from '@/components/Other/Dropdown';
+import NoResults from '@/components/Other/Exceptions/NoResults';
 
 type Genre = {
     id: number;
     name: string;
     description?: string;
 };
-
+const MAX_BOOK_PRICE = 100;
 interface BookFilter {
     query: string;
     genres: { [key: string]: Genre };
@@ -45,11 +29,13 @@ interface BookFilter {
 const BooksPage = () => {
     const [books, setBooks] = useState<BookCardProps[]>([]);
     const [genres, setGenres] = useState<Genre[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const [currentFilters, setCurrentFilters] = useState<BookFilter>({
         query: '',
         genres: {},
         minPrice: 0,
-        maxPrice: 1000, // Set an initial max value for the slider
+        maxPrice: MAX_BOOK_PRICE, // Set an initial max value for the slider
     });
 
     const fetchGenres = async () => {
@@ -72,10 +58,12 @@ const BooksPage = () => {
 
     useEffect(() => {
         fetchGenres();
+        fetchBooks(currentFilters);
     }, []);
 
     const fetchBooks = async (filters: BookFilter) => {
         try {
+            setIsLoading(true);
             const response = await fetch(
                 `${API_URL}/api/books?query=${filters.query}&genres=${Object.keys(
                     filters.genres
@@ -84,8 +72,8 @@ const BooksPage = () => {
             if (response.ok) {
                 const json = await response.json();
                 setBooks(json.data);
-                return;
             }
+            setIsLoading(false);
         } catch (e) {
             console.log(e);
         }
@@ -123,7 +111,7 @@ const BooksPage = () => {
             query: '',
             genres: {},
             minPrice: 0,
-            maxPrice: 1000
+            maxPrice: MAX_BOOK_PRICE
         });
     }
     const setSorting = (value: string) => {
@@ -157,7 +145,7 @@ const BooksPage = () => {
                     <Range
                         step={1}
                         min={0}
-                        max={1000}
+                        max={MAX_BOOK_PRICE}
                         values={[currentFilters.minPrice, currentFilters.maxPrice]}
                         onChange={handlePriceChange}
                         renderTrack={({ props, children }) => (
@@ -168,7 +156,7 @@ const BooksPage = () => {
                                     marginTop: '20px',
                                     height: '6px',
                                     width: '100%',
-                                    background: `linear-gradient(to right, #ccc ${100 * currentFilters.minPrice / 1000}%, green ${100 * currentFilters.minPrice / 1000}%, green ${100 * currentFilters.maxPrice / 1000}%, #ccc ${100 * currentFilters.maxPrice / 1000}%)`,
+                                    background: `linear-gradient(to right, #ccc ${100 * currentFilters.minPrice / MAX_BOOK_PRICE}%, green ${100 * currentFilters.minPrice / MAX_BOOK_PRICE}%, green ${100 * currentFilters.maxPrice / MAX_BOOK_PRICE}%, #ccc ${100 * currentFilters.maxPrice / MAX_BOOK_PRICE}%)`,
                                 }}
                             >
                                 {children}
@@ -220,11 +208,13 @@ const BooksPage = () => {
                     <Button onClick={searchBooks}>Search</Button>
                 </div>
                 <div className="flex flex-wrap">
-                    {books.map((book: BookCardProps) => (
+                    {!isLoading && books.length > 0 && books.map((book: BookCardProps) => (
                         <div key={book.id} className="w-full sm:w-1/2 lg:w-1/4 p-2">
                             <BookCard {...book} />
                         </div>
                     ))}
+                    {!isLoading && books.length === 0 && <div style={{width:"100%", height:"100%"}} className='flex justify-center items-center'><NoResults/></div>}
+                    {isLoading && <div style={{width:"100%", height:"100%"}} className='flex justify-center items-center'><Loader2Icon/></div>}
                 </div>
             </div>
         </section>
