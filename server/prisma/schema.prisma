@@ -55,23 +55,24 @@ model BookGenre {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
-  email        String         @unique
-  password     String
-  avatar       String?        @default("")
-  googleId     String?        @default("")
-  name         String
-  role         String         @default("user")
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  salt         String?        @unique
-  sessionToken String?        @unique
-  Author       Author?
-  Review       Review[]
-  SavedBook    SavedBook[]
-  Subsribers   Subscriber[]
-  UserProgress UserProgress[]
-  Order        Order[]
+  id                Int                @id @default(autoincrement())
+  email             String             @unique
+  password          String
+  avatar            String?            @default("")
+  googleId          String?            @default("")
+  name              String
+  role              String             @default("user")
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  salt              String?            @unique
+  sessionToken      String?            @unique
+  Author            Author?
+  Review            Review[]
+  SavedBook         SavedBook[]
+  Subsribers        Subscriber[]
+  UserProgress      UserProgress[]
+  Order             Order[]
+  AuthorApplication AuthorApplication?
 }
 
 model SavedBook {
@@ -91,6 +92,22 @@ model Author {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   Subsribers Subscriber[]
+}
+
+model AuthorApplication {
+  id                   Int    @id @default(autoincrement())
+  userId               Int    @unique
+  fullName             String @db.VarChar(100)
+  email                String @db.VarChar(100)
+  genre                String @db.VarChar(100)
+  phone                String @db.VarChar(100)
+  currentCompany       String @db.VarChar(100)
+  previousPublications String @db.VarChar(100)
+  writingSample        String @db.VarChar(100)
+  pfpLink              String @db.VarChar(200)
+  identification       String @db.VarChar(200)
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Subscriber {

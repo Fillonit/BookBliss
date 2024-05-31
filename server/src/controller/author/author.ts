@@ -1,6 +1,7 @@
 import { Author } from "@prisma/client";
 import { prisma } from "../../db/client";
 import express from 'express';
+import { getUserBySessionToken } from "../user/authentication";
 
 
 export const getAuthors = async (
@@ -56,3 +57,52 @@ export const deleteAuthor = async (
     });
     res.status(200).json(deletedAuthor);
 };
+
+export const applyForAuthor = async (
+    req: express.Request,
+    res: express.Response
+) => {
+    const { session } = req.headers;
+    const user = await getUserBySessionToken(session as string);
+    if (!user) {
+        return res
+            .status(401)
+            .json({ message: "You must be logged in to apply for author" });
+    }
+    if(user.role !== 'user') return res.status(400).json({message: "You must be a user to apply for author"})
+    if(Array.isArray(req.files)){
+        return res.status(400).json({message: "Files were not in the correct format"})
+    }
+
+    const {fullName, email, phone, currentCompany, genre, previousPublications} = req.body;
+
+    const pfpName = req.files["pfp"][0].filename;
+    const writingSampleName = req.files["writingSample"][0].filename;
+    const identificationName = req.files["identification"][0].filename;
+    const applicationCount = await prisma.authorApplication.count({
+        where: {
+            userId: user.id,
+        },
+    });
+    if (applicationCount > 0) {
+        return res
+            .status(400)
+            .json({ message: "You have already applied for author" });
+    }
+    
+    await prisma.authorApplication.create({
+        data: {
+            userId: user.id,
+            identification: identificationName,
+            writingSample: writingSampleName,
+            pfpLink: pfpName,
+            fullName: fullName,
+            email: email,
+            phone: phone,
+            currentCompany: currentCompany,
+            genre: genre,
+            previousPublications: previousPublications,
+        },
+    });
+    res.status(200).json({ message: "Successfully applied for author" });
+}

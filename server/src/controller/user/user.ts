@@ -149,7 +149,7 @@ export const getUsersCount = async (
 			 contains: q
 		   } : {}
 	    },
-		{
+	{
            role: role ? {
 		   	 equals: role
 		   } : {}

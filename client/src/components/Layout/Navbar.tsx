@@ -299,7 +299,7 @@ function NavbarComponent() {
                                         </ListItem>
                                         <ListItem
                                             title="Apply"
-                                            href="/client/src/pages/Apply.tsx"
+                                            href="/author-application"
                                         >
                                             Apply for an author account to start
                                             publishing your work.
