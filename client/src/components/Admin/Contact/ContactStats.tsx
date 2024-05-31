@@ -63,6 +63,11 @@ export default function ContactsStats() {
       initialize();
     }, [])
 
+    const feedBackPercentage = contacts === 0 ? 0 : ((feedbacks / contacts) * 100).toFixed(0);
+    const feedBackText = `${feedBackPercentage}% of total contacts (${feedbacks} ${feedbacks > 1 ? 'feedbacks' : 'feedback'}) are feedbacks`;
+
+    const reportPercentage = contacts === 0 ? 0 : ((reports / contacts) * 100).toFixed(0);
+    const reportText = `${reportPercentage}% of total contacts (${reports} ${reports > 1 ? 'reports' : 'report'}) are reports`;
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
@@ -72,6 +77,7 @@ export default function ContactsStats() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">{contacts}</div>
+                    <p className="text-xs text-muted-foreground">{feedBackText}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -83,6 +89,7 @@ export default function ContactsStats() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">{feedbacks}</div>
+                    <p className="text-xs text-muted-foreground">{feedBackText}</p>
                 </CardContent>
             </Card>
             <Card>
@@ -94,6 +101,7 @@ export default function ContactsStats() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">{reports}</div>
+                    <p className="text-xs text-muted-foreground">{reportText}</p>
                 </CardContent>
             </Card>
             <Card>
