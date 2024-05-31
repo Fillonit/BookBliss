@@ -310,6 +310,16 @@ export const deleteBook = async (
 			.status(401)
 			.json({ message: "You do not have access to delete this book" });
 	}
+	await prisma.bookGenre.deleteMany({
+		where: {
+			bookId: Number.parseInt(id)
+		}
+	});
+	await prisma.discountTicket.deleteMany({
+		where: {
+			bookId: Number.parseInt(id)
+		}
+	});
 	await prisma.book.delete({
 		where: {
 			id: Number.parseInt(id),

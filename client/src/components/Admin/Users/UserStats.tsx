@@ -47,8 +47,9 @@ export default function UsersStats() {
     useEffect(() => {
         fetch(`${API_URL}/api/users/count`)
             .then((response) => response.json())
-            .then((data) => setUserCount(data.count))
+            .then((data) => setUserCount(data.data))
     }, [])
+
 
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -64,8 +65,8 @@ export default function UsersStats() {
                             0
                         )}
                         % of total users {'('}
-                        {`${usersWithGoogle.length} ${
-                            usersWithGoogle.length > 1 ? 'users' : 'user'
+                        {`${userCount} ${
+                            userCount > 1 ? 'users' : 'user'
                         }`}
                         {')'} use Google
                     </p>

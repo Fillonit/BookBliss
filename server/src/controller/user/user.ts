@@ -7,6 +7,7 @@ export const getUsers = async (req: express.Request, res: express.Response) => {
 	const limitNumber = Number.parseInt(String(limit ?? "5"));
 	const query = String(req.query.query ?? "");
 	const offsetNumber = Number.parseInt(String(offset ?? "0"));
+	
 	const users = await prisma.user.findMany({
 		take: limitNumber,
 		skip: offsetNumber,

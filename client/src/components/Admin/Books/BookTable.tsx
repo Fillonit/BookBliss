@@ -95,6 +95,7 @@ import { API_URL } from '@/util/envExport'
 import { BookCardProps } from '@/types/BookCardProps'
 type EditableBook = Pick<BookCardProps, 'title' | 'description' | 'id'>
 type BookCardType = Omit<BookCardProps, 'BookGenre'>
+
 export default function BookTable() {
     const [isSheetOpen, setSheetOpen] = useState(false)
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -109,7 +110,9 @@ export default function BookTable() {
             cover: '',
             rating: 0,
             price: 0,
-            genre: ''
+            genre: '',
+            hasPermission: true,
+            ratingCount: 0,
     })
     useEffect(() => {
         if (selectedBook) {
@@ -1016,7 +1019,7 @@ export default function BookTable() {
                                                 )
                                                 const jsonData =
                                                     await response.json()
-                                                setData(jsonData)
+                                                setData(jsonData.data)
                                             } catch (error) {
                                                 console.error(
                                                     'Error fetching data:',
