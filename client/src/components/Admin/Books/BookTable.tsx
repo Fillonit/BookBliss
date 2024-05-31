@@ -1014,12 +1014,12 @@ export default function BookTable() {
                                             try {
                                                 const response = await fetch(
                                                     `${API_URL}/api/books?limit=${pageSize}&offset=${
-                                                        (page-1) * pageSize
+                                                        page * pageSize
                                                     }`
                                                 )
                                                 const jsonData =
                                                     await response.json()
-                                                setData(jsonData)
+                                                setData(jsonData.data)
                                             } catch (error) {
                                                 console.error(
                                                     'Error fetching data:',
