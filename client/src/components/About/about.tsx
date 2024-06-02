@@ -1,11 +1,44 @@
 import { useEffect, useState } from 'react'
 import { API_URL } from '@/util/envExport'
 import { Loader2Icon } from 'lucide-react'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function About() {
     const [totalBooks, setTotalBooks] = useState<number | null>(null)
     const [totalUsers, setTotalUsers] = useState<number | null>(null)
     const [totalAuthors, setTotalAuthors] = useState<number | null>(null)
+    const [email, setEmail] = useState('')
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!email) {
+            toast.error('Please enter a valid email address.')
+            return
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/api/subscriber`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            })
+            if (response.ok) {
+                toast.success('Thank you for subscribing!')
+                setEmail('')
+            } else {
+                const errorData = await response.json()
+                toast.error(
+                    errorData.message ||
+                        'Subscription failed. Please try again.'
+                )
+            }
+        } catch (error) {
+            toast.error('An error occurred. Please try again.')
+        }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -165,9 +198,9 @@ export default function About() {
                                 <svg
                                     fill="none"
                                     stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
                                     className="text-amber-500 w-12 h-12 mb-3 inline-block"
                                     viewBox="0 0 24 24"
                                 >
@@ -202,7 +235,10 @@ export default function About() {
                             Enter your email below to stay updated!
                         </p>
 
-                        <form className="w-full max-w-xs mx-auto mt-8">
+                        <form
+                            className="w-full max-w-xs mx-auto mt-8"
+                            onSubmit={handleSubmit}
+                        >
                             <div className="flex flex-col w-full gap-2 lg:flex-row">
                                 <label
                                     htmlFor="email-address"
@@ -214,9 +250,11 @@ export default function About() {
                                     name="email"
                                     id="email-address"
                                     type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Enter your email"
                                     aria-describedby="emailHelp"
-                                    className="block w-full h-12 px-4 py-2 text-blue-500 duration-200 border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm"
+                                    className="block w-full h-12 px-4 py-2 text-blue-500 duration-200 border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm mb-2" // Added mb-2 for margin-bottom: 0.5rem;
                                 />
                                 <span id="emailHelp" className="sr-only">
                                     Please enter your email address to
@@ -234,6 +272,17 @@ export default function About() {
                     </div>
                 </div>
             </section>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </section>
     )
 }
