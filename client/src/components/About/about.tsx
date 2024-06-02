@@ -19,10 +19,12 @@ export default function About() {
                 setTotalUsers(dataUsers.data)
             })
 
-            fetch(`${API_URL}/api/users/count?role=author`).then(async (response) => {
-                const dataAuthors = await response.json()
-                setTotalAuthors(dataAuthors.data)
-            })
+            fetch(`${API_URL}/api/users/count?role=author`).then(
+                async (response) => {
+                    const dataAuthors = await response.json()
+                    setTotalAuthors(dataAuthors.data)
+                }
+            )
         }
         fetchData()
     }, [])
@@ -120,7 +122,11 @@ export default function About() {
                                     <path d="M20.88 18.09A5 5 0 0018 9h-1.26A8 8 0 103 16.29"></path>
                                 </svg>
                                 <h2 className="title-font font-medium sm:text-2xl text-3xl text-gray-900 dark:text-white">
-                                    {totalBooks !== null ? totalBooks : <Loader2Icon/>}
+                                    {totalBooks !== null ? (
+                                        totalBooks
+                                    ) : (
+                                        <Loader2Icon />
+                                    )}
                                 </h2>
                                 <p className="leading-relaxed dark:text-gray-200">
                                     Books
@@ -143,7 +149,11 @@ export default function About() {
                                     <path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"></path>
                                 </svg>
                                 <h2 className="title-font font-medium text-3xl text-gray-900 dark:text-white">
-                                    {totalUsers !== null ? totalUsers : <Loader2Icon/>}
+                                    {totalUsers !== null ? (
+                                        totalUsers
+                                    ) : (
+                                        <Loader2Icon />
+                                    )}
                                 </h2>
                                 <p className="leading-relaxed dark:text-gray-200">
                                     Users
@@ -165,7 +175,11 @@ export default function About() {
                                     <path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"></path>
                                 </svg>
                                 <h2 className="title-font font-medium text-3xl text-gray-900 dark:text-white">
-                                    {totalAuthors !== null ? totalAuthors : <Loader2Icon/>}
+                                    {totalAuthors !== null ? (
+                                        totalAuthors
+                                    ) : (
+                                        <Loader2Icon />
+                                    )}
                                 </h2>
                                 <p className="leading-relaxed dark:text-gray-200">
                                     Authors
