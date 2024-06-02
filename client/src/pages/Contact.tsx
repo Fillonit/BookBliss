@@ -1,4 +1,3 @@
-// import { Alert, Toast } from 'flowbite-react';
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useState } from 'react'
@@ -38,91 +37,95 @@ const Contact = () => {
     }
 
     return (
-        <section
-            className="relative bg-cover bg-center bg-white dark:bg-gray-900 mt-12 min-h-screen"
-            style={{
-                backgroundImage:
-                    "url('https://source.unsplash.com/random/?Books,dark')",
-            }}
-        >
-            <div className="container px-6 py-12 mx-auto">
-                <div>
-                    <p className="font-medium text-amber-500 dark:text-amber-400">
-                        Contact us
-                    </p>
-
-                    <h1 className="mt-2 text-2xl font-semibold text-white md:text-3xl dark:text-white">
-                        Chat to our friendly team
+        <section className="text-gray-600 body-font relative">
+            <div className="container px-5 py-24 mx-auto">
+                <div className="flex flex-col text-center w-full mb-12">
+                    <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900 dark:text-gray-100">
+                        Contact Us
                     </h1>
-
-                    <p className="mt-3 text-gray-200 dark:text-gray-400">
-                        We’d love to hear from you. Please fill out this form or
-                        shoot us an email.
+                    <p className="lg:w-2/3 mx-auto leading-relaxed text-base dark:text-gray-400">
+                        We value your feedback and inquiries. Whether you have a
+                        question, a suggestion, or just want to share your
+                        thoughts, we’d love to hear from you. Please fill out
+                        the form below or send us an email.
                     </p>
                 </div>
-
-                <div className="p-4 py-6 rounded-lg bg-gray-50 dark:bg-gray-800 md:p-8 mt-5">
-                    <form onSubmit={handleSubmit}>
-                        <div className="-mx-2 md:items-center md:flex">
-                            <div className="flex-1 px-2">
-                                <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
-                                    Full Name
+                <div className="lg:w-1/2 md:w-2/3 mx-auto">
+                    <form
+                        onSubmit={handleSubmit}
+                        className="flex flex-wrap -m-2"
+                    >
+                        <div className="p-2 w-1/2">
+                            <div className="relative">
+                                <label
+                                    htmlFor="name"
+                                    className="leading-7 text-sm text-gray-600 dark:text-gray-100"
+                                >
+                                    Name
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder="John"
+                                    id="name"
+                                    name="name"
                                     value={fullName}
                                     onChange={(e) =>
                                         setFullName(e.target.value)
                                     }
-                                    className="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-amber-400 dark:focus:border-amber-400 focus:ring-amber-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                                    className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out dark:bg-slate-800 dark:text-gray-100 dark:border-none dark:focus:border-yellow-500 dark:focus:bg-slate-900 dark:focus:ring-yellow-500 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-2 dark:focus:ring-yellow-500 dark:bg-opacity-50 dark:focus:bg-slate-900 dark:transition-colors dark:duration-200 dark:ease-in-out"
                                 />
                             </div>
                         </div>
-
-                        <div className="mt-4">
-                            <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
-                                Email address
-                            </label>
-                            <input
-                                type="email"
-                                placeholder="johndoe@example.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="block w-full px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-amber-400 dark:focus:border-amber-400 focus:ring-amber-400 focus:outline-none focus:ring focus:ring-opacity-40"
-                            />
+                        <div className="p-2 w-1/2">
+                            <div className="relative">
+                                <label
+                                    htmlFor="email"
+                                    className="leading-7 text-sm text-gray-600 dark:text-gray-100"
+                                >
+                                    Email
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out dark:bg-slate-800 dark:text-gray-100 dark:border-none dark:focus:border-yellow-500 dark:focus:bg-slate-900 dark:focus:ring-yellow-500 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-2 dark:focus:ring-yellow-500 dark:bg-opacity-50 dark:focus:bg-slate-900 dark:transition-colors dark:duration-200 dark:ease-in-out"
+                                />
+                            </div>
                         </div>
-                        <div className="mt-4">
-                            <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
-                                Type
-                            </label>
-                            <select
-                                value={type}
-                                onChange={(e) => setType(e.target.value)}
-                                className="block w-full px-5 py-2.5 mt-2 text-gray-700 bg-white border border-gray-200 rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-amber-400 dark:focus:border-amber-400 focus:ring-amber-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                        <div className="p-2 w-full">
+                            <div className="relative">
+                                <label
+                                    htmlFor="message"
+                                    className="leading-7 text-sm text-gray-600 dark:text-gray-100"
+                                >
+                                    Message
+                                </label>
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    value={message}
+                                    onChange={(e) => setMessage(e.target.value)}
+                                    className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out dark:bg-slate-800 dark:text-gray-100 dark:border-none dark:focus:border-yellow-500 dark:focus:bg-slate-900 dark:focus:ring-yellow-500 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-2 dark:focus:ring-yellow-500 dark:bg-opacity-50 dark:focus:bg-slate-900 dark:transition-colors dark:duration-200 dark:ease-in-out"
+                                ></textarea>
+                            </div>
+                        </div>
+                        <div className="p-2 w-full">
+                            <button
+                                type="submit"
+                                className="flex mx-auto text-white bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg"
                             >
-                                <option value="feedback">Feedback</option>
-                                <option value="report">Report</option>
-                            </select>
+                                Send
+                            </button>
                         </div>
-                        <div className="w-full mt-4">
-                            <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
-                                Message
-                            </label>
-                            <textarea
-                                value={message}
-                                onChange={(e) => setMessage(e.target.value)}
-                                className="block w-full h-32 px-5 py-2.5 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg md:h-56 dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-amber-400 dark:focus:border-amber-400 focus:ring-amber-400 focus:outline-none focus:ring focus:ring-opacity-40"
-                                placeholder="Message"
-                            ></textarea>
+                        <div className="p-2 w-full pt-8 mt-8 border-t border-gray-200 text-center">
+                            <a className="text-yellow-500">example@email.com</a>
+                            <p className="leading-normal my-5">
+                                49 Smith St.
+                                <br />
+                                Saint Cloud, MN 56301
+                            </p>
                         </div>
-
-                        <button
-                            type="submit"
-                            className="w-full px-6 py-3 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-amber-800 rounded-lg hover:bg-amber-700 focus:outline-none focus:ring focus:ring-amber-600 focus:ring-opacity-50"
-                        >
-                            Send message
-                        </button>
                     </form>
                 </div>
             </div>

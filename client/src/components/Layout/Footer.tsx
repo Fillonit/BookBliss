@@ -2,73 +2,99 @@
 
 const footer = () => {
     return (
-        <footer className="relative overflow-hidden bottom-0 left-0  flex h-[350px] z-[-999]">
-            {' '}
-            <div className="absolute inset-0 -z-10 max-w-[100vw]">
-                <svg
-                    className="absolute inset-0 w-full h-full scale-[5] scale-y-[3] origin-bottom"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlnsXlink="http://www.w3.org/1999/xlink"
-                    x="0px"
-                    y="0px"
-                    viewBox="0 0 1600 900"
-                >
-                    <defs>
-                        <path
-                            id="wave"
-                            fill="#B45309"
-                            d="M-363.852,502.589c0,0,236.988-41.997,505.475,0 s371.981,38.998,575.971,0s293.985-39.278,505.474,5.859s493.475,48.368,716.963-4.995v560.106H-363.852V502.589z"
-                        />
-                    </defs>
-                    <g>
-                        <use xlinkHref="#wave" opacity=".4">
-                            <animateTransform
-                                attributeName="transform"
-                                attributeType="XML"
-                                type="translate"
-                                dur="8s"
-                                calcMode="spline"
-                                values="270 230; -334 180; 270 230"
-                                keyTimes="0; .5; 1"
-                                keySplines="0.42, 0, 0.58, 1.0;0.42, 0, 0.58, 1.0"
-                                repeatCount="indefinite"
-                            />
-                        </use>
-                        <use xlinkHref="#wave" opacity=".6">
-                            <animateTransform
-                                attributeName="transform"
-                                attributeType="XML"
-                                type="translate"
-                                dur="6s"
-                                calcMode="spline"
-                                values="-270 230;243 220;-270 230"
-                                keyTimes="0; .6; 1"
-                                keySplines="0.42, 0, 0.58, 1.0;0.42, 0, 0.58, 1.0"
-                                repeatCount="indefinite"
-                            />
-                        </use>
-                        <use xlinkHref="#wave" opacity=".9">
-                            <animateTransform
-                                attributeName="transform"
-                                attributeType="XML"
-                                type="translate"
-                                dur="4s"
-                                calcMode="spline"
-                                values="0 230;-140 200;0 230"
-                                keyTimes="0; .4; 1"
-                                keySplines="0.42, 0, 0.58, 1.0;0.42, 0, 0.58, 1.0"
-                                repeatCount="indefinite"
-                            />
-                        </use>
-                    </g>
-                </svg>
-            </div>
-            <section className="flex flex-col justify-end gap-5 pb-10 pl-15 w-full md:items-center md:pl-0 md:gap-5">
-                <p className="text-xs m-0 font-bold font-sans text-white">
-                    © 2024 All rights reserved
+        <footer className="text-gray-600 body-font">
+            <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
+                <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        className="w-10 h-10 text-white p-2 bg-yellow-500 rounded-full"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                    </svg>
+                    <span className="ml-3 text-xl dark:text-gray-100">
+                        BookBliss
+                    </span>
+                </a>
+                <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4 dark:text-gray-100">
+                    © 2024 BookBliss
+                    <a
+                        href="https://twitter.com/knyttneve"
+                        className="text-gray-600 ml-1"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                    ></a>
                 </p>
-            </section>
+                <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+                    <a className="text-gray-500">
+                        <svg
+                            fill="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            className="w-5 h-5"
+                            viewBox="0 0 24 24"
+                        >
+                            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
+                        </svg>
+                    </a>
+                    <a className="ml-3 text-gray-500">
+                        <svg
+                            fill="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            className="w-5 h-5"
+                            viewBox="0 0 24 24"
+                        >
+                            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
+                        </svg>
+                    </a>
+                    <a className="ml-3 text-gray-500">
+                        <svg
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            className="w-5 h-5"
+                            viewBox="0 0 24 24"
+                        >
+                            <rect
+                                width="20"
+                                height="20"
+                                x="2"
+                                y="2"
+                                rx="5"
+                                ry="5"
+                            ></rect>
+                            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
+                        </svg>
+                    </a>
+                    <a className="ml-3 text-gray-500">
+                        <svg
+                            fill="currentColor"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="0"
+                            className="w-5 h-5"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="none"
+                                d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"
+                            ></path>
+                            <circle cx="4" cy="4" r="2" stroke="none"></circle>
+                        </svg>
+                    </a>
+                </span>
+            </div>
         </footer>
     )
 }
