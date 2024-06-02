@@ -69,7 +69,6 @@ model User {
   Author            Author?
   Review            Review[]
   SavedBook         SavedBook[]
-  Subsribers        Subscriber[]
   UserProgress      UserProgress[]
   Order             Order[]
   AuthorApplication AuthorApplication?
@@ -91,7 +90,6 @@ model Author {
   user       User         @relation(fields: [id], references: [id])
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
-  Subsribers Subscriber[]
 }
 
 model AuthorApplication {
@@ -112,13 +110,11 @@ model AuthorApplication {
 
 model Subscriber {
   id        Int      @id @default(autoincrement())
-  author    Author   @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  authorId  Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  userId    Int
+  email     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 
 model Review {
   id        Int      @id @default(autoincrement())

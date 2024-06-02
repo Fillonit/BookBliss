@@ -10,6 +10,7 @@ import review from "./review";
 import genre from "./genre";
 import savedbooks from "./savedbooks";
 import publisher from "./publisher";
+import subscriber from "./subscriber";
 
 const router = express.Router();
 
@@ -25,5 +26,6 @@ export default (): express.Router => {
 	genre(router);
 	savedbooks(router);
 	publisher(router);
+	subscriber(router);
 	return router;
 };

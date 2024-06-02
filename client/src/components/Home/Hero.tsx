@@ -1,4 +1,4 @@
-import { HomeBooks } from './HomeBooks'
+import HomeBooks from './HomeBooks'
 
 const Hero = () => {
     return (
