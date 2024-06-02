@@ -103,11 +103,12 @@ app.get(
 	passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-const attachmentsPath = path.join(__dirname, './attachments');
-app.use('/files', express.static(attachmentsPath));
-app.use('/pdfs', serveFilesWithCondition);
+const attachmentsPath = path.join(__dirname, "./attachments");
+console.log(attachmentsPath);
+app.use("/files", express.static(attachmentsPath));
+app.use("/pdfs", serveFilesWithCondition);
 
-
+app.use(express.static(__dirname));
 
 interface GoogleUser {
 	id: string;
