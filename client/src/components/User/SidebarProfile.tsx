@@ -1,6 +1,18 @@
 import { API_URL } from '@/util/envExport'
 import { useState, useEffect } from 'react'
 
+interface User {
+    id: number
+    email: string
+    avatar: string
+    name: string
+    role: string
+    createdAt: string
+    updatedAt: string
+    bio: string
+    location: string
+}
+
 const SidebarProfile = () => {
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [name, setName] = useState('')
@@ -9,24 +21,33 @@ const SidebarProfile = () => {
     const [initialEmail, setInitialEmail] = useState('')
 
     useEffect(() => {
+        const fetchUserData = async () => {
+            const sessionToken = localStorage.getItem('sessionToken')
+            if (sessionToken) {
+                try {
+                    const response = await fetch(
+                        `${API_URL}/api/auth/user/${sessionToken}`
+                    )
+                    if (!response.ok) {
+                        localStorage.removeItem('sessionToken')
+                        window.location.href = '/login'
+                        throw new Error('Network response was not ok')
+                    }
+                    const data: User = await response.json()
+                    setName(data.name)
+                    setEmail(data.email)
+                    setInitialName(data.name)
+                    setInitialEmail(data.email)
+                } catch (error) {
+                    console.error('Error fetching user data:', error)
+                    localStorage.removeItem('sessionToken')
+                    window.location.href = '/login'
+                }
+            }
+        }
+
         fetchUserData()
     }, [])
-
-    const fetchUserData = async () => {
-        try {
-            const response = await fetch(`${API_URL}/api/user/1`)
-            if (!response.ok) {
-                throw new Error('Failed to fetch user data')
-            }
-            const userData = await response.json()
-            setName(userData.name)
-            setEmail(userData.email)
-            setInitialName(userData.name)
-            setInitialEmail(userData.email)
-        } catch (error) {
-            console.error('Error fetching user data:', error)
-        }
-    }
 
     const toggleDrawer = () => {
         setDrawerOpen(!drawerOpen)

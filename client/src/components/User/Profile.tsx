@@ -1,6 +1,7 @@
 import { API_URL } from '@/util/envExport'
 import { useEffect, useState } from 'react'
 import SidebarProfile from '../../components/User/SidebarProfile'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 interface SavedBook {
     id: number
@@ -102,14 +103,15 @@ const Profile = () => {
                     }}
                 >
                     <div className="relative flex items-center">
-                        <img
-                            src={
-                                userData.avatar ||
-                                'https://via.placeholder.com/150'
-                            }
-                            alt="Profile"
-                            className="w-36 h-36 rounded-full border-4 border-white"
-                        />
+                        <Avatar className="h-36 w-36">
+                            <AvatarImage src={userData?.avatar} alt="Avatar" />
+                            <AvatarFallback className="uppercase text-4xl">
+                                {userData?.name
+                                    .split(' ')
+                                    .map((n) => n[0])
+                                    .join('')}
+                            </AvatarFallback>
+                        </Avatar>
                         <div className=" text-white flex flex-col justify-left">
                             <h5 className="text-2xl ml-6 mt-6">
                                 {userData.name}
