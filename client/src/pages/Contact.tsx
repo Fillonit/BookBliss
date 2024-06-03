@@ -8,11 +8,10 @@ const Contact = () => {
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('')
     const [type, setType] = useState('feedback')
-    setType('feedback')
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
         try {
-            e.preventDefault()
             const response = await fetch(`${API_URL}/api/contact`, {
                 method: 'POST',
                 headers: {
@@ -30,6 +29,8 @@ const Contact = () => {
                             ? 'dark'
                             : 'light',
                 })
+            } else {
+                toast.error('An error occurred while sending the message')
             }
         } catch (error) {
             console.error(error)
@@ -72,7 +73,8 @@ const Contact = () => {
                                     onChange={(e) =>
                                         setFullName(e.target.value)
                                     }
-                                    className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out dark:bg-slate-800 dark:text-gray-100 dark:border-none dark:focus:border-yellow-500 dark:focus:bg-slate-900 dark:focus:ring-yellow-500 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-2 dark:focus:ring-yellow-500 dark:bg-opacity-50 dark:focus:bg-slate-900 dark:transition-colors dark:duration-200 dark:ease-in-out"
+                                    className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2
+                                     focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out dark:bg-slate-800 dark:text-gray-100 dark:border-none dark:focus:border-yellow-500 dark:focus:bg-slate-900 dark:focus:ring-yellow-500 dark:placeholder-gray-400 dark:focus:ring-2 dark:bg-opacity-50 dark:transition-colors dark:duration-200 dark:ease-in-out"
                                 />
                             </div>
                         </div>
@@ -90,8 +92,29 @@ const Contact = () => {
                                     name="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out dark:bg-slate-800 dark:text-gray-100 dark:border-none dark:focus:border-yellow-500 dark:focus:bg-slate-900 dark:focus:ring-yellow-500 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-2 dark:focus:ring-yellow-500 dark:bg-opacity-50 dark:focus:bg-slate-900 dark:transition-colors dark:duration-200 dark:ease-in-out"
+                                    className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out dark:bg-slate-800
+                                     dark:text-gray-100 dark:border-none dark:focus:border-yellow-500 dark:focus:bg-slate-900 dark:focus:ring-yellow-500 dark:placeholder-gray-400 dark:focus:ring-2 dark:bg-opacity-50 dark:transition-colors dark:duration-200 dark:ease-in-out"
                                 />
+                            </div>
+                        </div>
+                        <div className="p-2 w-full">
+                            <div className="relative">
+                                <label
+                                    htmlFor="type"
+                                    className="leading-7 text-sm text-gray-600 dark:text-gray-100"
+                                >
+                                    Type
+                                </label>
+                                <select
+                                    id="type"
+                                    name="type"
+                                    value={type}
+                                    onChange={(e) => setType(e.target.value)}
+                                    className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out dark:bg-slate-800 dark:text-gray-100 dark:border-none dark:focus:border-yellow-500 dark:focus:bg-slate-900 dark:focus:ring-yellow-500 dark:placeholder-gray-400 dark:focus:ring-2 dark:bg-opacity-50 dark:transition-colors dark:duration-200 dark:ease-in-out"
+                                >
+                                    <option value="feedback">Feedback</option>
+                                    <option value="report">Report</option>
+                                </select>
                             </div>
                         </div>
                         <div className="p-2 w-full">
@@ -107,7 +130,7 @@ const Contact = () => {
                                     name="message"
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
-                                    className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out dark:bg-slate-800 dark:text-gray-100 dark:border-none dark:focus:border-yellow-500 dark:focus:bg-slate-900 dark:focus:ring-yellow-500 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-2 dark:focus:ring-yellow-500 dark:bg-opacity-50 dark:focus:bg-slate-900 dark:transition-colors dark:duration-200 dark:ease-in-out"
+                                    className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out dark:bg-slate-800 dark:text-gray-100 dark:border-none dark:focus:border-yellow-500 dark:focus:bg-slate-900 dark:focus:ring-yellow-500 dark:placeholder-gray-400 dark:focus:ring-2 dark:bg-opacity-50 dark:transition-colors dark:duration-200 dark:ease-in-out"
                                 ></textarea>
                             </div>
                         </div>

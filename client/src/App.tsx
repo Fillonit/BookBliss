@@ -24,6 +24,7 @@ import { PublicRoute, PrivateRoute } from '@/util/routeHandler'
 import Profile from './components/User/Profile'
 import CreateBook from './pages/CreateBook'
 import EditBook from './pages/EditBook'
+import Settings from './components/User/Settings'
 
 function App() {
     // const [userId, setUserId] = useState(localStorage.getItem("userId"));
@@ -55,10 +56,7 @@ function App() {
                                 path="/author-application"
                                 element={<ApplicationForm />}
                             />
-                            <Route
-                                path="/singleCard/:id"
-                                element={<SingleCard />}
-                            />
+                            <Route path="/books/:id" element={<SingleCard />} />
                             <Route
                                 path="/login"
                                 element={<PublicRoute element={<Login />} />}
@@ -113,6 +111,7 @@ function App() {
                                 }
                             />
                             <Route path="/profile" element={<Profile />} />
+                            <Route path="/settings" element={<Settings />} />
                             {/* <Route path="/dashboard" element={<Dashboard />} />
                             <Route
                                 path="/dashboard/:table"

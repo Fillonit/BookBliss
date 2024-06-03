@@ -36,24 +36,26 @@ const SingleCard = () => {
 
     console.log(books, loading)
 
-    setBooks([
-        {
-            id: 0,
-            title: '',
-            cover: '',
-            rating: 0,
-            author: '',
-            description: '',
-            price: 0,
-            ratingCount: 0,
-            genre: '',
-            authorId: 0,
-            pages: 0,
-            hasPermission: false,
-        },
-    ])
+    useEffect(() => {
+        setBooks([
+            {
+                id: 0,
+                title: '',
+                cover: '',
+                rating: 0,
+                author: '',
+                description: '',
+                price: 0,
+                ratingCount: 0,
+                genre: '',
+                authorId: 0,
+                pages: 0,
+                hasPermission: false,
+            },
+        ])
 
-    setLoading(false)
+        setLoading(false)
+    }, [])
 
     useEffect(() => {
         const fetchBookCover = async (bookId: number) => {
