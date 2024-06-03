@@ -2,6 +2,12 @@ import { API_URL } from '@/util/envExport'
 import { useEffect, useState } from 'react'
 import SidebarProfile from '../../components/User/SidebarProfile'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { BookCardProps } from '@/types/BookCardProps'
+import { Link } from 'react-router-dom'
+import moment from 'moment'
+// import BookCard from '../Book/BookCard'
+// import { FcGoogle } from 'react-icons/fc'
+// import { Badge } from '@/components/ui/badge'
 
 interface SavedBook {
     id: number
@@ -16,6 +22,7 @@ interface User {
     email: string
     avatar: string
     name: string
+    googleId: number
     role: string
     createdAt: string
     updatedAt: string
@@ -27,8 +34,8 @@ interface User {
 const Profile = () => {
     const [userData, setUserData] = useState<User | null>(null)
     const [currentPage, setCurrentPage] = useState<number>(1)
-    const [booksPerPage] = useState<number>(2)
-    const [savedBooks, setSavedBooks] = useState<SavedBook[]>([])
+    const [booksPerPage] = useState<number>(4)
+    const [savedBooks, setSavedBooks] = useState<BookCardProps[]>([])
     useEffect(() => {
         const fetchUserData = async () => {
             const sessionToken = localStorage.getItem('sessionToken')
@@ -76,8 +83,20 @@ const Profile = () => {
                 throw new Error('Network response was not ok')
             }
 
-            const data: SavedBook[] = await response.json()
-            setSavedBooks(data)
+            let data: {
+                userId: number
+                bookId: number
+                Book: BookCardProps
+            }[] = await response.json()
+
+            if (data.length === 0) {
+                const localData = localStorage.getItem('favourites')
+                if (localData) {
+                    data = JSON.parse(localData)
+                }
+            }
+            setSavedBooks(data.map((item) => item.Book))
+            // setSavedBooks(data)
         } catch (error) {
             console.error('Error fetching saved books:', error)
         }
@@ -115,6 +134,15 @@ const Profile = () => {
                         <div className=" text-white flex flex-col justify-left">
                             <h5 className="text-2xl ml-6 mt-6">
                                 {userData.name}
+                                {/* {userData.googleId && (
+                                    // <FcGoogle className="inline-block mr-2 mb-1" />
+                                    <Badge
+                                        variant="secondary"
+                                        className="inline-block -mt-4 ml-2"
+                                    >
+                                        {userData.googleId ? 'Google' : 'Local'}
+                                    </Badge>
+                                )} */}
                             </h5>
                             <p>{userData.location}</p>
                             <SidebarProfile />
@@ -125,15 +153,56 @@ const Profile = () => {
                     <h3 className="text-lg font-semibold mb-3 dark:text-white">
                         About
                     </h3>
-                    <div className="bg-white dark:bg-slate-800 p-4 rounded-lg dark:text-white shadow-md">
-                        <p className="italic mb-2">{userData.bio}</p>
-                        <p className="mb-2">
-                            <strong>Email:</strong> {userData.email}
-                        </p>
-                        <p className="mb-2">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit.
-                        </p>
+                    <div className="flex flex-col bg-white dark:bg-slate-800 p-6 rounded-lg dark:text-white shadow-md">
+                        <div className="mb-4">
+                            <h2 className="text-xl font-bold text-gray-700 dark:text-gray-100">
+                                Profile
+                            </h2>
+                            <p className="italic text-gray-600 dark:text-gray-300">
+                                {userData.bio}
+                            </p>
+                        </div>
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-100">
+                                Contact
+                            </h3>
+                            <strong className="">Email:</strong>
+                            <Link
+                                to={`mailto:${userData.email}`}
+                                className="text-amber-500 hover:text-amber-700 underline ml-2"
+                            >
+                                {userData.email}
+                            </Link>
+                        </div>
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-100">
+                                Details
+                            </h3>
+                            <p>
+                                <strong>Member since:</strong>{' '}
+                                {new Date(
+                                    userData.createdAt
+                                ).toLocaleDateString()}{' '}
+                                <span className="text-gray-500 dark:text-gray-400">
+                                    ({moment(userData.createdAt).fromNow()})
+                                </span>
+                            </p>
+                            <p>
+                                <strong>Last updated:</strong>{' '}
+                                {new Date(
+                                    userData.updatedAt
+                                ).toLocaleDateString()}{' '}
+                                <span className="text-gray-500 dark:text-gray-400">
+                                    ({moment(userData.updatedAt).fromNow()})
+                                </span>
+                            </p>
+                            <p>
+                                <strong>Type:</strong>{' '}
+                                <span className="text-gray-600 dark:text-gray-300">
+                                    {userData.googleId ? 'Google' : 'Local'}
+                                </span>
+                            </p>
+                        </div>
                     </div>
                     <div className="mt-4">
                         <div className="flex justify-between items-center mb-3">
@@ -141,14 +210,37 @@ const Profile = () => {
                                 Saved Books
                             </h4>
                         </div>
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-2 gap-8">
                             {currentBooks.map((book) => (
-                                <img
-                                    key={book.id}
-                                    src={book.Book.cover}
-                                    alt={book.Book.title}
-                                    className="w-full rounded-lg shadow-md"
-                                />
+                                <div className="rounded-lg shadow-md flex">
+                                    <img
+                                        key={book.id}
+                                        src={book.cover}
+                                        alt={book.title}
+                                        className="w-36 h-48 object-cover shadow-md rounded-tl-lg rounded-bl-lg"
+                                    />
+                                    <div className="p-4">
+                                        <h5 className="text-lg font-semibold">
+                                            {book.title}
+                                        </h5>
+                                        <p className="text-sm">
+                                            {book.author || 'Unknown author'}
+                                        </p>
+                                        <p className="text-sm">
+                                            {book.pages} pages
+                                        </p>
+                                        <p>
+                                            <span className="text-amber-600">
+                                                {book.price.toFixed(2)} €
+                                            </span>
+                                        </p>
+                                        <Link to={`/book/${book.id}`}>
+                                            <button className="bg-amber-500 text-white px-4 py-2 rounded-lg mt-2">
+                                                View
+                                            </button>
+                                        </Link>
+                                    </div>
+                                </div>
                             ))}
                         </div>
                         <nav className="mt-4" aria-label="Pagination">

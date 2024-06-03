@@ -12,7 +12,7 @@ export const login = async (req: express.Request, res: express.Response) => {
 		if (!email || !password) {
 			return res.status(400).json({ message: "Missing fields" });
 		}
-        console.log(email);
+		console.log(email);
 		let user = await prisma.user.findUnique({
 			where: {
 				email: email,
@@ -67,7 +67,6 @@ export const register = async (req: express.Request, res: express.Response) => {
 		}
 
 		const existingUser = await prisma.user.findUnique({ where: { email } });
-        
 
 		if (existingUser) {
 			return res.status(400).json({ message: "User already exists" });
@@ -178,7 +177,7 @@ export const refreshSessionToken = async (
 };
 
 export const getUserBySessionToken = async (sessionToken: string) => {
-	if(!sessionToken) return null;
+	if (!sessionToken) return null;
 	const user = await prisma.user.findUnique({
 		select: {
 			id: true,
@@ -186,6 +185,9 @@ export const getUserBySessionToken = async (sessionToken: string) => {
 			name: true,
 			role: true,
 			avatar: true,
+			googleId: true,
+			createdAt: true,
+			updatedAt: true,
 		},
 		where: {
 			sessionToken,

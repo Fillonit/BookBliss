@@ -10,23 +10,28 @@ export const getBooks = async (req: express.Request, res: express.Response) => {
 	const { limit, offset } = req.query;
 	const { session } = req.headers;
 	const user = await getUserBySessionToken(session as string);
- 
+
 	const limitNumber = Number.parseInt(String(limit ?? "16"));
 	const query = String(req.query.query ?? "");
 	const offsetNumber = Number.parseInt(String(offset ?? "0"));
 
 	const sorting = String(req.query.sorting ?? "createdAt") || "createdAt";
-	const genres = String(req.query.genres ?? "").split(",").map(Number).filter(id => id > 0);
-    
+	const genres = String(req.query.genres ?? "")
+		.split(",")
+		.map(Number)
+		.filter((id) => id > 0);
+
 	const minPrice = Number.parseFloat(String(req.query.minPrice ?? "0"));
 	const maxPrice = Number.parseFloat(String(req.query.maxPrice ?? "1000"));
 
 	const books = await prisma.book.findMany({
 		take: limitNumber,
 		skip: offsetNumber,
-		orderBy: VALID_SORTINGS.includes(sorting) ? {
-			 [sorting]: "desc"
-		} : undefined,
+		orderBy: VALID_SORTINGS.includes(sorting)
+			? {
+					[sorting]: "desc",
+			  }
+			: undefined,
 		select: {
 			id: true,
 			title: true,
@@ -51,32 +56,32 @@ export const getBooks = async (req: express.Request, res: express.Response) => {
 					},
 				},
 				{
-					OR: genres.length === 0
-						? [] // No additional genre filter if genres array is empty
-						: [
-							{
-								BookGenre: {
-									some: {
-										genreId: {
-											in: genres,
+					OR:
+						genres.length === 0
+							? [] // No additional genre filter if genres array is empty
+							: [
+									{
+										BookGenre: {
+											some: {
+												genreId: {
+													in: genres,
+												},
+											},
 										},
 									},
-								},
-							},
-						],
+							  ],
 				},
 				{
 					price: {
 						gte: minPrice,
 						lte: maxPrice,
-					}
-				}
+					},
+				},
 			],
 		},
 	});
-	
-   
-    const booksWithPermissions = books.map(book => ({
+
+	const booksWithPermissions = books.map((book) => ({
 		...book,
 		hasPermission: user && book.authorId === user.id,
 	}));
@@ -96,11 +101,12 @@ export const generateTicket = async (
 	const user = await getUserBySessionToken(session as string);
 	console.log(id);
 
-	if(!user) return res.status(401).json({ message: "Unauthorized" });
-    
+	if (!user) return res.status(401).json({ message: "Unauthorized" });
+
 	console.log(user);
-	const {duration, discount} = req.body;
-    if(discount < 0 || discount > 100) return res.status(400).json({ message: "Invalid discount value" });
+	const { duration, discount } = req.body;
+	if (discount < 0 || discount > 100)
+		return res.status(400).json({ message: "Invalid discount value" });
 
 	const book = await prisma.book.findFirst({
 		where: {
@@ -108,20 +114,29 @@ export const generateTicket = async (
 		},
 	});
 
-    if(book.authorId != user.id) return res.status(401).json({ message: "Unauthorized" });
+	if (book.authorId != user.id)
+		return res.status(401).json({ message: "Unauthorized" });
 
-	const code = crypto.randomBytes(DISCOUNT_CODE_LENGTH).toString('hex').slice(0, DISCOUNT_CODE_LENGTH);
+	const code = crypto
+		.randomBytes(DISCOUNT_CODE_LENGTH)
+		.toString("hex")
+		.slice(0, DISCOUNT_CODE_LENGTH);
 
 	await prisma.discountTicket.create({
 		data: {
 			bookId: Number.parseInt(id.toString()),
-			validUntil: new Date(new Date().getTime() + 1000 * 60 * 60 * duration),
+			validUntil: new Date(
+				new Date().getTime() + 1000 * 60 * 60 * duration
+			),
 			discountPercentage: Number.parseFloat(discount.toString()),
-            discountCode: code
+			discountCode: code,
 		},
 	});
-	res.status(200).json({ message: "Successfully created ticket", data: code });
-}
+	res.status(200).json({
+		message: "Successfully created ticket",
+		data: code,
+	});
+};
 
 export const getBook = async (req: express.Request, res: express.Response) => {
 	const { id } = req.params;
@@ -172,15 +187,18 @@ export const countBooks = async (
 	res: express.Response
 ) => {
 	const query = String(req.query.query ?? "");
-    
+
 	const count = await prisma.book.count({
 		where: {
 			title: {
 				contains: query,
-			}
-		}
-	})
-	res.status(200).json({ message: "Successfully fetched count", data: count});
+			},
+		},
+	});
+	res.status(200).json({
+		message: "Successfully fetched count",
+		data: count,
+	});
 };
 export const averagePrice = async (
 	req: express.Request,
@@ -195,10 +213,13 @@ export const averagePrice = async (
 
 	const avgPrice = await prisma.book.aggregate({
 		_avg: {
-			price: true
-		}
-	})
-	res.status(200).json({ message: "Successfully fetched price", data: avgPrice._avg.price});
+			price: true,
+		},
+	});
+	res.status(200).json({
+		message: "Successfully fetched price",
+		data: avgPrice._avg.price,
+	});
 };
 export const averageRating = async (
 	req: express.Request,
@@ -213,10 +234,13 @@ export const averageRating = async (
 
 	const avgRating = await prisma.book.aggregate({
 		_avg: {
-			rating: true
-		}
+			rating: true,
+		},
 	});
-	res.status(200).json({ message: "Successfully fetched rating", data: avgRating._avg.rating });
+	res.status(200).json({
+		message: "Successfully fetched rating",
+		data: avgRating._avg.rating,
+	});
 };
 
 export const averageTimeToRead = async (
@@ -232,10 +256,13 @@ export const averageTimeToRead = async (
 
 	const avgTimeToRead = await prisma.book.aggregate({
 		_avg: {
-			timeToRead: true
-		}
+			timeToRead: true,
+		},
 	});
-	res.status(200).json({ message: "Successfully fetched time to read", data: avgTimeToRead._avg.timeToRead });
+	res.status(200).json({
+		message: "Successfully fetched time to read",
+		data: avgTimeToRead._avg.timeToRead,
+	});
 };
 
 export const createBook = async (
@@ -247,8 +274,17 @@ export const createBook = async (
 	if (!user || user.role !== "author") {
 		return res.status(401).json({ message: "Unauthorized" });
 	}
-    const data = JSON.parse(req.body.other);
-	const { price, description, title, pages, words, timeToRead, publisher, genres } = data;
+	const data = JSON.parse(req.body.other);
+	const {
+		price,
+		description,
+		title,
+		pages,
+		words,
+		timeToRead,
+		publisher,
+		genres,
+	} = data;
 	console.log(data);
 
 	const coverFile = Array.isArray(req.files)
@@ -266,7 +302,7 @@ export const createBook = async (
 			title: title as string,
 			author: user.name,
 			pdfLink: pdfFile ?? "default.pdf",
-			cover: coverFile ?? "default.png",
+			cover: `http://localhost:5000/files/${coverFile}` ?? "default.png",
 			isbn: (
 				Math.floor(Math.random() * 9000000000000) + 1000000000000
 			).toString(),
@@ -276,15 +312,15 @@ export const createBook = async (
 			authorId: user.id,
 			createdAt: new Date(),
 			updatedAt: new Date(),
-			publisherId: publisher
+			publisherId: publisher,
 		},
 	});
 	await prisma.bookGenre.createMany({
-		data: Object.keys(genres).map(key=>({
-           bookId: createdBook.id,
-		   genreId: genres[key].id
-		}))
-	})
+		data: Object.keys(genres).map((key) => ({
+			bookId: createdBook.id,
+			genreId: genres[key].id,
+		})),
+	});
 	res.status(200).json({ message: "Successfully created book" });
 };
 
@@ -292,7 +328,7 @@ export const deleteBook = async (
 	req: express.Request,
 	res: express.Response
 ) => {
-	const session = req.headers['session'];
+	const session = req.headers["session"];
 	const { id } = req.params;
 
 	const user = await getUserBySessionToken(session as string);
@@ -312,13 +348,13 @@ export const deleteBook = async (
 	}
 	await prisma.bookGenre.deleteMany({
 		where: {
-			bookId: Number.parseInt(id)
-		}
+			bookId: Number.parseInt(id),
+		},
 	});
 	await prisma.discountTicket.deleteMany({
 		where: {
-			bookId: Number.parseInt(id)
-		}
+			bookId: Number.parseInt(id),
+		},
 	});
 	await prisma.book.delete({
 		where: {

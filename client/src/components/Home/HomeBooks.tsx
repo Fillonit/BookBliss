@@ -99,14 +99,14 @@ const HomeBooks = () => {
         <div className="w-full mb-8">
             <Carousel
                 opts={{ align: 'start' }}
-                className="w-full min-w-96 mt-4"
+                className="w-full min-w-96 mt-4 "
             >
                 {loading && <SkeletonCardBook count={4} />}
                 {!loading && books && books.length > 0 && (
                     <CarouselContent>
                         {books.map((book, index) => (
                             <CarouselItem key={index} className="basis-1/4">
-                                <div className="p-1">
+                                <div className="p-2">
                                     <BookCard {...book} />
                                 </div>
                             </CarouselItem>
