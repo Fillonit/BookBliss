@@ -17,7 +17,7 @@ const Register = () => {
     })
 
     const validateForm = () => {
-        let newErrors = {
+        const newErrors = {
             email: '',
             password: '',
             confirmPassword: '',
@@ -92,7 +92,7 @@ const Register = () => {
         }
     }
 
-    const handleChange = (event: { target: { id: any; value: any } }) => {
+    const handleChange = (event: { target: { id: string; value: string } }) => {
         setFormValues({ ...formValues, [event.target.id]: event.target.value })
     }
 
@@ -196,7 +196,7 @@ const Register = () => {
                                 className="underline-offset-4 font-semibold text-amber-900 underline"
                             >
                                 {' '}
-                                have an Account?
+                                Login.
                             </a>
                         </p>
                     </div>

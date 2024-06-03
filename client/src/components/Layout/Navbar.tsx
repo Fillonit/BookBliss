@@ -113,8 +113,8 @@ function NavbarComponent() {
         }
     }, [])
 
-    function SingOut() {
-        localStorage.removeItem('sessionToken')
+    async function SingOut() {
+        await localStorage.removeItem('sessionToken')
         window.location.href = '/login'
     }
     return (

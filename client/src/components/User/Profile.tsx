@@ -113,7 +113,7 @@ const Profile = () => {
     }
 
     return (
-        <div className="bg-white dark:bg-slate-700 py-5 min-h-screen flex items-center justify-center mt-11">
+        <div className="bg-white dark:bg-slate-700 min-h-screen flex items-center justify-center mt-11 py-12">
             <div className="bg-white dark:bg-slate-900 rounded-lg overflow-hidden w-full max-w-4xl shadow-lg">
                 <div
                     className="h-48 flex items-end p-4 bg-black"
@@ -230,7 +230,7 @@ const Profile = () => {
                                             {book.pages} pages
                                         </p>
                                         <p>
-                                            <span className="text-amber-600">
+                                            <span className="text-amber-600 font-bold">
                                                 {book.price.toFixed(2)} €
                                             </span>
                                         </p>
