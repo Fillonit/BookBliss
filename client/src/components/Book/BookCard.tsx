@@ -81,7 +81,7 @@ export default function BookCard(book: BookCardProps) {
                     <img
                         alt="Book cover"
                         className="w-full h-64 object-cover"
-                        src={`${API_URL}/files/${book.cover}`}
+                        src={`${book.cover}`}
                     />
                     <span className="absolute bottom-0 left-0 bg-amber-500 text-white px-2 py-1 m-2 rounded inline-flex items-center">
                         <HiStar className="text-xl" />{' '}
