@@ -188,6 +188,8 @@ export const getUserBySessionToken = async (sessionToken: string) => {
 			googleId: true,
 			createdAt: true,
 			updatedAt: true,
+			salt: true,
+			password: true,
 		},
 		where: {
 			sessionToken,
@@ -212,6 +214,54 @@ export const getUserBySessionTokenEndpoint = async (
 		return res.status(200).json(user).end();
 	} catch (error) {
 		console.log(error);
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
+
+export const updatePassword = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	try {
+		const { session } = req.headers;
+		const { currentPassword, newPassword } = req.body;
+
+		console.log(session);
+
+		if (!currentPassword || !newPassword) {
+			return res.status(400).json({ message: "Missing fields" });
+		}
+
+		const user = await getUserBySessionToken(session as string);
+
+		if (!user) {
+			return res.status(400).json({ message: "User not found" });
+		}
+
+		const expectedHash = authentication(user.salt, currentPassword);
+
+		if (expectedHash !== user.password) {
+			return res
+				.status(403)
+				.json({ message: "Invalid current password" });
+		}
+
+		// const salt = random();
+		const hashedNewPassword = authentication(user.salt, newPassword);
+
+		await prisma.user.update({
+			where: { id: user.id },
+			data: {
+				// salt,
+				password: hashedNewPassword,
+			},
+		});
+
+		return res
+			.status(200)
+			.json({ message: "Password updated successfully" });
+	} catch (error) {
+		console.error(error);
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };
