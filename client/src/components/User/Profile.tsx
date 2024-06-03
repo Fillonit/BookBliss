@@ -234,7 +234,7 @@ const Profile = () => {
                                                 {book.price.toFixed(2)} €
                                             </span>
                                         </p>
-                                        <Link to={`/book/${book.id}`}>
+                                        <Link to={`/books/${book.id}`}>
                                             <button className="bg-amber-500 text-white px-4 py-2 rounded-lg mt-2">
                                                 View
                                             </button>
