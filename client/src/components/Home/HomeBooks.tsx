@@ -97,6 +97,16 @@ const HomeBooks = () => {
         sorting: string
     ) => (
         <div className="w-full mb-8">
+            <div className="mt-2 w-full flex justify-between items-center">
+                <h2 className="text-xl font-bold mt-2">{sorting}</h2>
+                <a
+                    href={`http://localhost:5173/books?sorting=${sorting}`}
+                    className="text-amber-500 hover:underline flex items-center font-semibold"
+                >
+                    More
+                    <AiOutlineArrowRight className="ml-1 font-semibold" />
+                </a>
+            </div>
             <Carousel
                 opts={{ align: 'start' }}
                 className="w-full min-w-96 mt-4 "
@@ -121,26 +131,14 @@ const HomeBooks = () => {
                     </>
                 )}
             </Carousel>
-            <div className="mt-2 w-full flex justify-end">
-                <a
-                    href={`http://localhost:5173/books?sorting=${sorting}`}
-                    className="text-amber-500 hover:underline flex items-center font-semibold"
-                >
-                    More
-                    <AiOutlineArrowRight className="ml-1 font-semibold" />
-                </a>
-            </div>
         </div>
     )
 
     return (
         <div className="flex flex-col items-start w-full">
-            <h2 className="text-xl font-bold mt-2">Most Recent</h2>
-            {renderCarousel(booksByRecent, loading.recent, 'createdAt')}
-            <h2 className="text-xl font-bold mt-2">Most Popular</h2>
-            {renderCarousel(booksByPopular, loading.popular, 'ratingCount')}
-            <h2 className="text-xl font-bold mt-2">Highest Rated</h2>
-            {renderCarousel(booksByRated, loading.rated, 'rating')}
+            {renderCarousel(booksByRecent, loading.recent, 'Most Recent')}
+            {renderCarousel(booksByPopular, loading.popular, 'Most Popular')}
+            {renderCarousel(booksByRated, loading.rated, 'Highest Rated')}
 
             <section>
                 <div className="px-8 py-12 mx-auto md:px-12 lg:px-32 max-w-7xl">

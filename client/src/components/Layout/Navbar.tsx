@@ -229,21 +229,21 @@ function NavbarComponent() {
                                             </NavigationMenuLink>
                                         </li>
                                         <ListItem
-                                            href="/books/popular"
+                                            href="/books?sorting=ratingCount"
                                             title="Popular Books"
                                         >
                                             Discover the most popular books
                                             across multiple genres.
                                         </ListItem>
                                         <ListItem
-                                            href="/books/recent"
+                                            href="/books?sorting=createdAt"
                                             title="Recent Books"
                                         >
                                             Explore the latest books added to
                                             our collection.
                                         </ListItem>
                                         <ListItem
-                                            href="/books/featured"
+                                            href="/books?sorting=rating"
                                             title="Featured Books"
                                         >
                                             Explore the books that we love.
