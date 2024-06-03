@@ -120,7 +120,7 @@ export default function BookCard(book: BookCardProps) {
                     </Link>
                     <div className="mt-3 flex items-center justify-between">
                         <span className="text-sm font-medium bg-amber-600 p-2 rounded-md text-white">
-                            {book.price.toFixed(2)} €
+                            {book?.price?.toFixed(2)} €
                         </span>
                         <Button
                             size="sm"

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { API_URL } from '@/util/envExport'
 // import SkeletonCardBook from '../Other/Loading'
-import { BookCardProps } from '@/types/BookCardProps'
+// import { BookCardProps } from '@/types/BookCardProps'
 import {
     Carousel,
     CarouselContent,
@@ -14,9 +14,10 @@ import {
 import BookCard from '@/components/Book/BookCard'
 
 import { HiStar, HiOutlineStar, HiOutlineShoppingCart } from 'react-icons/hi'
+import { toast } from 'react-toastify'
 const SingleCard = () => {
     const { id } = useParams<{ id: string }>()
-    const [books, setBooks] = useState<BookCardProps[] | null>([])
+    // const [books, setBooks] = useState<BookCardProps[] | null>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [cover, setCover] = useState<string>('')
     const [book, setBook] = useState({
@@ -34,40 +35,44 @@ const SingleCard = () => {
         hasPermission: false,
     })
 
-    console.log(books, loading)
 
-    useEffect(() => {
-        setBooks([
-            {
-                id: 0,
-                title: '',
-                cover: '',
-                rating: 0,
-                author: '',
-                description: '',
-                price: 0,
-                ratingCount: 0,
-                genre: '',
-                authorId: 0,
-                pages: 0,
-                hasPermission: false,
-            },
-        ])
+    // useEffect(() => {
+    //     setBooks([
+    //         {
+    //             id: 0,
+    //             title: '',
+    //             cover: '',
+    //             rating: 0,
+    //             author: '',
+    //             description: '',
+    //             price: 0,
+    //             ratingCount: 0,
+    //             genre: '',
+    //             authorId: 0,
+    //             pages: 0,
+    //             hasPermission: false,
+    //         },
+    //     ])
 
-        setLoading(false)
-    }, [])
+    //     setLoading(false)
+    // }, [])
 
     useEffect(() => {
         const fetchBookCover = async (bookId: number) => {
+            setLoading(true)
             const response = await fetch(`${API_URL}/api/books/${bookId}`)
+            if(!response.ok){
+                toast.error('Failed to fetch book');
+                return;
+            }
             const bookData = await response.json()
-            setBook(bookData)
+            setBook(bookData.book)
 
-            const cover = bookData.cover
+            const cover = bookData.book.cover
 
             setCover(cover)
+            setLoading(false)
         }
-
         fetchBookCover(Number(id))
     }, [id])
 
@@ -82,7 +87,7 @@ const SingleCard = () => {
                     />
                     <div className="lg:w-2/3 w-full lg:pl-20 lg:py-10 mt-10 lg:mt-0">
                         <h2 className="text-sm title-font text-gray-500 tracking-widest">
-                            {book.author ? book.author : 'Loading...'}
+                            {book.author ? book.author : loading ? 'Loading...': 'None'}
                         </h2>
                         <h1 className="text-gray-900 text-4xl title-font font-medium mb-1 dark:text-gray-100">
                             {book.title ? book.title : 'Loading...'}
@@ -94,7 +99,7 @@ const SingleCard = () => {
                                     {book.rating ? book.rating : 'Loading...'} (
                                     {book.ratingCount
                                         ? book.ratingCount
-                                        : 'Loading...'}{' '}
+                                        : loading ? 'Loading...' : ''}{' '}
                                     reviews)
                                 </span>
                             </span>
