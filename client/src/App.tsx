@@ -54,10 +54,7 @@ function App() {
                                 path="/author-application"
                                 element={<ApplicationForm />}
                             />
-                            <Route
-                                path="/singleCard/:id"
-                                element={<SingleCard />}
-                            />
+                            <Route path="/books/:id" element={<SingleCard />} />
                             <Route
                                 path="/login"
                                 element={<PublicRoute element={<Login />} />}
