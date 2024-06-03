@@ -167,7 +167,10 @@ export const getBook = async (req: express.Request, res: express.Response) => {
 			publisherId: true,
 			cover: true,
 			pdfLink: true,
-			authorId: true
+			authorId: true,
+			rating: true,
+			ratingCount: true,
+			pages: true
 		}
 	});
 	if(book == null) return res.status(200).json({book: null});
