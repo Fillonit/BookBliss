@@ -120,7 +120,7 @@ export default function BookTable() {
         authorId: 0,
         pages: 0,
     })
-    
+
     useEffect(() => {
         if (selectedBook) {
             setBookData({
@@ -393,8 +393,7 @@ export default function BookTable() {
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                     onClick={() => {
-                                        setSelectedBook(user)
-                                        setSheetOpen(true)
+                                        window.location.href = `/book/edit/${user.id}`
                                     }}
                                 >
                                     <HiOutlinePencil className="mr-2 h-4 w-4" />

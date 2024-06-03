@@ -8,7 +8,7 @@ export function PrivateRoute({
     element,
     requiredRole,
     ...props
-}: React.ComponentProps<typeof Route> & { requiredRole: 'admin' | 'author' }) {
+}: React.ComponentProps<typeof Route> & { requiredRole: string[]}) {
     const [role, setRole] = useState<string | null>(null)
     const sessionToken = localStorage.getItem('sessionToken')
 
@@ -47,7 +47,7 @@ export function PrivateRoute({
 
     if (role === null) {
         return null
-    } else if (role === requiredRole) {
+    } else if (requiredRole.includes(role)) {
         return React.cloneElement(element as React.ReactElement<unknown>, props)
     } else {
         return <Navigate to="/" />

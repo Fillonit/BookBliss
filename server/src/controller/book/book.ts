@@ -31,7 +31,9 @@ export const getBooks = async (req: express.Request, res: express.Response) => {
 			? {
 					[sorting]: "desc",
 			  }
-			: undefined,
+			: {
+				createdAt: 'desc'
+			},
 		select: {
 			id: true,
 			title: true,
@@ -140,12 +142,38 @@ export const generateTicket = async (
 
 export const getBook = async (req: express.Request, res: express.Response) => {
 	const { id } = req.params;
+	const { session } = req.headers;
+	const user = await getUserBySessionToken(session as string);
+
 	const book = await prisma.book.findFirst({
 		where: {
 			id: Number.parseInt(id),
 		},
+		select: {
+			id: true,
+			title: true,
+			description: true,
+			price: true,
+            BookGenre: {
+				select: {
+					Genre: {
+						select: {
+							name: true,
+							id: true
+						}
+					}
+				}
+			},
+			publisherId: true,
+			cover: true,
+			pdfLink: true,
+			authorId: true
+		}
 	});
-	res.status(200).json(book);
+	if(book == null) return res.status(200).json({book: null});
+
+	const hasPermission = user && book.authorId === user.id || user?.role === 'admin';
+	res.status(200).json({book: {...book, hasPermission}});
 };
 
 export const updateBook = async (
@@ -154,33 +182,70 @@ export const updateBook = async (
 ) => {
 	const { session } = req.headers;
 	const { id } = req.params;
+
 	const user = await getUserBySessionToken(session as string);
-	if (!user || (user.role !== "admin" && user.role !== "author")) {
-		return res.status(401).json({ message: "Unauthorized" });
-	}
 	const book = await prisma.book.findFirst({
 		where: {
 			id: Number.parseInt(id),
 		},
 	});
-	if (!book || (book.authorId !== user.id && user.role !== "admin")) {
-		return res
-			.status(401)
-			.json({ message: "Book does not exist or you do not have access" });
+    if(!book) return res.status(404).json({message: 'Book not found'});
+	if (!user || (user.role !== "admin" && user.id !== book.authorId)) {
+		return res.status(401).json({ message: "Unauthorized" });
 	}
-	const { description, title } = req.body;
+	const data = JSON.parse(req.body.other);
+	const {
+		price,
+		description,
+		title,
+		pages,
+		words,
+		timeToRead,
+		publisher,
+		genres,
+	} = data;
+	
+	const coverFile = Array.isArray(req.files)
+		? req?.files?.[0]?.filename ?? null
+		: req?.files?.["cover"]?.[0]?.filename ?? null;
 
+	
+	
+	const pdfFile = Array.isArray(req.files)
+		? req?.files?.[0]?.filename ?? null
+		: req?.files?.["cover"]?.[0]?.filename ?? null;
+	
+
+
+	await prisma.bookGenre.deleteMany({
+		where: {
+			bookId: Number.parseInt(id),
+		},
+	});
+	await prisma.bookGenre.createMany({
+		data: Object.keys(genres).map((key) => ({
+			bookId: Number.parseInt(id),
+			genreId: genres[key].id,
+		})),
+	});
 	await prisma.book.update({
 		where: {
 			id: Number.parseInt(id),
 		},
 		data: {
-			description,
-			title,
+			price: price as number,
+			description: description as string,
+			title: title as string,
+			pdfLink: pdfFile ?? '',
+			cover: coverFile ?? '',
+			pages: pages as number,
+			words: words as number,
+			timeToRead: timeToRead as number,
 			updatedAt: new Date(),
+			publisherId: publisher,
 		},
 	});
-	res.status(200).json({ message: "Successfully updated book" });
+	return res.status(200).json({ message: "Successfully updated book" });
 };
 export const countBooks = async (
 	req: express.Request,

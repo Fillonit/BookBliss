@@ -94,7 +94,7 @@ export default function BookStats() {
                     <HiOutlinePencilAlt className="h-6 w-6 text-amber-500" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">{averagePrice}</div>
+                    <div className="text-2xl font-bold">{averagePrice.toFixed(2)}</div>
                 </CardContent>
             </Card>
             <Card>

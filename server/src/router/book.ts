@@ -18,7 +18,11 @@ import { ratelimitMiddleware } from "../middleware/ratelimit";
 
 export default (router: express.Router) => {
 	router.get("/books", getBooks);
-	router.put("/books/:id", updateBook);
+	router.put("/books/:id", 
+    upload.fields([
+		{ name: "pdf", maxCount: 1 },
+		{ name: "cover", maxCount: 1 },
+	]), updateBook);
 	router.delete("/books/:id", deleteBook);
 	router.post(
 		"/books",

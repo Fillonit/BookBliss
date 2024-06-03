@@ -23,6 +23,7 @@ import Footer from '@/components/Layout/Footer'
 import { PublicRoute, PrivateRoute } from '@/util/routeHandler'
 import Profile from './components/User/Profile'
 import CreateBook from './pages/CreateBook'
+import EditBook from './pages/EditBook'
 
 function App() {
     // const [userId, setUserId] = useState(localStorage.getItem("userId"));
@@ -70,7 +71,7 @@ function App() {
                                 path="/admin"
                                 element={
                                     <PrivateRoute
-                                        requiredRole="admin"
+                                        requiredRole={["admin"]}
                                         element={<BookList />}
                                     />
                                 }
@@ -79,7 +80,7 @@ function App() {
                                 path="/dashboard"
                                 element={
                                     <PrivateRoute
-                                        requiredRole="admin"
+                                        requiredRole={["admin"]}
                                         element={<Dashboard />}
                                     />
                                 }
@@ -88,8 +89,17 @@ function App() {
                                 path="/book/create"
                                 element={
                                     <PrivateRoute
-                                        requiredRole="author"
+                                        requiredRole={['author']}
                                         element={<CreateBook />}
+                                    />
+                                }
+                            />
+                             <Route
+                                path="/book/edit/:id"
+                                element={
+                                    <PrivateRoute
+                                        requiredRole={['admin', 'author']}
+                                        element={<EditBook />}
                                     />
                                 }
                             />
@@ -97,7 +107,7 @@ function App() {
                                 path="/dashboard/:table"
                                 element={
                                     <PrivateRoute
-                                        requiredRole="admin"
+                                        requiredRole={["admin"]}
                                         element={<Dashboard />}
                                     />
                                 }
