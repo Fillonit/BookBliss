@@ -120,20 +120,7 @@ export default function BookTable() {
         authorId: 0,
         pages: 0,
     })
-    setViewDetailsBook({
-        title: '',
-        description: '',
-        id: -1,
-        author: '',
-        cover: '',
-        rating: 0,
-        price: 0,
-        genre: '',
-        hasPermission: true,
-        ratingCount: 0,
-        authorId: 0,
-        pages: 0,
-    })
+    
     useEffect(() => {
         if (selectedBook) {
             setBookData({
