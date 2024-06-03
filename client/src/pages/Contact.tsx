@@ -8,6 +8,7 @@ const Contact = () => {
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('')
     const [type, setType] = useState('feedback')
+    setType('feedback')
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         try {

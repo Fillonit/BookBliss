@@ -10,64 +10,76 @@ import {
     HiOutlinePencilAlt,
     HiOutlineCursorClick,
     HiOutlineShieldCheck,
-    HiOutlineBookOpen
+    HiOutlineBookOpen,
 } from 'react-icons/hi'
 
 import { API_URL } from '@/util/envExport'
 import { useEffect, useState } from 'react'
 
 export default function BookStats() {
-    const [totalBooks, setTotalBooks] = useState<number>(0);
-    const [averagePrice, setAveragePrice] = useState<number>(0);
-    const [averageRating, setAverageRating] = useState<number>(0);
-    const [averageTimeToRead, setAverageTimeToRead] = useState<number>(0);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [totalBooks, setTotalBooks] = useState<number>(0)
+    const [averagePrice, setAveragePrice] = useState<number>(0)
+    const [averageRating, setAverageRating] = useState<number>(0)
+    const [averageTimeToRead, setAverageTimeToRead] = useState<number>(0)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
-    const fetchData = async (url: string, key: string) =>{
+    console.log(isLoading)
+
+    const fetchData = async (url: string, key: string) => {
         const response = await fetch(url, {
             headers: {
-                session: localStorage.getItem('sessionToken') as string
-            }
-        });
-        const data = await response.json();
-        const value = data.data;
-        return {key, value};
+                session: localStorage.getItem('sessionToken') as string,
+            },
+        })
+        const data = await response.json()
+        const value = data.data
+        return { key, value }
     }
     useEffect(() => {
-        const urls: {key: string, url: string}[] = [
-              {key: 'totalBooks', url: `${API_URL}/api/books/count`},
-              {key: 'averagePrice', url: `${API_URL}/api/books/average-price`},
-              {key: 'averageRating', url: `${API_URL}/api/books/average-rating`},
-              {key: 'averageTimeToRead', url: `${API_URL}/api/books/average-time-to-read`}
-        ];
-        const initialize = async ()=>{
-          const promises = await Promise.all(urls.map(({key, url}) => fetchData(url, key)));
-          promises.forEach(({key, value}) => {
-                switch(key){
+        const urls: { key: string; url: string }[] = [
+            { key: 'totalBooks', url: `${API_URL}/api/books/count` },
+            { key: 'averagePrice', url: `${API_URL}/api/books/average-price` },
+            {
+                key: 'averageRating',
+                url: `${API_URL}/api/books/average-rating`,
+            },
+            {
+                key: 'averageTimeToRead',
+                url: `${API_URL}/api/books/average-time-to-read`,
+            },
+        ]
+        const initialize = async () => {
+            const promises = await Promise.all(
+                urls.map(({ key, url }) => fetchData(url, key))
+            )
+            promises.forEach(({ key, value }) => {
+                switch (key) {
                     case 'totalBooks':
-                        setTotalBooks(value);
-                        break;
+                        setTotalBooks(value)
+                        break
                     case 'averagePrice':
-                        setAveragePrice(value);
-                        break;
+                        setAveragePrice(value)
+                        break
                     case 'averageRating':
-                        setAverageRating(value);
-                        break;
+                        setAverageRating(value)
+                        break
                     case 'averageTimeToRead':
-                        setAverageTimeToRead(value);
-                        break;
+                        setAverageTimeToRead(value)
+                        break
                 }
-          });
-          setIsLoading(false);
+            })
+            setIsLoading(false)
         }
-        initialize();
+        initialize()
     }, [])
 
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Total books</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                        Total books
+                    </CardTitle>
                     <HiOutlineBookOpen className="h-6 w-6 text-amber-500" />
                 </CardHeader>
                 <CardContent>
@@ -83,7 +95,6 @@ export default function BookStats() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">{averagePrice}</div>
-
                 </CardContent>
             </Card>
             <Card>
@@ -105,7 +116,9 @@ export default function BookStats() {
                     <HiOutlineCursorClick className="h-6 w-6 text-amber-500" />
                 </CardHeader>
                 <CardContent>
-                    <div className="text-2xl font-bold">{averageTimeToRead}</div>
+                    <div className="text-2xl font-bold">
+                        {averageTimeToRead}
+                    </div>
                 </CardContent>
             </Card>
         </div>

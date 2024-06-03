@@ -10,22 +10,22 @@ import { Label } from 'flowbite-react'
 
 import GenreGrid from '@/components/Genre/GenreGrid'
 import { Loader2Icon } from 'lucide-react'
-import { Dropdown, DropdownProps } from '@/components/Other/Dropdown'
+import { DropdownProps } from '@/components/Other/Dropdown'
 import NoResults from '@/components/Other/Exceptions/NoResults'
 import { IoSearch } from 'react-icons/io5'
 // import { }
 import * as React from 'react'
-import { FaSearch } from 'react-icons/fa'
+// import { FaSearch } from 'react-icons/fa'
 // import { DropdownMenuCheckboxItemProps } from '@radix-ui/react-dropdown-menu'
 
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
-    DropdownMenuLabel,
+    // DropdownMenuLabel,
     DropdownMenuRadioGroup,
     DropdownMenuRadioItem,
-    DropdownMenuSeparator,
+    // DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 

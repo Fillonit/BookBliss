@@ -88,7 +88,8 @@ export type AuthorApplication = {
 export default function ContactTable() {
     const [isSheetOpen, setSheetOpen] = useState(false)
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false)
-    const [selectedApplication, setSelectedApplication] = useState<AuthorApplication | null>(null)
+    const [selectedApplication, setSelectedApplication] =
+        useState<AuthorApplication | null>(null)
 
     const [isViewDetailsSheetOpen, setViewDetailsSheetOpen] = useState(false)
     const [viewDetailsContact, setViewDetailsContact] = useState({
@@ -102,11 +103,14 @@ export default function ContactTable() {
     const [page, setPage] = useState(0)
     const [pageSize, setPageSize] = useState(5)
 
+    console.log(isSheetOpen)
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `${API_URL}/api/contacts?limit=${pageSize}&offset=${page * pageSize
+                    `${API_URL}/api/contacts?limit=${pageSize}&offset=${
+                        page * pageSize
                     }`
                 )
                 const jsonData = await response.json()
@@ -198,7 +202,7 @@ export default function ContactTable() {
             },
             cell: ({ row }) => (
                 <div className="lowercase hover:text-amber-600">
-                        {row.getValue('type')}
+                    {row.getValue('type')}
                 </div>
             ),
         },
@@ -306,7 +310,12 @@ export default function ContactTable() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 onClick={() => {
-                                    setViewDetailsContact({id: String(contact.id), email: contact.email, fullName: contact.fullName, username: contact.username})
+                                    setViewDetailsContact({
+                                        id: String(contact.id),
+                                        email: contact.email,
+                                        fullName: contact.fullName,
+                                        username: contact.username,
+                                    })
                                     setViewDetailsSheetOpen(true)
                                 }}
                             >
@@ -447,10 +456,10 @@ export default function ContactTable() {
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
-                                                    header.column.columnDef
-                                                        .header,
-                                                    header.getContext()
-                                                )}
+                                                      header.column.columnDef
+                                                          .header,
+                                                      header.getContext()
+                                                  )}
                                         </TableHead>
                                     )
                                 })}
@@ -608,7 +617,7 @@ export default function ContactTable() {
                     </Button>
                 </div>
                 <ToastContainer />
-                
+
                 {isViewDetailsSheetOpen && viewDetailsContact && (
                     <Sheet
                         open={isViewDetailsSheetOpen}
@@ -708,8 +717,10 @@ export default function ContactTable() {
                                 </DialogClose>
                                 <Button
                                     onClick={async () => {
-                                        if(!selectedApplication){
-                                            toast.error('No application selected')
+                                        if (!selectedApplication) {
+                                            toast.error(
+                                                'No application selected'
+                                            )
                                             return
                                         }
                                         const response = await fetch(
@@ -748,7 +759,8 @@ export default function ContactTable() {
                                         const fetchData = async () => {
                                             try {
                                                 const response = await fetch(
-                                                    `${API_URL}/api/contacts?limit=${pageSize}&offset=${page * pageSize
+                                                    `${API_URL}/api/contacts?limit=${pageSize}&offset=${
+                                                        page * pageSize
                                                     }`
                                                 )
                                                 const jsonData =

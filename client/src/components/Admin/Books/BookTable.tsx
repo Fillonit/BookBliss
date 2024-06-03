@@ -100,19 +100,39 @@ export default function BookTable() {
     const [isSheetOpen, setSheetOpen] = useState(false)
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [selectedBook, setSelectedBook] = useState<BookCardProps | null>(null)
-    const [bookData, setBookData] = useState<EditableBook>({ title: '', description: '', id: -1 })
+    const [bookData, setBookData] = useState<EditableBook>({
+        title: '',
+        description: '',
+        id: -1,
+    })
     const [isViewDetailsSheetOpen, setViewDetailsSheetOpen] = useState(false)
     const [viewDetailsBook, setViewDetailsBook] = useState<BookCardType>({
-            title: '',
-            description: '',
-            id: -1,
-            author: '',
-            cover: '',
-            rating: 0,
-            price: 0,
-            genre: '',
-            hasPermission: true,
-            ratingCount: 0,
+        title: '',
+        description: '',
+        id: -1,
+        author: '',
+        cover: '',
+        rating: 0,
+        price: 0,
+        genre: '',
+        hasPermission: true,
+        ratingCount: 0,
+        authorId: 0,
+        pages: 0,
+    })
+    setViewDetailsBook({
+        title: '',
+        description: '',
+        id: -1,
+        author: '',
+        cover: '',
+        rating: 0,
+        price: 0,
+        genre: '',
+        hasPermission: true,
+        ratingCount: 0,
+        authorId: 0,
+        pages: 0,
     })
     useEffect(() => {
         if (selectedBook) {
@@ -136,7 +156,7 @@ export default function BookTable() {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        'session': localStorage.getItem('sessionToken') as string
+                        session: localStorage.getItem('sessionToken') as string,
                     },
                     body: JSON.stringify(bookData),
                 }
@@ -149,7 +169,7 @@ export default function BookTable() {
                             ? 'dark'
                             : 'light',
                 })
-                return;
+                return
             }
 
             toast.success('Changes saved successfully', {
@@ -758,7 +778,7 @@ export default function BookTable() {
                     </Button>
                 </div>
                 <ToastContainer />
-            
+
                 {isSheetOpen && selectedBook && (
                     <Sheet
                         open={isSheetOpen}
@@ -771,8 +791,8 @@ export default function BookTable() {
                             <SheetHeader>
                                 <SheetTitle>Edit book</SheetTitle>
                                 <SheetDescription>
-                                    Make changes to this book here. Click
-                                    save when you're done.
+                                    Make changes to this book here. Click save
+                                    when you're done.
                                 </SheetDescription>
                             </SheetHeader>
                             <div className="grid gap-4 py-4">
@@ -895,9 +915,7 @@ export default function BookTable() {
                                     </Label>
                                     <Input
                                         id="price"
-                                        value={
-                                            viewDetailsBook.price
-                                        }
+                                        value={viewDetailsBook.price}
                                         disabled
                                         className="col-span-3"
                                     />
@@ -977,9 +995,12 @@ export default function BookTable() {
                                             `${API_URL}/api/books/${selectedBook.id}`,
                                             {
                                                 headers: {
-                                                    'session': localStorage.getItem('sessionToken') as string
-                                                },                                                
-                                                method: 'DELETE'
+                                                    session:
+                                                        localStorage.getItem(
+                                                            'sessionToken'
+                                                        ) as string,
+                                                },
+                                                method: 'DELETE',
                                             }
                                         )
 
@@ -995,7 +1016,7 @@ export default function BookTable() {
                                                             : 'light',
                                                 }
                                             )
-                                            return;
+                                            return
                                         }
 
                                         toast.success(

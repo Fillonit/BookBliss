@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { API_URL } from '@/util/envExport'
-import SkeletonCardBook from '../Other/Loading'
+// import SkeletonCardBook from '../Other/Loading'
 import { BookCardProps } from '@/types/BookCardProps'
 import {
     Carousel,
@@ -29,7 +29,31 @@ const SingleCard = () => {
         price: 0,
         ratingCount: 0,
         genre: '',
+        authorId: 0,
+        pages: 0,
+        hasPermission: false,
     })
+
+    console.log(books, loading)
+
+    setBooks([
+        {
+            id: 0,
+            title: '',
+            cover: '',
+            rating: 0,
+            author: '',
+            description: '',
+            price: 0,
+            ratingCount: 0,
+            genre: '',
+            authorId: 0,
+            pages: 0,
+            hasPermission: false,
+        },
+    ])
+
+    setLoading(false)
 
     useEffect(() => {
         const fetchBookCover = async (bookId: number) => {
