@@ -143,6 +143,7 @@ export const generateTicket = async (
 export const getBook = async (req: express.Request, res: express.Response) => {
 	const { id } = req.params;
 	const { session } = req.headers;
+
 	const user = await getUserBySessionToken(session as string);
 
 	const book = await prisma.book.findFirst({
@@ -173,10 +174,30 @@ export const getBook = async (req: express.Request, res: express.Response) => {
 			pages: true
 		}
 	});
-	if(book == null) return res.status(200).json({book: null});
 
+	const reviews = await prisma.review.groupBy({
+		by: ['rating'],
+		_count: {
+			rating: true
+		},
+		where: {
+			bookId: Number.parseInt(id)
+		}
+	});
+	const total = reviews.reduce((acc, curr) => acc + curr._count.rating, 0);
+	const percentages = reviews.length === 0 ? 
+	[{rating: 1, percentage: 0}, {rating: 2, percentage: 0}, 
+	 {rating: 3, percentage: 0}, {rating: 4, percentage: 0}, 
+	 {rating: 5, percentage: 0}] :
+	 reviews.map(review => ({
+		rating: review.rating,
+		percentage: review._count.rating / total * 100
+	}));
+    
+	if(book == null) return res.status(200).json({book: null});
+   
 	const hasPermission = user && book.authorId === user.id || user?.role === 'admin';
-	res.status(200).json({book: {...book, hasPermission}});
+	res.status(200).json({book: {...book, hasPermission, percentages: percentages}});
 };
 
 export const updateBook = async (

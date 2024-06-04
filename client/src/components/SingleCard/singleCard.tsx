@@ -1,25 +1,27 @@
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { API_URL } from '@/util/envExport'
-// import SkeletonCardBook from '../Other/Loading'
-// import { BookCardProps } from '@/types/BookCardProps'
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { API_URL } from '@/util/envExport';
 import {
     Carousel,
     CarouselContent,
     CarouselItem,
     CarouselNext,
     CarouselPrevious,
-} from '@/components/ui/carousel'
+} from '@/components/ui/carousel';
 
-import BookCard from '@/components/Book/BookCard'
+import BookCard from '@/components/Book/BookCard';
 
-import { HiStar, HiOutlineStar, HiOutlineShoppingCart } from 'react-icons/hi'
-import { toast } from 'react-toastify'
+import { HiStar, HiOutlineStar, HiOutlineShoppingCart } from 'react-icons/hi';
+import { toast } from 'react-toastify';
+import CreateReview from '../Admin/Reviews/CreateReview';
+
 const SingleCard = () => {
-    const { id } = useParams<{ id: string }>()
-    // const [books, setBooks] = useState<BookCardProps[] | null>([])
-    const [loading, setLoading] = useState<boolean>(true)
-    const [cover, setCover] = useState<string>('')
+    const { id } = useParams<{ id: string }>();
+    // const [books, setBooks] = useState<BookCardProps[] | null>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [reviews, setReviews] = useState<{ id: number, comment: string, rating: number, user: {name: string} }[]>([]);
+    const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
+
     const [book, setBook] = useState({
         id: 0,
         title: '',
@@ -33,61 +35,60 @@ const SingleCard = () => {
         authorId: 0,
         pages: 0,
         hasPermission: false,
-    })
-
-
-    // useEffect(() => {
-    //     setBooks([
-    //         {
-    //             id: 0,
-    //             title: '',
-    //             cover: '',
-    //             rating: 0,
-    //             author: '',
-    //             description: '',
-    //             price: 0,
-    //             ratingCount: 0,
-    //             genre: '',
-    //             authorId: 0,
-    //             pages: 0,
-    //             hasPermission: false,
-    //         },
-    //     ])
-
-    //     setLoading(false)
-    // }, [])
+    });
 
     useEffect(() => {
         const fetchBookCover = async (bookId: number) => {
-            setLoading(true)
-            const response = await fetch(`${API_URL}/api/books/${bookId}`)
-            if(!response.ok){
+            setLoading(true);
+            const response = await fetch(`${API_URL}/api/books/${bookId}`);
+            if (!response.ok) {
                 toast.error('Failed to fetch book');
                 return;
             }
-            const bookData = await response.json()
-            setBook(bookData.book)
+            const bookData = await response.json();
+            setBook(bookData.book);
+            setLoading(false);
+        };
 
-            const cover = bookData.book.cover
+        fetch(`${API_URL}/api/reviews-user/${id}`, {
+            headers: {
+                session: localStorage.getItem('sessionToken') as string,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setReviews(data.data);
+            });
 
-            setCover(cover)
-            setLoading(false)
-        }
-        fetchBookCover(Number(id))
-    }, [id])
+        fetchBookCover(Number(id));
+    }, [id]);
+
+    const bookCover = `${API_URL}/files/${book.cover}`;
+
+    const nextReview = () => {
+        setCurrentReviewIndex((prevIndex) =>
+            prevIndex === reviews.length - 1 ? 0 : prevIndex + 1
+        );
+    };
+
+    const prevReview = () => {
+        setCurrentReviewIndex((prevIndex) =>
+            prevIndex === 0 ? reviews.length - 1 : prevIndex - 1
+        );
+    };
 
     return (
         <section className="text-gray-600 body-font overflow-hidden">
             <div className="container px-10 py-32 mx-auto">
                 <div className="lg:w-3/4 mx-auto flex flex-wrap">
                     <img
-                        src={book.cover ? book.cover : cover}
+                        src={bookCover}
                         alt="Book cover"
                         className="w-1/3 object-cover object-center rounded"
                     />
                     <div className="lg:w-2/3 w-full lg:pl-20 lg:py-10 mt-10 lg:mt-0">
                         <h2 className="text-sm title-font text-gray-500 tracking-widest">
-                            {book.author ? book.author : loading ? 'Loading...': 'None'}
+                            {book.author ? book.author : loading ? 'Loading...' : 'None'}
                         </h2>
                         <h1 className="text-gray-900 text-4xl title-font font-medium mb-1 dark:text-gray-100">
                             {book.title ? book.title : 'Loading...'}
@@ -119,26 +120,49 @@ const SingleCard = () => {
                                 <HiOutlineShoppingCart className="w-8 h-8" />
                             </button>
                         </div>
+                        <CreateReview bookId={Number.parseInt(String(id))} />
                     </div>
                 </div>
             </div>
-            <div className="border-b-2 border-gray-100 mb-10 w-full mr-96 max-w-[65rem] ml-[32rem]" />
+            <div className="border-b-2 border-gray-100 mb-10 w-full max-w-[65rem]" />
+            {reviews && reviews.length > 0 && (
+                <div className="flex justify-center mt-4 pb-6">
+                    <Carousel className="w-1/2">
+                        <CarouselContent>
+                            <CarouselItem style={{width: "100%"}}>
+                                <div style={{width: "100%"}}>
+                                    <div className="bg-zinc-100 p-6 rounded-lg shadow-md">
+                                        <h3 className="text-lg font-semibold mb-2">
+                                            Review by @{reviews[currentReviewIndex].user.name}
+                                        </h3>
+                                        <p className="text-gray-600 mb-2">
+                                            {reviews[currentReviewIndex].comment}
+                                        </p>
+                                        <div className="flex items-center">
+                                            {renderStars(reviews[currentReviewIndex].rating)}
+                                        </div>
+                                    </div>
+                                </div>
+                            </CarouselItem>
+                        </CarouselContent>
+                        <>
+                            <CarouselPrevious onClick={prevReview} />
+                            <CarouselNext onClick={nextReview} />
+                        </>
+                    </Carousel>
+                </div>
+            )}
             <div className="flex justify-center mt-4 pb-6">
-                <Carousel
-                    // opts={{
-                    //     align: 'start',
-                    // }}
-                    className="w-1/2"
-                >
+                <Carousel className="w-1/2">
                     <CarouselContent className="mr-2">
                         <BookCard {...book} hasPermission={false} />
-                        <CarouselItem className="basis-1/4 ">
+                        <CarouselItem className="basis-1/4">
                             <div className="p-1">
                                 <BookCard {...book} hasPermission={false} />
                             </div>
                         </CarouselItem>
                         <BookCard {...book} hasPermission={false} />
-                        <CarouselItem className="basis-1/4 ">
+                        <CarouselItem className="basis-1/4">
                             <div className="p-1">
                                 <BookCard {...book} hasPermission={false} />
                             </div>
@@ -151,20 +175,19 @@ const SingleCard = () => {
                 </Carousel>
             </div>
         </section>
-    )
-}
+    );
+};
+
 const renderStars = (ratingCount: number) => {
-    const stars = []
+    const stars = [];
     for (let i = 0; i < 5; i++) {
         if (i < ratingCount) {
-            stars.push(<HiStar key={i} className="w-7 h-7 text-yellow-500" />)
+            stars.push(<HiStar key={i} className="w-7 h-7 text-yellow-500" />);
         } else {
-            stars.push(
-                <HiOutlineStar key={i} className="w-6 h-6 text-yellow-500" />
-            )
+            stars.push(<HiOutlineStar key={i} className="w-6 h-6 text-yellow-500" />);
         }
     }
-    return stars
-}
+    return stars;
+};
 
-export default SingleCard
+export default SingleCard;
