@@ -48,6 +48,7 @@ const CreateReview: React.FC<{ bookId: number, onSubmit?: () => void | Promise<v
         if(response.ok){
             toast.success('Review submitted successfully');
             onSubmit?.();
+            setExists(true);
         }
         else{
             toast.error('Failed to submit review');
