@@ -13,7 +13,7 @@ import Dashboard from '@/components/Admin/Dashboard'
 import Contact from '@/pages/Contact'
 import BooksPage from './pages/Books'
 import ApplicationForm from './pages/Apply'
-import SingleCard from '@/components/SingleCard/singleCard'
+import SingleCard from '@/components/Book/Book'
 
 // ? COMPONENTS
 import Navbar from '@/components/Layout/Navbar'
@@ -69,7 +69,7 @@ function App() {
                                 path="/admin"
                                 element={
                                     <PrivateRoute
-                                        requiredRole={["admin"]}
+                                        requiredRole={['admin']}
                                         element={<BookList />}
                                     />
                                 }
@@ -78,7 +78,7 @@ function App() {
                                 path="/dashboard"
                                 element={
                                     <PrivateRoute
-                                        requiredRole={["admin"]}
+                                        requiredRole={['admin']}
                                         element={<Dashboard />}
                                     />
                                 }
@@ -92,7 +92,7 @@ function App() {
                                     />
                                 }
                             />
-                             <Route
+                            <Route
                                 path="/book/edit/:id"
                                 element={
                                     <PrivateRoute
@@ -105,7 +105,7 @@ function App() {
                                 path="/dashboard/:table"
                                 element={
                                     <PrivateRoute
-                                        requiredRole={["admin"]}
+                                        requiredRole={['admin']}
                                         element={<Dashboard />}
                                     />
                                 }

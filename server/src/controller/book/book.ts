@@ -32,8 +32,8 @@ export const getBooks = async (req: express.Request, res: express.Response) => {
 					[sorting]: "desc",
 			  }
 			: {
-				createdAt: 'desc'
-			},
+					createdAt: "desc",
+			  },
 		select: {
 			id: true,
 			title: true,
@@ -154,15 +154,16 @@ export const getBook = async (req: express.Request, res: express.Response) => {
 			title: true,
 			description: true,
 			price: true,
-            BookGenre: {
+			author: true,
+			BookGenre: {
 				select: {
 					Genre: {
 						select: {
 							name: true,
-							id: true
-						}
-					}
-				}
+							id: true,
+						},
+					},
+				},
 			},
 			publisherId: true,
 			cover: true,
@@ -170,13 +171,14 @@ export const getBook = async (req: express.Request, res: express.Response) => {
 			authorId: true,
 			rating: true,
 			ratingCount: true,
-			pages: true
-		}
+			pages: true,
+		},
 	});
-	if(book == null) return res.status(200).json({book: null});
+	if (book == null) return res.status(200).json({ book: null });
 
-	const hasPermission = user && book.authorId === user.id || user?.role === 'admin';
-	res.status(200).json({book: {...book, hasPermission}});
+	const hasPermission =
+		(user && book.authorId === user.id) || user?.role === "admin";
+	res.status(200).json({ book: { ...book, hasPermission } });
 };
 
 export const updateBook = async (
@@ -192,7 +194,7 @@ export const updateBook = async (
 			id: Number.parseInt(id),
 		},
 	});
-    if(!book) return res.status(404).json({message: 'Book not found'});
+	if (!book) return res.status(404).json({ message: "Book not found" });
 	if (!user || (user.role !== "admin" && user.id !== book.authorId)) {
 		return res.status(401).json({ message: "Unauthorized" });
 	}
@@ -207,18 +209,14 @@ export const updateBook = async (
 		publisher,
 		genres,
 	} = data;
-	
+
 	const coverFile = Array.isArray(req.files)
 		? req?.files?.[0]?.filename ?? null
 		: req?.files?.["cover"]?.[0]?.filename ?? null;
 
-	
-	
 	const pdfFile = Array.isArray(req.files)
 		? req?.files?.[0]?.filename ?? null
 		: req?.files?.["cover"]?.[0]?.filename ?? null;
-	
-
 
 	await prisma.bookGenre.deleteMany({
 		where: {
@@ -239,8 +237,8 @@ export const updateBook = async (
 			price: price as number,
 			description: description as string,
 			title: title as string,
-			pdfLink: pdfFile ?? '',
-			cover: coverFile ?? '',
+			pdfLink: pdfFile ?? "",
+			cover: coverFile ?? "",
 			pages: pages as number,
 			words: words as number,
 			timeToRead: timeToRead as number,
@@ -431,3 +429,100 @@ export const deleteBook = async (
 	});
 	res.status(200).json({ message: "Successfully updated book" });
 };
+
+export const getBookOnDukagjini = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const { id } = req.params;
+	const book = await prisma.book.findFirst({
+		where: {
+			id: Number.parseInt(id),
+		},
+	});
+
+	if (!book) {
+		return res.status(404).json({ message: "Book not found" });
+	}
+
+	try {
+		const response = await fetch(
+			`https://api.dukagjinibooks.com/api/products/search?search=${book.title}`,
+			{
+				headers: {
+					accept: "application/json",
+				},
+				method: "GET",
+			}
+		);
+
+		if (!response.ok) {
+			throw new Error("DukagjiniBooks API response was not ok");
+		}
+
+		const data = await response.json();
+		res.status(200).json({ book, dukagjiniBooksData: data });
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+};
+
+export const howLongToRead = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const { id, wpm } = req.params;
+	const book = await prisma.book.findFirst({
+		where: {
+			id: Number.parseInt(id),
+		},
+	});
+
+	if (!book) {
+		return res.status(404).json({ message: "Book not found" });
+	}
+
+	try {
+		const response = await fetch(
+			`https://api.howlongtoread.com/books/search/${book.title}`
+		);
+		if (!response.ok) {
+			throw new Error("howlongtoread API response was not ok");
+		}
+
+		const data = await response.json();
+		const bookId = data[0].id;
+
+		const secondResponse = await fetch(
+			`https://api.howlongtoread.com/books/id/${bookId}`
+		);
+		if (!secondResponse.ok) {
+			throw new Error("howlongtoread API response was not ok");
+		}
+
+		const secondData = await secondResponse.json();
+		const words = secondData.wordCount;
+		const avgWordsPerMinute = wpm ? Number.parseInt(wpm) : 200;
+		const timeToRead = Math.ceil(words / avgWordsPerMinute);
+		res.status(200).json({
+			timeToRead,
+			words,
+			readTime: secondData.readTime,
+			goodreadsId: secondData.goodreadsId,
+			averageReadingTime: secondData.averageReadingTime,
+			human: secondsToHms(secondData.averageReadingTime),
+			numPages: secondData.numPages,
+		});
+	} catch (error) {
+		res.status(500).json({ message: error.message });
+	}
+};
+
+function secondsToHms(d: number) {
+	d = Number(d);
+	const h = Math.floor(d / 3600);
+	const m = Math.floor((d % 3600) / 60);
+	const hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+	const mDisplay = m > 0 ? m + (m == 1 ? " minute" : " minutes") : "";
+	return hDisplay + mDisplay;
+}
