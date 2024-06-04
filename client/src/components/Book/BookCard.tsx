@@ -126,7 +126,7 @@ export default function BookCard(book: BookCardProps) {
                             size="sm"
                             className="dark:bg-amber-600 dark:text-white"
                         >
-                            <HiOutlineShoppingCart className="" />
+                            <HiOutlineShoppingCart className="text-xl" />
                         </Button>
                     </div>
                 </CardContent>

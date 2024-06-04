@@ -13,7 +13,7 @@ import Dashboard from '@/components/Admin/Dashboard'
 import Contact from '@/pages/Contact'
 import BooksPage from './pages/Books'
 import ApplicationForm from './pages/Apply'
-import SingleCard from '@/components/SingleCard/singleCard'
+import SingleCard from '@/components/Book/Book'
 
 // ? COMPONENTS
 import Navbar from '@/components/Layout/Navbar'
