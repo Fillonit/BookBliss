@@ -147,6 +147,7 @@ export const getReviewUser = async (
             userId: user.id
         },
         select: {
+            id: true,
             rating: true,
             comment: true,
         }
@@ -199,6 +200,7 @@ export const updateReview = async (
 ) => {
     const { id } = req.params;
     const user = await getUserBySessionToken(req.headers.session as string);
+    if(!id) return res.status(400).json({ message: "Review ID is required." });
     if(!user) return res.status(403).json({ message: "You must be logged in to update a review." });
 
     const { rating, comment, bookId } = req.body;
