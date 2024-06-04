@@ -122,6 +122,14 @@ export default function BookTable() {
     })
 
     useEffect(() => {
+        if (viewDetailsBook) {
+            setViewDetailsBook({
+                ...viewDetailsBook,
+            })
+        }
+    }, [viewDetailsBook])
+
+    useEffect(() => {
         if (selectedBook) {
             setBookData({
                 ...selectedBook,
