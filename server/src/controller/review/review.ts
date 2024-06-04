@@ -53,6 +53,29 @@ export const createReview = async (
      res.status(200).json(review);
 };
 
+export const getReviewsUser = async (
+    req: express.Request,
+    res: express.Response
+) => {
+    const {id} = req.params;
+    const reviews = await prisma.review.findMany({
+        where: {
+            bookId: Number.parseInt(id)
+        },
+        select: {
+            id: true,
+            rating: true,
+            comment: true,
+            user: {
+                select: {
+                    name: true
+                }
+            }
+        }
+    });
+    res.status(200).json({message: "Successfully fetched reviews", data: reviews});
+};
+
 export const getReviews = async (
     req: express.Request,
     res: express.Response
@@ -109,6 +132,26 @@ export const getReview = async (
         },
     });
     res.status(200).json(review);
+};
+export const getReviewUser = async (
+    req: express.Request,
+    res: express.Response
+) => {
+    const { id } = req.params;
+    const user = await getUserBySessionToken(req.headers.session as string);
+    if(!user) return res.status(403).json({ message: "You must be logged in to view a review." });
+
+    const review = await prisma.review.findFirst({
+        where: {
+            bookId: Number.parseInt(id),
+            userId: user.id
+        },
+        select: {
+            rating: true,
+            comment: true,
+        }
+    });
+    res.status(200).json({message: "Successfully fetched review", data: review});
 };
 
 export const deleteReview = async (
