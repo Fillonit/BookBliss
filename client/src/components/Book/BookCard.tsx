@@ -75,8 +75,9 @@ export default function BookCard(book: BookCardProps) {
     }
 
     return (
-        <Link to={`/books/${book.id}`}>
-            <Card className="flex flex-col w-full max-w-xs mx-2 bg-white rounded-lg overflow-hidden dark:bg-slate-950 shadow-md mb-2 transition-transform duration-500 ease-in-out transform hover:scale-105">
+        // <Link to={`/books/${book.id}`}>
+        <Card className="flex flex-col w-full max-w-xs mx-2 bg-white rounded-lg overflow-hidden dark:bg-slate-950 shadow-md mb-2 transition-transform duration-500 ease-in-out transform hover:scale-105">
+            <Link to={`/books/${book.id}`}>
                 <div className="relative">
                     <img
                         alt="Book cover"
@@ -94,43 +95,46 @@ export default function BookCard(book: BookCardProps) {
                             'None'}
                     </span>
                 </div>
-                <CardContent className="p-2 flex-grow mt-2">
-                    <div className="flex justify-between items-start">
+            </Link>
+            <CardContent className="p-2 flex-grow mt-2">
+                <div className="flex justify-between items-start">
+                    <Link to={`/books/${book.id}`}>
                         <CardTitle className="text-lg font-semibold mb-2 dark:text-white">
                             {book.title}
                         </CardTitle>
-                        {isFavourite ? (
-                            <HiHeart
-                                className="text-2xl text-amber-600 cursor-pointer"
-                                onClick={toggleFavourite}
-                            />
-                        ) : (
-                            <HiOutlineHeart
-                                className="text-2xl text-amber-600 cursor-pointer"
-                                onClick={toggleFavourite}
-                            />
-                        )}
-                    </div>
-                    <Link to={`/profile/${book.authorId}`}>
-                        <p className="text-sm mb-2">
-                            {book.author || book.authorId
-                                ? book.author || `Author No.${book.authorId}`
-                                : 'Unknown Author'}
-                        </p>
                     </Link>
-                    <div className="mt-3 flex items-center justify-between">
-                        <span className="text-sm font-medium bg-amber-600 p-2 rounded-md text-white">
-                            {book?.price?.toFixed(2)} €
-                        </span>
-                        <Button
-                            size="sm"
-                            className="dark:bg-amber-600 dark:text-white"
-                        >
-                            <HiOutlineShoppingCart className="text-xl" />
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
-        </Link>
+                    {isFavourite ? (
+                        <HiHeart
+                            className="text-2xl text-amber-600 cursor-pointer"
+                            onClick={toggleFavourite}
+                        />
+                    ) : (
+                        <HiOutlineHeart
+                            className="text-2xl text-amber-600 cursor-pointer"
+                            onClick={toggleFavourite}
+                        />
+                    )}
+                </div>
+                <Link to={`/profile/${book.authorId}`}>
+                    <p className="text-sm mb-2">
+                        {book.author || book.authorId
+                            ? book.author || `Author No.${book.authorId}`
+                            : 'Unknown Author'}
+                    </p>
+                </Link>
+                <div className="mt-3 flex items-center justify-between">
+                    <span className="text-sm font-medium bg-amber-600 p-2 rounded-md text-white">
+                        {book?.price?.toFixed(2)} €
+                    </span>
+                    <Button
+                        size="sm"
+                        className="dark:bg-amber-600 dark:text-white"
+                    >
+                        <HiOutlineShoppingCart className="text-xl" />
+                    </Button>
+                </div>
+            </CardContent>
+        </Card>
+        // </Link>
     )
 }
