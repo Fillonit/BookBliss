@@ -3,38 +3,38 @@ import React, { useEffect, useState } from 'react';
 import { HiStar } from 'react-icons/hi';
 import { toast } from 'react-toastify';
 
-const CreateReview: React.FC<{ bookId: number }> = ({ bookId }) => {
+const CreateReview: React.FC<{ bookId: number, onSubmit?: () => void | Promise<void>  }> = ({ bookId, onSubmit }) => {
+    const [id, setId] = useState<number | null>(null);
     const [comment, setComment] = useState('');
     const [rating, setRating] = useState<number | null>(null);
     const [exists, setExists] = useState<boolean | null>(null);
-
-    useEffect(()=>{
-        const fetchData = async()=>{
-            const response = await fetch(`${API_URL}/api/review-user/${bookId}`, {
-                headers: {
-                    session: localStorage.getItem('sessionToken') as string,
-                },
-            });
-            if(response.ok){
-                const data = await response.json();
-                if(data === null){
-                    setExists(false);
-                    return;
-                }
-                setExists(true);
-                setRating(data.data.rating);
-                setComment(data.data.comment);
+    const fetchData = async()=>{
+        const response = await fetch(`${API_URL}/api/review-user/${bookId}`, {
+            headers: {
+                session: localStorage.getItem('sessionToken') as string,
+            },
+        });
+        if(response.ok){
+            const data = await response.json();
+            if(data === null){
+                setExists(false);
+                return;
             }
+            setExists(true);
+            setRating(data.data.rating);
+            setComment(data.data.comment);
+            setId(data.data.id);
         }
+    }
+    useEffect(()=>{
         fetchData();
-    })
+    }, [])
 
     // Handler for submitting the review
     const handleSubmit = async(event: React.FormEvent) => {
         event.preventDefault();
         
-        console.log('Submitted Review:', { bookId, comment, rating });
-        const url = exists ? `${API_URL}/api/review/${bookId}` : `${API_URL}/api/review`;
+        const url = exists ? `${API_URL}/api/review/${id}` : `${API_URL}/api/review`;
         const method = exists ? 'PUT' : 'POST';
 
         const response = await fetch(url, {
@@ -47,6 +47,7 @@ const CreateReview: React.FC<{ bookId: number }> = ({ bookId }) => {
         });
         if(response.ok){
             toast.success('Review submitted successfully');
+            onSubmit?.();
         }
         else{
             toast.error('Failed to submit review');

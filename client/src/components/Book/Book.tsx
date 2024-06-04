@@ -17,6 +17,7 @@ import { HiStar, HiOutlineStar, HiOutlineShoppingCart } from 'react-icons/hi'
 import { FaAmazon, FaGoodreads } from 'react-icons/fa6'
 import { toast } from 'react-toastify'
 import { Input } from '@/components/ui/input'
+import CreateReview from '../Admin/Reviews/CreateReview'
 
 interface DukagjiniBook {
     dukagjiniBooksData: {
@@ -42,7 +43,9 @@ const SingleCard = () => {
     const { id } = useParams<{ id: string }>()
     // const [books, setBooks] = useState<BookCardProps[] | null>([])
     const [loading, setLoading] = useState<boolean>(true)
-    const [cover, setCover] = useState<string>('')
+   
+    const [reviews, setReviews] = useState<{ id: number, comment: string, rating: number, user: {name: string} }[]>([]);
+    const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
     const [book, setBook] = useState({
         id: 0,
         title: '',
@@ -70,56 +73,77 @@ const SingleCard = () => {
     })
 
     const [wpm, setWpm] = useState(200)
-
-    useEffect(() => {
-        const fetchBookCover = async (bookId: number) => {
-            setLoading(true)
-            const response = await fetch(`${API_URL}/api/books/${bookId}`)
-            if (!response.ok) {
-                toast.error('Failed to fetch book')
-                return
-            }
-            const bookData = await response.json()
-            setBook(bookData.book)
-
-            const cover = bookData.book.cover
-            setCover(cover)
-
-            const dukagjiniResponse = await fetch(
-                `${API_URL}/api/books/${bookId}/dukagjini`
-            )
-            if (!dukagjiniResponse.ok) {
-                toast.error('Failed to fetch book from dukagjini')
-                return
-            }
-            const dukagjiniData = await dukagjiniResponse.json()
-            console.log(dukagjiniData)
-            setBookOnDukagjini(dukagjiniData)
-
-            const htlrResponse = await fetch(
-                `${API_URL}/api/books/${bookData.book.id}/hltr`
-            )
-            if (!htlrResponse.ok) {
-                toast.error('Failed to fetch book from htlr')
-                return
-            }
-            const htlrData = await htlrResponse.json()
-            console.log(htlrData)
-            setHltrBook(htlrData)
-
-            setLoading(false)
+    const fetchReviews = async()=>{
+        fetch(`${API_URL}/api/reviews-user/${id}`, {
+            headers: {
+                session: localStorage.getItem('sessionToken') as string,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setReviews(data.data);
+            });
+    }
+    const fetchBookCover = async (bookId: number) => {
+        setLoading(true)
+        const response = await fetch(`${API_URL}/api/books/${bookId}`)
+        if (!response.ok) {
+            toast.error('Failed to fetch book')
+            return
         }
+        const bookData = await response.json()
+        setBook(bookData.book)
+
+        const dukagjiniResponse = await fetch(
+            `${API_URL}/api/books/${bookId}/dukagjini`
+        )
+        if (!dukagjiniResponse.ok) {
+            toast.error('Failed to fetch book from dukagjini')
+            return
+        }
+        const dukagjiniData = await dukagjiniResponse.json()
+        console.log(dukagjiniData)
+        setBookOnDukagjini(dukagjiniData)
+
+        const htlrResponse = await fetch(
+            `${API_URL}/api/books/${bookData.book.id}/hltr`
+        )
+        if (!htlrResponse.ok) {
+            toast.error('Failed to fetch book from htlr')
+            return
+        }
+
+        const htlrData = await htlrResponse.json()
+        console.log(htlrData)
+        setHltrBook(htlrData)
+
+        setLoading(false)
+    }
+    useEffect(() => {
+        fetchReviews();
         fetchBookCover(Number(id))
     }, [id])
 
-    console.log(bookOnDukagjini)
+    const bookCover = `${API_URL}/files/${book.cover}`;
+
+    const nextReview = () => {
+        setCurrentReviewIndex((prevIndex) =>
+            prevIndex === reviews.length - 1 ? 0 : prevIndex + 1
+        );
+    };
+
+    const prevReview = () => {
+        setCurrentReviewIndex((prevIndex) =>
+            prevIndex === 0 ? reviews.length - 1 : prevIndex - 1
+        );
+    };
 
     return (
         <section className="text-gray-600 body-font overflow-hidden">
             <div className="container px-10 py-32 mx-auto">
                 <div className="lg:w-3/4 mx-auto flex flex-wrap">
                     <img
-                        src={book.cover ? book.cover : cover}
+                        src={bookCover}
                         alt="Book cover"
                         className="w-1/3 object-contain object-center rounded"
                     />
@@ -221,10 +245,41 @@ const SingleCard = () => {
                                 Add to cart
                             </button>
                         </div>
+                        <CreateReview bookId={Number.parseInt(String(id))} onSubmit={()=>{
+                            fetchBookCover(Number(id));
+                            fetchReviews();
+                        }}/>
                     </div>
                 </div>
             </div>
             <div className="border-b-2 border-gray-100 mb-10 w-full mr-96 max-w-[65rem] ml-[32rem]" />
+            {reviews && reviews.length > 0 && (
+                <div className="flex justify-center mt-4 pb-6">
+                    <Carousel className="w-1/2">
+                        <CarouselContent>
+                            <CarouselItem style={{width: "100%"}}>
+                                <div style={{width: "100%"}}>
+                                    <div className="bg-zinc-100 p-6 rounded-lg shadow-md">
+                                        <h3 className="text-lg font-semibold mb-2">
+                                            Review by @{reviews[currentReviewIndex].user.name}
+                                        </h3>
+                                        <p className="text-gray-600 mb-2">
+                                            {reviews[currentReviewIndex].comment}
+                                        </p>
+                                        <div className="flex items-center">
+                                            {renderStars(reviews[currentReviewIndex].rating)}
+                                        </div>
+                                    </div>
+                                </div>
+                            </CarouselItem>
+                        </CarouselContent>
+                        <>
+                            <CarouselPrevious onClick={prevReview} />
+                            <CarouselNext onClick={nextReview} />
+                        </>
+                    </Carousel>
+                </div>
+            )}
             <div className="flex justify-center mt-4 pb-6">
                 <Carousel
                     // opts={{

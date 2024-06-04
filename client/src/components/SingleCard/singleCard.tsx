@@ -36,20 +36,19 @@ const SingleCard = () => {
         pages: 0,
         hasPermission: false,
     });
+    const fetchBookCover = async (bookId: number) => {
+        setLoading(true);
+        const response = await fetch(`${API_URL}/api/books/${bookId}`);
+        if (!response.ok) {
+            toast.error('Failed to fetch book');
+            return;
+        }
+        const bookData = await response.json();
+        setBook(bookData.book);
+        setLoading(false);
+    };
 
     useEffect(() => {
-        const fetchBookCover = async (bookId: number) => {
-            setLoading(true);
-            const response = await fetch(`${API_URL}/api/books/${bookId}`);
-            if (!response.ok) {
-                toast.error('Failed to fetch book');
-                return;
-            }
-            const bookData = await response.json();
-            setBook(bookData.book);
-            setLoading(false);
-        };
-
         fetch(`${API_URL}/api/reviews-user/${id}`, {
             headers: {
                 session: localStorage.getItem('sessionToken') as string,
@@ -120,7 +119,7 @@ const SingleCard = () => {
                                 <HiOutlineShoppingCart className="w-8 h-8" />
                             </button>
                         </div>
-                        <CreateReview bookId={Number.parseInt(String(id))} />
+                        <CreateReview bookId={Number.parseInt(String(id))}/>
                     </div>
                 </div>
             </div>
