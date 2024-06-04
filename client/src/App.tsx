@@ -28,10 +28,13 @@ import Settings from './components/User/Settings'
 import BookDetails from './components/Book/BookDetails'
 import Reviews from './components/Book/Reviews'
 
+import { Analytics } from '@vercel/analytics/react'
+
 function App() {
     // const [userId, setUserId] = useState(localStorage.getItem("userId"));
     return (
         <Router>
+            <Analytics />
             <head>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
