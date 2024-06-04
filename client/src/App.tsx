@@ -35,14 +35,6 @@ function App() {
     return (
         <Router>
             <Analytics />
-            <head>
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" />
-                <link
-                    href="https://fonts.googleapis.com/css2?family=Vibes&display=swap"
-                    rel="stylesheet"
-                />
-            </head>
             <Flowbite>
                 <ThemeProvider
                     defaultTheme="dark"
