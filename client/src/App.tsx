@@ -25,6 +25,8 @@ import Profile from './components/User/Profile'
 import CreateBook from './pages/CreateBook'
 import EditBook from './pages/EditBook'
 import Settings from './components/User/Settings'
+import BookDetails from './components/Book/BookDetails'
+import Reviews from './components/Book/Reviews'
 
 function App() {
     // const [userId, setUserId] = useState(localStorage.getItem("userId"));
@@ -112,6 +114,11 @@ function App() {
                             />
                             <Route path="/profile" element={<Profile />} />
                             <Route path="/settings" element={<Settings />} />
+                            <Route
+                                path="/bookdetails/:id"
+                                element={<BookDetails />}
+                            />
+                            <Route path="/reviews/:id" element={<Reviews />} />
                             {/* <Route path="/dashboard" element={<Dashboard />} />
                             <Route
                                 path="/dashboard/:table"
