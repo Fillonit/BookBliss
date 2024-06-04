@@ -43,9 +43,16 @@ const SingleCard = () => {
     const { id } = useParams<{ id: string }>()
     // const [books, setBooks] = useState<BookCardProps[] | null>([])
     const [loading, setLoading] = useState<boolean>(true)
-   
-    const [reviews, setReviews] = useState<{ id: number, comment: string, rating: number, user: {name: string} }[]>([]);
-    const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
+
+    const [reviews, setReviews] = useState<
+        {
+            id: number
+            comment: string
+            rating: number
+            user: { name: string }
+        }[]
+    >([])
+    const [currentReviewIndex, setCurrentReviewIndex] = useState(0)
     const [book, setBook] = useState({
         id: 0,
         title: '',
@@ -73,7 +80,7 @@ const SingleCard = () => {
     })
 
     const [wpm, setWpm] = useState(200)
-    const fetchReviews = async()=>{
+    const fetchReviews = async () => {
         fetch(`${API_URL}/api/reviews-user/${id}`, {
             headers: {
                 session: localStorage.getItem('sessionToken') as string,
@@ -81,8 +88,8 @@ const SingleCard = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                setReviews(data.data);
-            });
+                setReviews(data.data)
+            })
     }
     const fetchBookCover = async (bookId: number) => {
         setLoading(true)
@@ -120,30 +127,28 @@ const SingleCard = () => {
         setLoading(false)
     }
     useEffect(() => {
-        fetchReviews();
+        fetchReviews()
         fetchBookCover(Number(id))
     }, [id])
-
-    const bookCover = `${API_URL}/files/${book.cover}`;
 
     const nextReview = () => {
         setCurrentReviewIndex((prevIndex) =>
             prevIndex === reviews.length - 1 ? 0 : prevIndex + 1
-        );
-    };
+        )
+    }
 
     const prevReview = () => {
         setCurrentReviewIndex((prevIndex) =>
             prevIndex === 0 ? reviews.length - 1 : prevIndex - 1
-        );
-    };
+        )
+    }
 
     return (
         <section className="text-gray-600 body-font overflow-hidden">
             <div className="container px-10 py-32 mx-auto">
                 <div className="lg:w-3/4 mx-auto flex flex-wrap">
                     <img
-                        src={bookCover}
+                        src={book.cover}
                         alt="Book cover"
                         className="w-1/3 object-contain object-center rounded"
                     />
@@ -245,10 +250,13 @@ const SingleCard = () => {
                                 Add to cart
                             </button>
                         </div>
-                        <CreateReview bookId={Number.parseInt(String(id))} onSubmit={()=>{
-                            fetchBookCover(Number(id));
-                            fetchReviews();
-                        }}/>
+                        <CreateReview
+                            bookId={Number.parseInt(String(id))}
+                            onSubmit={() => {
+                                fetchBookCover(Number(id))
+                                fetchReviews()
+                            }}
+                        />
                     </div>
                 </div>
             </div>
@@ -257,17 +265,27 @@ const SingleCard = () => {
                 <div className="flex justify-center mt-4 pb-6">
                     <Carousel className="w-1/2">
                         <CarouselContent>
-                            <CarouselItem style={{width: "100%"}}>
-                                <div style={{width: "100%"}}>
+                            <CarouselItem style={{ width: '100%' }}>
+                                <div style={{ width: '100%' }}>
                                     <div className="bg-zinc-100 p-6 rounded-lg shadow-md">
                                         <h3 className="text-lg font-semibold mb-2">
-                                            Review by @{reviews[currentReviewIndex].user.name}
+                                            Review by @
+                                            {
+                                                reviews[currentReviewIndex].user
+                                                    .name
+                                            }
                                         </h3>
                                         <p className="text-gray-600 mb-2">
-                                            {reviews[currentReviewIndex].comment}
+                                            {
+                                                reviews[currentReviewIndex]
+                                                    .comment
+                                            }
                                         </p>
                                         <div className="flex items-center">
-                                            {renderStars(reviews[currentReviewIndex].rating)}
+                                            {renderStars(
+                                                reviews[currentReviewIndex]
+                                                    .rating
+                                            )}
                                         </div>
                                     </div>
                                 </div>
