@@ -6,6 +6,8 @@ import {
 	createUser,
 	deleteUser,
 	updateUser,
+	getUserByGoogleId,
+	getUsersCount,
 } from "../controller/user/user";
 
 import { ratelimitMiddleware } from "../middleware/ratelimit";
@@ -16,4 +18,6 @@ export default (router: express.Router) => {
 	router.post("/user", createUser);
 	router.delete("/user/:id", deleteUser);
 	router.put("/user/:id", updateUser);
+	router.get("/user/getByGoogleId/:googleId", getUserByGoogleId);
+	router.get("/users/count", getUsersCount);
 };

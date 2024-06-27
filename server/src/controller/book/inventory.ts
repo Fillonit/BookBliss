@@ -15,16 +15,42 @@ export const getInventory = async (
 	res: express.Response
 ) => {
 	const { limit, offset } = req.query;
-	const limitNumber = Number.parseInt(String(limit));
-	const offsetNumber = Number.parseInt(String(offset));
+	const limitNumber = Number.parseInt(String(limit ?? "5"));
+	const offsetNumber = Number.parseInt(String(offset ?? "0"));
 	const inventory = await prisma.inventory.findMany({
 		take: limitNumber,
 		skip: offsetNumber,
+		include: {
+			Book: {
+				select: {
+					title: true,
+					author: true,
+					cover: true,
+					authorId: true,
+					publisherId: true,
+				},
+			},
+		},
 	});
 
 	res.status(200).json(inventory);
 };
+export const getInventoryCount = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	const q = String(req.query.q ?? "");
 
+	const count = q == "" ? await prisma.inventory.count() : 
+	await prisma.inventory.count({where:{
+		Book: {
+			title: {
+				contains: q,
+			},
+		},	
+	}});
+	res.status(200).json({ message: "Successfully fetched count", data: count });
+};
 export const getInventoryItem = async (
 	req: express.Request,
 	res: express.Response

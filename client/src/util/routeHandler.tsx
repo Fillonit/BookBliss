@@ -1,59 +1,70 @@
-import React, { useEffect, useState } from "react";
-import { Navigate, Route } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
+import { Navigate, Route } from 'react-router-dom'
+import { API_URL } from './envExport'
 
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = `${API_URL}/api`
 
 export function PrivateRoute({
-	element,
-	...props
-}: React.ComponentProps<typeof Route>) {
-	const [role, setRole] = useState<string | null>(null);
+    element,
+    requiredRole,
+    ...props
+}: React.ComponentProps<typeof Route> & { requiredRole: string[]}) {
+    const [role, setRole] = useState<string | null>(null)
+    const sessionToken = localStorage.getItem('sessionToken')
 
-	useEffect(() => {
-		const user = JSON.parse(localStorage.getItem("user") || "{}");
+    useEffect(() => {
+        if (sessionToken) {
+            fetch(
+                `${API_BASE_URL}/auth/user/${sessionToken}?source=PrivateRoute`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            )
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok')
+                    }
+                    return response.json()
+                })
+                .then((data) => {
+                    setRole(data.role)
+                })
+                .catch((error) => handleError(error))
+        }
+    }, [sessionToken])
 
-		if (user && user.authentication.sessionToken) {
-			fetch(`${API_BASE_URL}/users/me`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `${user.authentication.sessionToken}`,
-				},
-			})
-				.then((response) => response.json())
-				.then((data) => {
-					setRole(data.user.role);
-				})
-				.catch((error) => console.error(error));
-		}
-	}, []);
+    function handleError(error: unknown) {
+        console.error(error)
+        setRole('error')
+    }
 
-	if (role === null) {
-		return null; // or a loading spinner
-	} else if (role === "admin") {
-		return React.cloneElement(
-			element as React.ReactElement<unknown>,
-			props
-		);
-	} else {
-		return <Navigate to="/" />;
-	}
+    if (!sessionToken || role === 'error') {
+        return <Navigate to="/" />
+    }
+
+    if (role === null) {
+        return null
+    } else if (requiredRole.includes(role)) {
+        return React.cloneElement(element as React.ReactElement<unknown>, props)
+    } else {
+        return <Navigate to="/" />
+    }
 }
 
 export function PublicRoute({
-	element,
-	...props
+    element,
+    ...props
 }: React.ComponentProps<typeof Route>) {
-	const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const sessionToken = localStorage.getItem('sessionToken')
 
-	if (!user || !user.role) {
-		return React.cloneElement(
-			element as React.ReactElement<unknown>,
-			props
-		);
-	} else {
-		return <Navigate to="/" />;
-	}
+    if (!sessionToken) {
+        return React.cloneElement(element as React.ReactElement<unknown>, props)
+    } else {
+        return <Navigate to="/" />
+    }
 }
 
-export default PrivateRoute;
+export default PrivateRoute

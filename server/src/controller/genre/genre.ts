@@ -6,7 +6,7 @@ export const getGenres = async (
 	res: express.Response
 ) => {
 	const genres = await prisma.genre.findMany();
-	res.status(200).json(genres);
+	res.status(200).json({message: "Successfully fetched data", data: genres});
 };
 
 export const getGenreById = async (

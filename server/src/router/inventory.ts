@@ -11,10 +11,11 @@ import {
 	getInventoryByBookIds,
 	getInventoryByQuantity,
 	getInventoryByQuantityRange,
+	getInventoryCount
 } from "../controller/book/inventory";
 
 export default (router: express.Router) => {
-	router.get("/inventory/:bookId", getInventory);
+	router.get("/inventory", getInventory);
 	router.post("/inventory/bookIds", getInventoryByBookIds);
 	router.get("/inventory/quantity/:quantity", getInventoryByQuantity);
 	router.get(
@@ -23,6 +24,7 @@ export default (router: express.Router) => {
 	);
 	router.get("/inventory/book/:bookId", getInventoryByBookId);
 	router.get("/inventory/bookTitle/:title", getInventoryByBookTitle);
+	router.get("/inventory/count", getInventoryCount);
 	router.get("/inventory/:id", getInventoryItem);
 	router.put("/inventory/:id", updateInventoryItem);
 	router.post("/inventory", createInventoryItem);

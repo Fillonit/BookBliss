@@ -1,8 +1,9 @@
 {
-	"dependencies": {
-		"@prisma/client": "^5.11.0"
-	},
 	"scripts": {
-		"deploy:dev": "npx vercel alias set book-bliss-git-development-fillonit.vercel.app bookbliss-dev.logic-nest.me"
+		"deploy:dev": "npx vercel alias set book-bliss-git-development-fillonit.vercel.app bookbliss-dev.logic-nest.me",
+		"start:dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\""
+	},
+	"dependencies": {
+		"concurrently": "^8.2.2"
 	}
 }
