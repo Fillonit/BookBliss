@@ -84,12 +84,12 @@ model SavedBook {
 }
 
 model Author {
-  id         Int          @id
-  name       String       @unique
-  books      Book[]
-  user       User         @relation(fields: [id], references: [id])
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  id        Int      @id
+  name      String   @unique
+  books     Book[]
+  user      User     @relation(fields: [id], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model AuthorApplication {
@@ -114,7 +114,6 @@ model Subscriber {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
 
 model Review {
   id        Int      @id @default(autoincrement())
@@ -201,4 +200,19 @@ model Payment {
   amount      Float
   status      String   @default("pending")
   Order       Order    @relation(fields: [orderId], references: [id])
+}
+
+model Player {
+  PlayerId  String @id @default(uuid())
+  Name      String
+  Number    Int
+  TeamId    String
+  BirthYear Int    @default(0) @db.Int
+  Team      Team   @relation(fields: [TeamId], references: [TeamId])
+}
+
+model Team {
+  TeamId String   @id @default(uuid())
+  Name   String
+  Player Player[]
 }

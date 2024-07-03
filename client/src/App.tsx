@@ -27,6 +27,13 @@ import EditBook from './pages/EditBook'
 import Settings from './components/User/Settings'
 import BookDetails from './components/Book/BookDetails'
 import Reviews from './components/Book/Reviews'
+import CreatePlayer from './components/Player/createPlayer'
+import CreateTeam from './components/Team/createTeam'
+import UpdateTeam from './components/Team/updateTeam'
+import TeamsList from './components/Team/getTeam'
+import PlayersList from './components/Player/getPlayer'
+import UpdatePlayer from './components/Player/updatePlayer'
+import GetPlayerByYear from './components/Player/getPlayerByYear'
 
 import { Analytics } from '@vercel/analytics/react'
 
@@ -114,6 +121,28 @@ function App() {
                                 element={<BookDetails />}
                             />
                             <Route path="/reviews/:id" element={<Reviews />} />
+                            <Route
+                                path="/player/create"
+                                element={<CreatePlayer />}
+                            />
+                            <Route
+                                path="/team/create"
+                                element={<CreateTeam />}
+                            />
+                            <Route
+                                path="/team/:teamId/update"
+                                element={<UpdateTeam />}
+                            />
+                            <Route path="/teams" element={<TeamsList />} />
+                            <Route path="/players" element={<PlayersList />} />
+                            <Route
+                                path="/player/:playerId/update"
+                                element={<UpdatePlayer />}
+                            />
+                            <Route
+                                path="/players/year/:year"
+                                element={<GetPlayerByYear />}
+                            />
                             {/* <Route path="/dashboard" element={<Dashboard />} />
                             <Route
                                 path="/dashboard/:table"
