@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
     process.env.REACT_APP_API_URL =
         mode === 'production'
             ? 'http://localhost:5000'
-            : 'https://api.bookbliss.logic-nest.me'
+            : 'https://bookbliss-pj2u.onrender.com'
     return {
         plugins: [react()],
         resolve: {
