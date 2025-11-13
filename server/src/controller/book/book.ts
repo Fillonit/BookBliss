@@ -388,7 +388,7 @@ export const createBook = async (
 			title: title as string,
 			author: user.name,
 			pdfLink: pdfFile ?? "default.pdf",
-			cover: `http://localhost:5000/files/${coverFile}` ?? "default.png",
+			cover: `https://bookbliss-pj2u.onrender.com/files/${coverFile}` ?? "default.png",
 			isbn: (
 				Math.floor(Math.random() * 9000000000000) + 1000000000000
 			).toString(),

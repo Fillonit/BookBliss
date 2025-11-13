@@ -120,7 +120,7 @@ export default function ReviewTable() {
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/reviews`
+                    `https://bookbliss-pj2u.onrender.com/api/reviews`
                 )
                 const jsonData = await response.json()
                 setData(jsonData)
@@ -152,7 +152,7 @@ export default function ReviewTable() {
         if (selectedReview) {
             console.log(setReviewData)
             const response = await fetch(
-                `http://localhost:5000/api/review/${selectedReview.id}`,
+                `https://bookbliss-pj2u.onrender.com/api/review/${selectedReview.id}`,
                 {
                     method: 'PUT',
                     headers: {
@@ -181,7 +181,7 @@ export default function ReviewTable() {
             const fetchData = async () => {
                 try {
                     const response = await fetch(
-                        `http://localhost:5000/api/reviews`
+                        `https://bookbliss-pj2u.onrender.com/api/reviews`
                     )
                     const jsonData = await response.json()
                     setData(jsonData)
@@ -810,7 +810,7 @@ export default function ReviewTable() {
                                 <Button
                                     onClick={async () => {
                                         const response = await fetch(
-                                            `http://localhost:5000/api/review/${selectedReview.id}`,
+                                            `https://bookbliss-pj2u.onrender.com/api/review/${selectedReview.id}`,
                                             {
                                                 method: 'DELETE',
                                             }
@@ -845,7 +845,7 @@ export default function ReviewTable() {
                                         const fetchData = async () => {
                                             try {
                                                 const response = await fetch(
-                                                    `http://localhost:5000/api/reviews`
+                                                    `https://bookbliss-pj2u.onrender.com/api/reviews`
                                                 )
                                                 const jsonData = await response.json()
                                                 setData(jsonData)
